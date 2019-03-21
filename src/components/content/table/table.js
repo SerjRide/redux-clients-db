@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getData } from '../../../actions'
+import { getData } from '../../../actions';
+import { getProductsNames } from '../../../service';
 
 class Table extends Component {
 
@@ -14,6 +15,7 @@ class Table extends Component {
     let items;
 
     if (length !== 0) {
+
       items = orders.map((item, i) => {
         return (
           <tr key={ item._id }>
@@ -22,7 +24,7 @@ class Table extends Component {
             <td>{ item.date }</td>
             <td>{ item.name }</td>
             <td>{ item.contacts }</td>
-            <td>{ item.product }</td>
+            <td>{ getProductsNames(item) }</td>
             <td>{ item.price }</td>
           </tr>
         )

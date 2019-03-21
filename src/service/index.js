@@ -1,3 +1,13 @@
-import { timestampToDate } from './service';
+import {
+  timestampToDate,
+  getNewOrederNamber,
+  calcVis,
+  calcProductsSumm,
+  getProductsNames } from './service';
 
-export { timestampToDate };
+export {
+    timestampToDate,
+    getNewOrederNamber,
+    calcVis,
+    calcProductsSumm,
+    getProductsNames };

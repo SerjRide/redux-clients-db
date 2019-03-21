@@ -3,7 +3,8 @@ import {
   showNavbar,
   hideNavbar,
   getData,
-  showAddOrder
+  showAddOrder,
+  setData
 
 } from './actions';
 
@@ -12,6 +13,7 @@ export {
   showNavbar,
   hideNavbar,
   getData,
-  showAddOrder
+  showAddOrder,
+  setData
 
 }

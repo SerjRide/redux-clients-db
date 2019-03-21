@@ -1,27 +1,27 @@
 {
-	"namber": 19138,
+	"namber": 19000,
 	"customer": "Простор",
 	"date": "21-03-2019",
 	"name": "Елена",
 	"contacts": "lena@mail.ru",
-	"product": "Визитки",
+	"product": [{"name":"Визитки","tech":"Цифровая печать","count":"200","format":"90x50","material":"Обычная","colors":"1+1","lam":"","border":false,"price":1120},{"name":"Визитки","tech":"Цифровая печать","count":"50","format":"90x50","material":"Обычная","colors":"4+4","lam":"","border":false,"price":450}],
 	"price": 2200
 }
 {
-	"namber": 19139,
+	"namber": 19001,
 	"customer": "Vintegra",
 	"date": "12-03-2019",
 	"name": "Ева",
 	"contacts": "eva@mail.ru",
-	"product": "Визитки",
+	"product": [{"name":"Визитки","tech":"Цифровая печать","count":"200","format":"90x50","material":"Обычная","colors":"4+0","lam":"","border":false,"price":1200},{"name":"Визитки","tech":"Цифровая печать","count":"100","format":"90x50","material":"Обычная","colors":"1+0","lam":"","border":false,"price":300}],
 	"price": 2100
 }
 {
-	"namber": 19140,
-	"customer": "Vintegra",
+	"namber": 19002,
+	"customer": "BOSCO",
 	"date": "24-03-2019",
 	"name": "Морган",
 	"contacts": "morgan@mail.ru",
-	"product": "листовки",
+	"product": [{"name":"Визитки","tech":"Цифровая печать","count":"500","format":"90x50","material":"Обычная","colors":"4+0","lam":"","border":false,"price":3000}],
 	"price": 4300
 }

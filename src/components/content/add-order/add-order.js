@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { timestampToDate } from '../../../service'
-import { getData } from '../../../actions';
+
+import {
+  timestampToDate,
+  getNewOrederNamber,
+  calcProductsSumm } from '../../../service'
+
+import { setData } from '../../../actions';
 import ContactsInfo from './contacts-info';
 import VisitCard from './visit-card';
 
@@ -18,14 +23,16 @@ class AddOrder extends Component {
   };
 
   addOrder = () => {
+    const { length } = this.props.state.orders
     const customer = document.getElementById('inputCustomer').value;
-    const date = Date.now();
+    const date = timestampToDate(Date.now());
+    const namber = getNewOrederNamber(length);
     const name = document.getElementById('inputName').value;
     const contacts = document.getElementById('inputContacts').value;
-    const { products } = this.state
-    const price = 1000;
+    let { products } = this.state;
+    const price = calcProductsSumm(products);
     const obj = {
-      namber: 19666,
+      namber: namber,
       customer: customer,
       date: date,
       name: name,
@@ -33,9 +40,9 @@ class AddOrder extends Component {
       product: products,
       price: price
     }
-    console.log(timestampToDate(date))
     console.log(obj)
-  }
+    this.props.setData('setorder', obj)
+  };
 
   render() {
     const { products } = this.state
@@ -61,7 +68,7 @@ class AddOrder extends Component {
             <p>Бумага: { item.material }</p>
             { viewLam }
             { viewBorder }
-            <p>Цена: 1000 руб.</p>
+            <p>Цена: {item.price} руб.</p>
           </div>
         )
       });
@@ -121,7 +128,7 @@ class AddOrder extends Component {
 const mapStateToProps = (state) => ({ state: state });
 const mapDispatchToProps = (dispatch) => {
   return {
-    getData: (url) => dispatch(getData(url))
+    setData: (url, body) => dispatch(setData(url, body))
   }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AddOrder);

@@ -6,7 +6,7 @@ const OrderSchema = new Schema({
   date: String,
   name: String,
   contacts: String,
-  product: String,
+  product: [],
   price: Number
 });
 

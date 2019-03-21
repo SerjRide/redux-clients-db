@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { calcVis } from '../../../../service'
 
 class VisitCard extends Component {
 
@@ -11,9 +12,11 @@ class VisitCard extends Component {
       material: this.inputVisMaterial.value,
       colors: this.inputVisColors.value,
       lam: this.inputVisLam.value,
-      border: this.inputVisBorder.checked
+      border: this.inputVisBorder.checked,
+      price: 0
     }
-    this.props.addProduct(obj)
+    obj.price = calcVis(obj);
+    this.props.addProduct(obj);
   }
 
   render() {

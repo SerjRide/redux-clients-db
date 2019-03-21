@@ -13,11 +13,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/getorders', ORC.index);
-app.post('/orders', ORC.create);
+app.post('/setorder', ORC.create);
 app.get('/orders/:id', ORC.read);
 app.delete('/orders/:id', ORC.delete);
 app.put('/orders/:id', ORC.update);
 
 app.listen(8080, () => {
-  console.log('server started...')
+  console.log('server started on 8080 port...')
 })

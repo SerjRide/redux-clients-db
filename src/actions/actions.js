@@ -13,6 +13,22 @@ const getData = (request) => {
     .then((orders) => dispatch(reqDone(orders)))
   };
 };
+
+const setData = (request, body) => {
+  return (dispatch) => {
+    fetch('/' + request, {
+      method: 'POST',
+      body: JSON.stringify(body),
+      headers:{'content-type': 'application/json'}
+    })
+    .then((res) => {
+      if(!res.ok) throw new Error(res.statusText)
+      return res;
+    })
+    .then((res) => res.json())
+    .then((orders) => dispatch(reqDone(orders)))
+  };
+};
 const showAddOrder = () => ({ type: "SHOW_ADD_ORDER" })
 
-export { showNavbar, hideNavbar, getData, showAddOrder }
+export { showNavbar, hideNavbar, getData, showAddOrder, setData }
