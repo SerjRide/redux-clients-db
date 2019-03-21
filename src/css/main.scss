@@ -1,0 +1,128 @@
+@mixin testing {
+  border: solid 1px red;
+  box-shadow: inset 0 0 6px 0px #772b2b;
+}
+$btnHover: rgba(#E9E9E9, 0.51);
+
+html {
+  height: 100%;
+  body {
+    height: 100%;
+    div#root {
+      height: 100%;
+    }
+    ul {
+      padding-left: 0;
+      li {
+        list-style-type: none;
+      }
+    }
+  }
+}
+
+.App {
+  height: 100%;
+  .head{
+    nav{
+      padding: 10px 10px;
+    }
+    .form {
+      display: flex;
+      justify-content: space-between;
+      width: 80%;
+      input {
+        width: 75%;
+        margin-right: 5px;
+      }
+    }
+  }
+}
+
+.left-navbar {
+  position: absolute;
+  background-color: white;
+  z-index: 10;
+  height: 100%;
+  box-shadow: 0 0 50px 10px #5a5a5a;
+  animation: getleftNav 0.3s;
+  button.nav-link {
+    text-align: left;
+    background-color: white;
+    border: 0;
+    width: 250px;
+  }
+  button.nav-link:hover {
+    background-color: $btnHover;
+  }
+  button.nav-link:focus {
+    outline: 0;
+    border-left: solid 5px #D2DFFF
+  }
+  hr {
+    border: solid 0.5px #ECECEC;
+    width: 100%;
+  }
+  .navbar-head{
+    display: flex;
+    padding-top: 20px;
+    margin-bottom: 0px;
+    .el {
+      padding-left: 10px;
+      button {
+        border: 0;
+        border-radius: 100px;
+        width: 50px;
+        height: 50px;
+        margin-top: -6px;
+        background-color: white;
+      }
+      button:hover {
+        background-color: $btnHover;
+      }
+      button:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+.modal-shadow {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(#000000, 0.45);
+  z-index: 9;
+  animation: getShadow 0.3s;
+}
+
+.add-order {
+  margin-top: 20px;
+  p {
+    margin-bottom: 2px;
+  }
+  .products-list{
+    display: flex;
+    div {
+      margin-right: 20px;
+    }
+  }
+  .btn-sm {
+    margin-top: 10px;
+  }
+}
+
+@keyframes getShadow {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes getleftNav {
+  from { transform: translateX(-150px); }
+  to { transform: translateX(0); }
+}
+
+.entrance {
+  @include testing;
+  display: flex;
+  margin: 10px 50px;
+}
