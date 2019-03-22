@@ -1,7 +1,7 @@
 {
 	"namber": 19000,
 	"customer": "Простор",
-	"date": "21-03-2019",
+	"date": "21.03.19",
 	"name": "Елена",
 	"contacts": "lena@mail.ru",
 	"product": [{"name":"Визитки","tech":"Цифровая печать","count":"200","format":"90x50","material":"Обычная","colors":"1+1","lam":"","border":false,"price":1120},{"name":"Визитки","tech":"Цифровая печать","count":"50","format":"90x50","material":"Обычная","colors":"4+4","lam":"","border":false,"price":450}],
@@ -10,7 +10,7 @@
 {
 	"namber": 19001,
 	"customer": "Vintegra",
-	"date": "12-03-2019",
+	"date": "12.03.19",
 	"name": "Ева",
 	"contacts": "eva@mail.ru",
 	"product": [{"name":"Визитки","tech":"Цифровая печать","count":"200","format":"90x50","material":"Обычная","colors":"4+0","lam":"","border":false,"price":1200},{"name":"Визитки","tech":"Цифровая печать","count":"100","format":"90x50","material":"Обычная","colors":"1+0","lam":"","border":false,"price":300}],
@@ -19,7 +19,7 @@
 {
 	"namber": 19002,
 	"customer": "BOSCO",
-	"date": "24-03-2019",
+	"date": "24.03.19",
 	"name": "Морган",
 	"contacts": "morgan@mail.ru",
 	"product": [{"name":"Визитки","tech":"Цифровая печать","count":"500","format":"90x50","material":"Обычная","colors":"4+0","lam":"","border":false,"price":3000}],

@@ -1,4 +1,5 @@
 import Order from '../models/order';
+import Orders from '../models/orders';
 
 class OrderController {
   index(req, res) {
@@ -21,20 +22,28 @@ class OrderController {
       price: data.price
     })
 
-    order.save().then(() => {
+    order.save()
+    .then(() => {
       console.log('order added...');
       res.send({ status: 'ok' });
     })
     .catch(() => {})
   }
 
+  createMany(req, res) {
+    const data = req.body;
+    function onInsert(err, docs) {
+      if (err) { res.send(err) }
+      else res.json({ status: 'All orders added' })
+    }
+    Orders.collection.insertMany(data, onInsert);
+  }
+
   read(req, res) {
-    Order.findOne({ _id: req.params.id }).then(post => {
-      if (!post) {
-        res.send({ error: 'not found' });
-      } else {
-        res.json(post);
-      }
+    Order.findOne({ _id: req.params.id })
+    .then(post => {
+      if (!post) { res.send({ error: 'not found' }) }
+      else res.json(post);
     })
     .catch(() => {})
   }
@@ -47,7 +56,7 @@ class OrderController {
   }
 
   delete(req, res) {
-    Order.remove({
+    Order.deleteOne({
       _id: req.params.id,
     }).then(post => {
       if (post) {
@@ -55,6 +64,14 @@ class OrderController {
       } else res.json({ status: 'error' });
     })
     .catch(() => {});
+  }
+
+  deleteAll(req, res) {
+    function deleteAllOrders (err) {
+      if (err) { res.send(err) }
+      else res.json({ status: 'All orders deleted' });
+    }
+    Order.collection.deleteMany({}, deleteAllOrders);
   }
 }
 
