@@ -23,9 +23,9 @@ class OrderController {
     })
 
     order.save()
-    .then(() => {
+    .then((res) => {
       console.log('order added...');
-      res.send({ status: 'ok' });
+      res.send(res);
     })
     .catch(() => {})
   }
@@ -56,11 +56,13 @@ class OrderController {
   }
 
   delete(req, res) {
-    Order.deleteOne({
+    Order
+    .deleteOne({
       _id: req.params.id,
-    }).then(post => {
-      if (post) {
-        res.json({ status: 'deleted' });
+    })
+    .then((result) => {
+      if (result) {
+        res.json(res);
       } else res.json({ status: 'error' });
     })
     .catch(() => {});

@@ -3,7 +3,9 @@ import {
   showNavbar,
   hideNavbar,
   getData,
-  setData
+  setData,
+  alertSaccess,
+  delData
 
 } from './actions';
 
@@ -12,6 +14,8 @@ export {
   showNavbar,
   hideNavbar,
   getData,
-  setData
+  setData,
+  alertSaccess,
+  delData
 
 }

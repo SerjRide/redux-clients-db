@@ -30,4 +30,21 @@ const setData = (request, body) => {
   };
 };
 
-export { showNavbar, hideNavbar, getData, setData }
+const delData = (id) => {
+  return (dispatch) => {
+    fetch('/delorder/' + id, {
+      method: 'DELETE',
+      headers:{'content-type': 'application/json'}
+    })
+    .then((res) => {
+      if(!res.ok) throw new Error(res.statusText)
+      return res;
+    })
+    .then((res) => res.json())
+    .then((orders) => dispatch(reqDone(orders)))
+  };
+};
+
+const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text })
+
+export { showNavbar, hideNavbar, getData, setData, alertSaccess, delData }

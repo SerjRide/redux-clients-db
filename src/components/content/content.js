@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Table from '../content/table';
 import { connect } from 'react-redux';
 import AddOrder from './add-order';
+import DeleteOrder from './delete-order';
 import { Route } from 'react-router-dom';
 
 class Content extends Component {
@@ -12,6 +13,7 @@ class Content extends Component {
         <div className="content">
           <Route path='/' component = { Table } exact/>
           <Route path='/add-order' component = { AddOrder } />
+          <Route path='/del-order' component = { DeleteOrder } />
         </div>
     );
   }

@@ -5,8 +5,11 @@ import { getProductsNames } from '../../../service';
 
 class Table extends Component {
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
+    console.log('before');
     this.props.getData('getorders');
+    console.log('after');
   }
 
   render() {
@@ -32,7 +35,7 @@ class Table extends Component {
     }
 
     return (
-      <div className="content">
+      <div className="table">
       <table className="table table-hover table-sm">
         <thead>
           <tr>

@@ -24,6 +24,9 @@ html {
   height: 100%;
   .head{
     nav{
+      position: fixed;
+      z-index: 8;
+      width: 100%;
       padding: 10px 10px;
     }
     .form {
@@ -39,7 +42,7 @@ html {
 }
 
 .left-navbar {
-  position: absolute;
+  position: fixed;
   background-color: white;
   z-index: 10;
   height: 100%;
@@ -88,7 +91,7 @@ html {
 }
 
 .modal-shadow {
-  position: absolute;
+  position: fixed;
   width: 100%;
   height: 100%;
   background-color: rgba(#000000, 0.45);
@@ -96,8 +99,14 @@ html {
   animation: getShadow 0.3s;
 }
 
+.content {
+  padding-top: 75px;
+  .table {
+    margin-top: -17px;
+  }
+}
+
 .add-order {
-  margin-top: 20px;
   p {
     margin-bottom: 2px;
   }
@@ -126,4 +135,20 @@ html {
   @include testing;
   display: flex;
   margin: 10px 50px;
+}
+
+.alert {
+  position: fixed;
+  z-index: 9999;
+  width: 120%;
+  animation-name: alert;
+  animation-duration: 2s;
+  transform:translateY(-50px);
+  opacity: 0.9;
+}
+
+@keyframes alert {
+  from {  transform:translateY(-50px); }
+  10%,90% { transform:translateY(0px); }
+  to { transform:translateY(-50px); }
 }

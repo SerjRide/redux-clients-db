@@ -1,12 +1,12 @@
 const timestampToDate = (ts) => {
   var d = new Date();
   d.setTime(ts);
-  return ('0' + d.getDate()).slice(-2) + '.' + ('0' + (d.getMonth() + 1)).slice(-2) + '.' + d.getFullYear();
+  return ('0' + d.getDate()).slice(-2) + '.' + ('0' + (d.getMonth() + 1)).slice(-2) + '.' + (d.getFullYear() + '').slice(-2);
 }
 
 const getNewOrederNamber = (length) => {
   const date = Date.now();
-  return timestampToDate(date)[8] + timestampToDate(date)[9] + ('00' + length).slice(-3);
+  return timestampToDate(date)[6] + timestampToDate(date)[7] + ('000' + length).slice(-4);
 }
 
 const calcVis = (obj) => {
@@ -31,9 +31,8 @@ const calcProductsSumm = (arr) => {
 const getProductsNames = (obj) => {
   const { product } = obj
   let productsNames = ''
-  if (product.length === 1) {
-    productsNames = product[0]
-  } else {
+  if (typeof(product[0]) === 'string') productsNames = product[0]
+  else {
     for (let j = 0; j < product.length; j++) {
       let join = ', ';
       if (j === product.length - 1) join = '';
@@ -44,8 +43,11 @@ const getProductsNames = (obj) => {
 }
 
 export {
+
   timestampToDate,
   getNewOrederNamber,
   calcVis,
   calcProductsSumm,
-  getProductsNames }
+  getProductsNames
+
+}

@@ -6,7 +6,7 @@ import {
   getNewOrederNamber,
   calcProductsSumm } from '../../../service'
 
-import { setData } from '../../../actions';
+import { setData, alertSaccess } from '../../../actions';
 import ContactsInfo from './contacts-info';
 import VisitCard from './visit-card';
 
@@ -21,6 +21,13 @@ class AddOrder extends Component {
     products.push(obj)
     this.setState({ products: products });
   };
+
+  refreshForm = () => {
+    this.setState({ products: [] });
+    document.getElementById('inputCustomer').value = '';
+    document.getElementById('inputName').value = '';
+    document.getElementById('inputContacts').value = '';
+  }
 
   addOrder = () => {
     const { length } = this.props.state.orders
@@ -40,8 +47,9 @@ class AddOrder extends Component {
       product: products,
       price: price
     }
-    console.log(obj)
     this.props.setData('setorder', obj)
+    this.props.alertSaccess('Added');
+    this.refreshForm();
   };
 
   render() {
@@ -128,7 +136,8 @@ class AddOrder extends Component {
 const mapStateToProps = (state) => ({ state: state });
 const mapDispatchToProps = (dispatch) => {
   return {
-    setData: (url, body) => dispatch(setData(url, body))
+    setData: (url, body) => dispatch(setData(url, body)),
+    alertSaccess: (text) => dispatch(alertSaccess(text))
   }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(AddOrder);
