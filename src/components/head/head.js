@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { showNavbar } from '../../actions';
+import { Link } from 'react-router-dom';
 
 class Head extends Component {
 
@@ -14,9 +15,10 @@ class Head extends Component {
             type="button">
             <i className="fas fa-bars"></i>
           </button>
-          <div className="navbar-brand">
+          <Link className="navbar-brand"
+            to="/">
             Redux Clients DB
-          </div>
+          </Link>
           <div className="form">
             <input
               className="form-control"

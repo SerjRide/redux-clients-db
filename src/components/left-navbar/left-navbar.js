@@ -1,43 +1,58 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { hideNavbar, showAddOrder } from '../../actions';
+import { hideNavbar } from '../../actions';
+import { Link } from 'react-router-dom';
 
 class LeftNavbar extends Component {
 
   render() {
+    const { hideNavbar } = this.props
+
     return (
       <React.Fragment>
       <div className="modal-shadow"
-        onClick={ () => this.props.hideNavbar() }>
+        onClick={ () => hideNavbar() }>
       </div>
       <div className="left-navbar">
         <nav className="nav flex-column">
           <ul className="navbar-head">
             <li className="el">
               <button
-                onClick={ () => this.props.hideNavbar() }
+                onClick={ () => hideNavbar() }
                 type="button">
                 <i className="fas fa-bars"></i>
               </button>
             </li>
             <li className="el">
-              <div className="navbar-brand">
+              <Link className="navbar-brand"
+                onClick={ () => hideNavbar() }
+                to="/">
                 Redux Clients DB
-              </div>
+              </Link>
             </li>
           </ul>
           <hr />
-          <button className="nav-link"
-            onClick={ () => this.props.showAddOrder() }>
+          <Link className="nav-link"
+            to="/"
+            onClick={ () => hideNavbar() }>
+            База клиентов
+          </Link>
+          <Link className="nav-link"
+            to="/add-order"
+            onClick={ () => hideNavbar() }>
             Добавить заказ
-          </button>
+          </Link>
           <hr />
-          <button className="nav-link">
+          <Link className="nav-link"
+            onClick={ () => hideNavbar() }
+            to="/">
             Аналитика
-          </button>
-          <button className="nav-link disabled">
+          </Link>
+          <Link className="nav-link disabled"
+            onClick={ () => hideNavbar() }
+            to="/">
             Disabled
-          </button>
+          </Link>
         </nav>
       </div>
       </React.Fragment>
@@ -48,8 +63,7 @@ class LeftNavbar extends Component {
 const mapStateToProps = (state) => ({ state: state })
 const mapDispatchToProps = (dispatch) => {
   return {
-    hideNavbar: () => dispatch(hideNavbar()),
-    showAddOrder: () => dispatch(showAddOrder())
+    hideNavbar: () => dispatch(hideNavbar())
   }
 };
 

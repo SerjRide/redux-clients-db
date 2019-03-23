@@ -3,6 +3,7 @@ import Head from '../head';
 import Content from '../content';
 import LeftNavbar from '../left-navbar';
 import { connect } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 
 import '../../css/main.css';
 
@@ -16,11 +17,13 @@ class App extends Component {
     }
 
     return (
-      <div className="App">
-        { leftNavbar }
-        <Head />
-        <Content />
-      </div>
+      <Router>
+        <div className="App">
+          { leftNavbar }
+          <Head />
+          <Content />
+        </div>
+      </Router>
     );
   }
 }

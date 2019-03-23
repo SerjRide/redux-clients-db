@@ -28,14 +28,15 @@ html {
   height: 100%;
   box-shadow: 0 0 50px 10px #5a5a5a;
   animation: getleftNav 0.3s; }
-  .left-navbar button.nav-link {
+  .left-navbar a.nav-link {
+    color: #000;
     text-align: left;
     background-color: white;
     border: 0;
     width: 250px; }
-  .left-navbar button.nav-link:hover {
+  .left-navbar a.nav-link:hover {
     background-color: rgba(233, 233, 233, 0.51); }
-  .left-navbar button.nav-link:focus {
+  .left-navbar a.nav-link:focus {
     outline: 0;
     border-left: solid 5px #D2DFFF; }
   .left-navbar hr {

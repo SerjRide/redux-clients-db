@@ -29,6 +29,5 @@ const setData = (request, body) => {
     .then((orders) => dispatch(reqDone(orders)))
   };
 };
-const showAddOrder = () => ({ type: "SHOW_ADD_ORDER" })
 
-export { showNavbar, hideNavbar, getData, showAddOrder, setData }
+export { showNavbar, hideNavbar, getData, setData }

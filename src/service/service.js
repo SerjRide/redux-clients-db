@@ -31,10 +31,14 @@ const calcProductsSumm = (arr) => {
 const getProductsNames = (obj) => {
   const { product } = obj
   let productsNames = ''
-  for (let j = 0; j < product.length; j++) {
-    let join = ', ';
-    if (j === product.length - 1) join = '';
-    productsNames += product[j].name + join;
+  if (product.length === 1) {
+    productsNames = product[0]
+  } else {
+    for (let j = 0; j < product.length; j++) {
+      let join = ', ';
+      if (j === product.length - 1) join = '';
+      productsNames += product[j].name + join;
+    }
   }
   return productsNames;
 }

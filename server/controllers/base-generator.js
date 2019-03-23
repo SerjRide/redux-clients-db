@@ -3,17 +3,11 @@ const surnames = require('../../etc/russian-surnames.json');
 const contacts = require('../../etc/contacts.json');
 const products = require('../../etc/products-and-price.json');
 const customers = require('../../etc/customers.json');
+const fs = require("fs");
 
 const addCustomers = (arr, i) => {
   let newArr = arr;
   newArr[i].customer = customers[Math.floor(Math.random() * 1000)];
-  return newArr;
-}
-
-const getCustomers = (arr, i) => {
-  const { customer } = arr[i];
-  let newArr = arr;
-  newArr[i] = customer;
   return newArr;
 }
 
@@ -49,14 +43,14 @@ const addProducts = (arr, i, profit) => {
   if (count === 1) {
     rndProduct = products[Math.floor(Math.random() * 13)].products
   } else if (count === 2) {
+    rndPrice += charge;
     rndProduct = products[Math.floor(Math.random() * 13)].products + ', ' +
                  products[Math.floor(Math.random() * 13)].products;
-    rndPrice += charge;
   } else if (count === 3) {
+    rndPrice += (charge * 2);
     rndProduct = products[Math.floor(Math.random() * 13)].products + ', ' +
                  products[Math.floor(Math.random() * 13)].products + ', ' +
                  products[Math.floor(Math.random() * 13)].products;
-    rndPrice += (charge * 2);
   }
   newArr[i].product = rndProduct;
   newArr[i].price = rndPrice;
@@ -81,9 +75,14 @@ const baseGenerator = (year = 18, profit = 'low') => {
     addContacts(newArr, i);
     addProducts(newArr, i, profit);
   }
+  fs.writeFile(`./server/build/${profit}_base.json`, JSON.stringify(newArr), (err) => {
+
+    if(err) throw err;
+    console.log('**************')
+    console.log(`File ${profit}_base.json was successfully recorded in folder build`);
+
+  });
   return newArr;
 }
 
-export {
-  baseGenerator
-};
+export default baseGenerator;
