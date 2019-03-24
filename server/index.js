@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/getorders', ORC.index);
+app.get('/getbyyear/:year', ORC.getByYear);
 app.post('/setorder', ORC.create);
 app.post('/setorders', ORC.createMany);
 app.get('/orders/:id', ORC.read);
@@ -25,7 +26,7 @@ app.put('/orders/:id', ORC.update);
 // 1-ый аргумент - год
 // 2-й аргумент - рентабельность
 
-// baseGenerator(18, 'mid');
+// baseGenerator(16, 'low');
 
 app.listen(8080, () => {
   console.log('server started on 8080 port...')

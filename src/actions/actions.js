@@ -4,7 +4,7 @@ const reqDone = (orders) => ({ type: "ITEMS_FETCH_DATA_SUCCESS", orders })
 
 const getData = (request) => {
   return (dispatch) => {
-    fetch('/' + request)
+    fetch('/getbyyear/' + request)
     .then((res) => {
       if(!res.ok) throw new Error(res.statusText)
       return res;
@@ -45,6 +45,16 @@ const delData = (id) => {
   };
 };
 
+const changePeriod = (year, mounth) => ({ type: "PERIOD_CHANGE", year, mounth })
+
 const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text })
 
-export { showNavbar, hideNavbar, getData, setData, alertSaccess, delData }
+export {
+  showNavbar,
+  hideNavbar,
+  getData,
+  setData,
+  alertSaccess,
+  delData,
+  changePeriod
+}

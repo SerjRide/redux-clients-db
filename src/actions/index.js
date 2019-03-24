@@ -5,7 +5,8 @@ import {
   getData,
   setData,
   alertSaccess,
-  delData
+  delData,
+  changePeriod
 
 } from './actions';
 
@@ -16,6 +17,7 @@ export {
   getData,
   setData,
   alertSaccess,
-  delData
+  delData,
+  changePeriod
 
 }

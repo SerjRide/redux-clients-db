@@ -7,9 +7,8 @@ class Table extends Component {
 
   constructor(props) {
     super(props);
-    console.log('before');
-    this.props.getData('getorders');
-    console.log('after');
+    const { year } = this.props.state.period
+    this.props.getData(year);
   }
 
   render() {

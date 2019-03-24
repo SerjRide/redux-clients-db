@@ -10,6 +10,16 @@ class OrderController {
     .catch(() => {})
   }
 
+  getByYear(req, res) {
+    const { year } = req.params;
+    const reg = new RegExp(`${year}\\w+`, 'i')
+    Order.find({ namber: reg })
+    .exec((err, orders) => {
+      if (err) throw err;
+      res.json(orders);
+    })
+  };
+
   create(req, res) {
     const data = req.body
     const order = new Order({

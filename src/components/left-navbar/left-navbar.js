@@ -43,6 +43,11 @@ class LeftNavbar extends Component {
             Добавить заказ
           </Link>
           <Link className="nav-link"
+            to="/period-settings"
+            onClick={ () => hideNavbar() }>
+            Выбрать период
+          </Link>
+          <Link className="nav-link"
             to="/del-order"
             onClick={ () => hideNavbar() }>
             Удалить заказ
