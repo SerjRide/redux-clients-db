@@ -11,6 +11,16 @@ class Table extends Component {
     this.props.getData(year);
   }
 
+  mounthFilter = () => {
+    const { orders } = this.props.state
+    const { mounth } = this.props.state.period
+    if (mounth.length === 0) return orders;
+    return orders.filter((item) => {
+      const state_mounth = item.date.slice(3,5);
+      return state_mounth === mounth;
+    })
+  }
+
   render() {
     const { orders } = this.props.state;
     const { length } = orders;
@@ -18,7 +28,8 @@ class Table extends Component {
 
     if (length !== 0) {
 
-      items = orders.map((item, i) => {
+      const mounth_filter = this.mounthFilter();
+      items = mounth_filter.map((item, i) => {
         return (
           <tr key={ item._id }>
             <th>{ item.namber }</th>

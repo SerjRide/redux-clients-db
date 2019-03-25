@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { setData, alertSaccess, changePeriod } from '../../../actions';
+import { getData, changePeriod } from '../../../actions';
 
 class PeriodSettings extends Component {
 
@@ -43,19 +43,19 @@ class PeriodSettings extends Component {
             <select id="inputMounth"
               ref={ (e) => { this.inputMounth = e} }
               className="form-control">
-              <option></option>
-              <option>Январь</option>
-              <option>Февраль</option>
-              <option>Март</option>
-              <option>Апрель</option>
-              <option>Май</option>
-              <option>Июнь</option>
-              <option>Июль</option>
-              <option>Август</option>
-              <option>Сентябрь</option>
-              <option>Октябрь</option>
-              <option>Ноябрь</option>
-              <option>Декабрь</option>
+              <option value={false}></option>
+              <option value="01">Январь</option>
+              <option value="02">Февраль</option>
+              <option value="03">Март</option>
+              <option value="04">Апрель</option>
+              <option value="05">Май</option>
+              <option value="06">Июнь</option>
+              <option value="07">Июль</option>
+              <option value="08">Август</option>
+              <option value="09">Сентябрь</option>
+              <option value="10">Октябрь</option>
+              <option value="11">Ноябрь</option>
+              <option value="12">Декабрь</option>
             </select>
           </div>
 
@@ -110,8 +110,7 @@ class PeriodSettings extends Component {
 const mapStateToProps = (state) => ({ state: state });
 const mapDispatchToProps = (dispatch) => {
   return {
-    setData: (url, body) => dispatch(setData(url, body)),
-    alertSaccess: (text) => dispatch(alertSaccess(text)),
+    getData: (url) => dispatch(getData(url)),
     changePeriod: (year, mounth) => dispatch(changePeriod(year, mounth))
   }
 };
