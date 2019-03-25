@@ -6,14 +6,15 @@ import { getData, changePeriod } from '../../../actions';
 class PeriodSettings extends Component {
 
   componentDidMount() {
-    this.inputYear.value = '20' + this.props.state.period.year;
+    this.inputYear.value = this.props.state.period.year;
     this.inputMounth.value = this.props.state.period.mounth;
+    if (this.props.state.period.mounth === '') this.inputMounth.value = ''
   }
 
   apply = () => {
     const { value: year } = this.inputYear;
     const { value: mounth } = this.inputMounth;
-    this.props.changePeriod(year.slice(2), mounth);
+    this.props.changePeriod(year, mounth);
   }
 
   render() {
@@ -29,10 +30,10 @@ class PeriodSettings extends Component {
             <select id="inputYear"
               ref={ (e) => { this.inputYear = e} }
               className="form-control">
-              <option>2019</option>
-              <option>2018</option>
-              <option>2017</option>
-              <option>2016</option>
+              <option value='19'>2019</option>
+              <option value='18'>2018</option>
+              <option value='17'>2017</option>
+              <option value='16'>2016</option>
             </select>
           </div>
 
@@ -43,7 +44,7 @@ class PeriodSettings extends Component {
             <select id="inputMounth"
               ref={ (e) => { this.inputMounth = e} }
               className="form-control">
-              <option value={false}></option>
+              <option value=''>Все месяцы</option>
               <option value="01">Январь</option>
               <option value="02">Февраль</option>
               <option value="03">Март</option>

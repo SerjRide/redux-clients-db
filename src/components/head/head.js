@@ -1,9 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { showNavbar } from '../../actions';
+import { getData, showNavbar, changePeriod } from '../../actions';
 import { Link } from 'react-router-dom';
 
 class Head extends Component {
+
+  componentDidMount() {
+    this.inputYear.value = this.props.state.period.year;
+    this.inputMounth.value = this.props.state.period.mounth;
+    if (this.props.state.period.mounth === '') this.inputMounth.value = ''
+  }
+
+  applyPeriod = () => {
+    const { value: year } = this.inputYear;
+    const { value: mounth } = this.inputMounth;
+    this.props.changePeriod(year, mounth);
+    this.props.getData(year);
+  }
 
   render() {
     return (
@@ -20,16 +33,69 @@ class Head extends Component {
             Redux Clients DB
           </Link>
           <div className="form">
-            <input
-              className="form-control"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"/>
-            <button
-              className="btn btn-outline-danger"
-              type="button">
-              Выход
-            </button>
+
+          <div className="input-group">
+
+
+              <div className="form-group col-md-6 filter first">
+                <input
+                  className="form-control"
+                  type="search"
+                  placeholder="Search"
+                  aria-label="Search"/>
+              </div>
+
+              <div className="form-group col-md-2 filter middle">
+                <select id="inputYear"
+                  ref={ (e) => { this.inputYear = e} }
+                  className="form-control">
+                  <option value="19">2019</option>
+                  <option value="18">2018</option>
+                  <option value="17">2017</option>
+                  <option value="16">2016</option>
+                </select>
+              </div>
+
+              <div className="form-group col-md-2 filter middle">
+                <select id="inputMounth"
+                  ref={ (e) => { this.inputMounth = e} }
+                  className="form-control">
+                  <option value=''>Все месяцы</option>
+                  <option value="01">Январь</option>
+                  <option value="02">Февраль</option>
+                  <option value="03">Март</option>
+                  <option value="04">Апрель</option>
+                  <option value="05">Май</option>
+                  <option value="06">Июнь</option>
+                  <option value="07">Июль</option>
+                  <option value="08">Август</option>
+                  <option value="09">Сентябрь</option>
+                  <option value="10">Октябрь</option>
+                  <option value="11">Ноябрь</option>
+                  <option value="12">Декабрь</option>
+                </select>
+              </div>
+
+              <div className="form-group col-md-2 filter last">
+              <button
+                className="btn btn-outline-primary"
+                onClick={ this.applyPeriod }
+                type="button">
+                <i className="fas fa-search"></i>
+              </button>
+              </div>
+
+
+          </div>
+
+            <div className="form-group col-md-2 end">
+              <button
+                className="btn btn-outline-danger"
+                type="button">
+                Выход
+              </button>
+            </div>
+
           </div>
         </nav>
       </div>
@@ -40,7 +106,9 @@ class Head extends Component {
 const mapStateToProps = (state) => ({ state: state })
 const mapDispatchToProps = (dispatch) => {
   return {
-    showNavbar: () => dispatch(showNavbar())
+    getData: (url) => dispatch(getData(url)),
+    showNavbar: () => dispatch(showNavbar()),
+    changePeriod: (year, mounth) => dispatch(changePeriod(year, mounth))
   }
 };
 

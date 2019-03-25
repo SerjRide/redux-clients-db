@@ -34,9 +34,42 @@ html {
       justify-content: space-between;
       width: 80%;
       input {
-        width: 75%;
         margin-right: 5px;
       }
+    }
+  }
+  .form-group {
+    margin-bottom: 0;
+  }
+  .end {
+    text-align: right;
+  }
+  .filter {
+    padding: 0;
+  }
+  .first {
+    input {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+  .middle {
+    select {
+      border-radius: 0;
+      border-left: solid 0px #fff;
+    }
+  }
+  .last {
+    button {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+      border: solid 1px #D7D7D7;
+      border-left: solid 0px #D7D7D7;
+      color: #878787;
+    }
+    button:hover {
+      background-color: #D2D8EB;
+      color: #F9F9F9;
     }
   }
 }

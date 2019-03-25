@@ -21,8 +21,28 @@ html {
     justify-content: space-between;
     width: 80%; }
     .App .head .form input {
-      width: 75%;
       margin-right: 5px; }
+  .App .form-group {
+    margin-bottom: 0; }
+  .App .end {
+    text-align: right; }
+  .App .filter {
+    padding: 0; }
+  .App .first input {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0; }
+  .App .middle select {
+    border-radius: 0;
+    border-left: solid 0px #fff; }
+  .App .last button {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    border: solid 1px #D7D7D7;
+    border-left: solid 0px #D7D7D7;
+    color: #878787; }
+  .App .last button:hover {
+    background-color: #D2D8EB;
+    color: #F9F9F9; }
 
 .left-navbar {
   position: fixed;
