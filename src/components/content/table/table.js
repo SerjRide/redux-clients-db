@@ -21,6 +21,15 @@ class Table extends Component {
     })
   }
 
+  dayFilter = (obj) => {
+    const day = ('0' + this.props.state.period.day).slice(-2)
+    if (day === '0' || day === '00') return obj;
+    return obj.filter((item) => {
+      const state_day = item.date.slice(0,2);
+      return state_day === day;
+    })
+  }
+
   render() {
     const { orders } = this.props.state;
     const { length } = orders;
@@ -29,7 +38,8 @@ class Table extends Component {
     if (length !== 0) {
 
       const mounth_filter = this.mounthFilter();
-      items = mounth_filter.map((item, i) => {
+      const day_filter = this.dayFilter(mounth_filter);
+      items = day_filter.map((item, i) => {
         return (
           <tr key={ item._id }>
             <th>{ item.namber }</th>

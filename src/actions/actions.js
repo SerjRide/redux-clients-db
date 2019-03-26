@@ -45,7 +45,7 @@ const delData = (id) => {
   };
 };
 
-const changePeriod = (year, mounth) => ({ type: "PERIOD_CHANGE", year, mounth })
+const changePeriod = (year, mounth, day) => ({ type: "PERIOD_CHANGE", year, mounth, day })
 
 const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text })
 

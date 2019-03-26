@@ -14,7 +14,8 @@ class Head extends Component {
   applyPeriod = () => {
     const { value: year } = this.inputYear;
     const { value: mounth } = this.inputMounth;
-    this.props.changePeriod(year, mounth);
+    const { value: day } = this.inputDay;
+    this.props.changePeriod(year, mounth, day);
     this.props.getData(year);
   }
 
@@ -36,8 +37,7 @@ class Head extends Component {
 
           <div className="input-group">
 
-
-              <div className="form-group col-md-6 filter first">
+              <div className="form-group col-md-5 filter first">
                 <input
                   className="form-control"
                   type="search"
@@ -76,6 +76,13 @@ class Head extends Component {
                 </select>
               </div>
 
+              <div className="form-group col-md-1 filter middle">
+                <input id="inputDay" type="number"
+                  min="0" max="31"
+                  ref={ (e) => { this.inputDay = e} }
+                  className="form-control" />
+              </div>
+
               <div className="form-group col-md-2 filter last">
               <button
                 className="btn btn-outline-primary"
@@ -84,7 +91,6 @@ class Head extends Component {
                 <i className="fas fa-search"></i>
               </button>
               </div>
-
 
           </div>
 
@@ -108,7 +114,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getData: (url) => dispatch(getData(url)),
     showNavbar: () => dispatch(showNavbar()),
-    changePeriod: (year, mounth) => dispatch(changePeriod(year, mounth))
+    changePeriod: (year, mounth, day) => dispatch(changePeriod(year, mounth, day))
   }
 };
 

@@ -1,6 +1,7 @@
 const initial_state = {
   year: '18',
-  mounth: ''
+  mounth: '',
+  day: ''
 }
 
 const period = (state = initial_state, action) => {
@@ -8,7 +9,8 @@ const period = (state = initial_state, action) => {
     case "PERIOD_CHANGE":
       return {
         year: action.year,
-        mounth: action.mounth
+        mounth: action.mounth,
+        day: action.day
       };
     default:
       return state;

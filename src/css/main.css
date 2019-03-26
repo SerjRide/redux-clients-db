@@ -31,9 +31,23 @@ html {
   .App .first input {
     border-bottom-right-radius: 0;
     border-top-right-radius: 0; }
+  .App .first input:focus {
+    border-color: #d7d7d7;
+    outline: solid 1px #597ea2;
+    box-shadow: 0 0 0 #fff; }
   .App .middle select {
+    border-radius: 0; }
+  .App .middle input {
     border-radius: 0;
-    border-left: solid 0px #fff; }
+    border-left: solid 0px #597ea2; }
+  .App .middle select:focus {
+    border-color: #d7d7d7;
+    outline: solid 1px #597ea2;
+    box-shadow: 0 0 0 #fff; }
+  .App .middle input:focus {
+    border-color: #d7d7d7;
+    outline: solid 1px #597ea2;
+    box-shadow: 0 0 0 #fff; }
   .App .last button {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
@@ -106,6 +120,12 @@ html {
 
 .add-order .btn-sm {
   margin-top: 10px; }
+
+.add-order .form-group button {
+  margin-top: 20px; }
+
+.period-setting .form-group button {
+  margin-top: 20px; }
 
 @keyframes getShadow {
   from {

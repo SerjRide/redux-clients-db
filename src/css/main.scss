@@ -52,11 +52,29 @@ html {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
     }
+    input:focus {
+      border-color: #d7d7d7;
+      outline: solid 1px #597ea2;
+      box-shadow: 0 0 0 #fff;
+    }
   }
   .middle {
     select {
       border-radius: 0;
-      border-left: solid 0px #fff;
+    }
+    input {
+      border-radius: 0;
+      border-left: solid 0px #597ea2;
+    }
+    select:focus {
+      border-color: #d7d7d7;
+      outline: solid 1px #597ea2;
+      box-shadow: 0 0 0 #fff;
+    }
+    input:focus {
+      border-color: #d7d7d7;
+      outline: solid 1px #597ea2;
+      box-shadow: 0 0 0 #fff;
     }
   }
   .last {
@@ -151,6 +169,19 @@ html {
   }
   .btn-sm {
     margin-top: 10px;
+  }
+  .form-group {
+    button {
+      margin-top: 20px;
+    }
+  }
+}
+
+.period-setting {
+  .form-group {
+    button {
+      margin-top: 20px;
+    }
   }
 }
 
