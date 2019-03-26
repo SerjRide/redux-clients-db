@@ -154,6 +154,11 @@ html {
   padding-top: 75px;
   .table {
     margin-top: -17px;
+    .sort-btn {
+      th {
+        cursor: pointer;
+      }
+    }
   }
 }
 

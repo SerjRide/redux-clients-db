@@ -9,11 +9,12 @@ class Table extends Component {
     super(props);
     const { year } = this.props.state.period
     this.props.getData(year);
+    this.state = { col: 'namber', method: false }
   }
 
   mounthFilter = () => {
-    const { orders } = this.props.state
-    const { mounth } = this.props.state.period
+    const { orders } = this.props.state;
+    const { mounth } = this.props.state.period;
     if (mounth.length === 0) return orders;
     return orders.filter((item) => {
       const state_mounth = item.date.slice(3,5);
@@ -30,7 +31,51 @@ class Table extends Component {
     })
   }
 
-  render() {
+  sortOrders = (obj, type, method = true) => {
+    const compare = (a, b) => {
+      let val_a, val_b, var_1, var_2, comparison;
+
+      switch(type) {
+        case 'product':
+          val_a = a[type][0].toUpperCase();
+          val_b = b[type][0].toUpperCase();
+          break;
+        case 'price':
+          val_a = a[type];
+          val_b = b[type];
+          break;
+        default:
+          val_a = a[type].toUpperCase();
+          val_b = b[type].toUpperCase();
+      }
+
+      if (method) { var_1 = 1; var_2 = -1 }
+      else { var_1 = -1; var_2 = 1 }
+
+      if (val_a > val_b) comparison = var_1;
+      else if (val_a < val_b) comparison = var_2;
+
+      return comparison;
+    }
+    return obj.sort(compare)
+  }
+
+  changeSort = (e) => {
+    let col = e.target.getAttribute('data-name'), method;
+    if (e.target.tagName !== 'TH') return null;
+    if (e.target.lastChild.className === 'fas fa-caret-down'){
+      e.target.lastChild.className = 'fas fa-caret-up'
+    } else e.target.lastChild.className = 'fas fa-caret-down'
+    console.log(e.target.lastChild.className);
+    if (this.state.method) method = false;
+    else  method = true
+
+    console.log(method);
+    this.setState({ col, method })
+  }
+
+  renderRow = () => {
+    const { col, method } = this.state;
     const { orders } = this.props.state;
     const { length } = orders;
     let items;
@@ -39,6 +84,7 @@ class Table extends Component {
 
       const mounth_filter = this.mounthFilter();
       const day_filter = this.dayFilter(mounth_filter);
+      this.sortOrders(day_filter, col, method);
       items = day_filter.map((item, i) => {
         return (
           <tr key={ item._id }>
@@ -53,19 +99,38 @@ class Table extends Component {
         )
       });
     }
+    return items;
+  }
 
+  render() {
+    const items = this.renderRow();
+    let type = 'down';
     return (
       <div className="table">
       <table className="table table-hover table-sm">
         <thead>
-          <tr>
-            <th scope="col">№</th>
-            <th scope="col">Заказчик</th>
-            <th scope="col">Дата заказа</th>
-            <th scope="col">Контактное лицо</th>
-            <th scope="col">Почта/телефон</th>
-            <th scope="col">Товары</th>
-            <th scope="col">Цена</th>
+          <tr className="sort-btn">
+            <th onClick={ (e) => this.changeSort(e) } scope="col"
+              data-name="namber">
+              № <i className={`fas fa-caret-${type}`}></i></th>
+            <th onClick={ (e) => this.changeSort(e) } scope="col"
+              data-name="customer">
+              Заказчик <i className={`fas fa-caret-${type}`}></i></th>
+            <th onClick={ (e) => this.changeSort(e) } scope="col"
+              data-name="date">
+              Дата заказа <i className={`fas fa-caret-${type}`}></i></th>
+            <th onClick={ (e) => this.changeSort(e) } scope="col"
+              data-name="name">
+              Контактное лицо <i className={`fas fa-caret-${type}`}></i></th>
+            <th onClick={ (e) => this.changeSort(e) } scope="col"
+              data-name="contacts">
+              Почта/телефон <i className={`fas fa-caret-${type}`}></i></th>
+            <th onClick={ (e) => this.changeSort(e) } scope="col"
+              data-name="product">
+              Товары <i className={`fas fa-caret-${type}`}></i></th>
+            <th onClick={ (e) => this.changeSort(e) } scope="col"
+              data-name="price">
+              Цена <i className={`fas fa-caret-${type}`}></i></th>
           </tr>
         </thead>
         <tbody>{ items }</tbody>
@@ -74,7 +139,7 @@ class Table extends Component {
     );
   }
 }
-const mapStateToProps = (state) => ({ state: state });
+const mapStateToProps = (state) => ({ state });
 const mapDispatchToProps = (dispatch) => {
   return {
     getData: (url) => dispatch(getData(url))

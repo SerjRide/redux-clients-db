@@ -109,6 +109,8 @@ html {
   padding-top: 75px; }
   .content .table {
     margin-top: -17px; }
+    .content .table .sort-btn th {
+      cursor: pointer; }
 
 .add-order p {
   margin-bottom: 2px; }
