@@ -8,7 +8,15 @@ class Head extends Component {
   componentDidMount() {
     this.inputYear.value = this.props.state.period.year;
     this.inputMounth.value = this.props.state.period.mounth;
+    this.inputDay.value = this.props.state.period.day;
     if (this.props.state.period.mounth === '') this.inputMounth.value = ''
+  }
+
+  componentDidUpdate() {
+    const { year, mounth, day } = this.props.state.period;
+    this.inputYear.value = year;
+    this.inputMounth.value = mounth;
+    this.inputDay.value = day;
   }
 
   applyPeriod = () => {

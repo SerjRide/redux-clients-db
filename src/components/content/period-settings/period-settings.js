@@ -8,13 +8,15 @@ class PeriodSettings extends Component {
   componentDidMount() {
     this.inputYear.value = this.props.state.period.year;
     this.inputMounth.value = this.props.state.period.mounth;
+    this.inputDay.value = this.props.state.period.day;
     if (this.props.state.period.mounth === '') this.inputMounth.value = ''
   }
 
   apply = () => {
     const { value: year } = this.inputYear;
     const { value: mounth } = this.inputMounth;
-    this.props.changePeriod(year, mounth);
+    const { value: day } = this.inputDay;
+    this.props.changePeriod(year, mounth, day);
   }
 
   render() {
@@ -23,7 +25,7 @@ class PeriodSettings extends Component {
       <form>
         <div className="form-row">
 
-          <div className="form-group col-md-6">
+          <div className="form-group col-md-4">
             <label htmlFor="inputYear">
               Год
             </label>
@@ -37,7 +39,7 @@ class PeriodSettings extends Component {
             </select>
           </div>
 
-          <div className="form-group col-md-6">
+          <div className="form-group col-md-4">
             <label htmlFor="inputMounth">
               Месяц
             </label>
@@ -58,6 +60,16 @@ class PeriodSettings extends Component {
               <option value="11">Ноябрь</option>
               <option value="12">Декабрь</option>
             </select>
+          </div>
+
+          <div className="form-group col-md-4">
+            <label htmlFor="inputMounth">
+              День
+            </label>
+            <input id="inputDay" type="number"
+              min="0" max="31"
+              ref={ (e) => { this.inputDay = e} }
+              className="form-control" />
           </div>
 
           <div className="form-group col-md-6">
@@ -112,7 +124,7 @@ const mapStateToProps = (state) => ({ state: state });
 const mapDispatchToProps = (dispatch) => {
   return {
     getData: (url) => dispatch(getData(url)),
-    changePeriod: (year, mounth) => dispatch(changePeriod(year, mounth))
+    changePeriod: (year, mounth, day) => dispatch(changePeriod(year, mounth, day))
   }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(PeriodSettings);
