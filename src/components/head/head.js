@@ -5,13 +5,6 @@ import { Link } from 'react-router-dom';
 
 class Head extends Component {
 
-  componentDidMount() {
-    this.inputYear.value = this.props.state.ordersFilter.year;
-    this.inputMounth.value = this.props.state.ordersFilter.mounth;
-    this.inputDay.value = this.props.state.ordersFilter.day;
-    if (this.props.state.ordersFilter.mounth === '') this.inputMounth.value = ''
-  }
-
   componentDidUpdate() {
     const { year, mounth, day } = this.props.state.ordersFilter;
     this.inputYear.value = year;
@@ -26,6 +19,13 @@ class Head extends Component {
     const { value: info } = this.inputInfo;
     this.props.changeFilter(year, mounth, day, info);
     this.props.getData(year);
+  }
+
+  removeFilter = () => {
+    this.props.changeFilter('18', '', '', '');
+    this.props.getData('18');
+    this.inputMounth.value = '';
+    this.inputInfo.value = '';
   }
 
   render() {
@@ -100,9 +100,9 @@ class Head extends Component {
               <div className="form-group col-md-2 filter last">
               <button
                 className="btn btn-outline-primary"
-                onClick={ this.applyFilter }
+                onClick={ this.removeFilter }
                 type="button">
-                <i className="fas fa-search"></i>
+                Сброс
               </button>
               </div>
 
