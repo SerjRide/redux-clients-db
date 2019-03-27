@@ -45,7 +45,8 @@ const delData = (id) => {
   };
 };
 
-const changeFilter = (year, mounth, day) => ({ type: "FILTER_CHANGE", year, mounth, day })
+const changeFilter = (year, mounth, day, info) => ({ type: "FILTER_CHANGE",
+                                                      year, mounth, day, info })
 
 const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text })
 

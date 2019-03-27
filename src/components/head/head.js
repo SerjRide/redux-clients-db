@@ -23,7 +23,8 @@ class Head extends Component {
     const { value: year } = this.inputYear;
     const { value: mounth } = this.inputMounth;
     const { value: day } = this.inputDay;
-    this.props.changeFilter(year, mounth, day);
+    const { value: info } = this.inputInfo;
+    this.props.changeFilter(year, mounth, day, info);
     this.props.getData(year);
   }
 
@@ -47,9 +48,11 @@ class Head extends Component {
 
               <div className="form-group col-md-5 filter first">
                 <input
+                  ref={ (e) => { this.inputInfo = e} }
+                  onChange={ this.applyFilter }
                   className="form-control"
                   type="search"
-                  placeholder="Search"
+                  placeholder="Поиск по словам"
                   aria-label="Search"/>
               </div>
 
@@ -125,7 +128,12 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getData: (url) => dispatch(getData(url)),
     showNavbar: () => dispatch(showNavbar()),
-    changeFilter: (year, mounth, day) => dispatch(changeFilter(year, mounth, day))
+    changeFilter: (year, mounth, day, info) => dispatch(changeFilter(
+      year,
+      mounth,
+      day,
+      info
+    ))
   }
 };
 

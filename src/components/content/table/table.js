@@ -31,6 +31,15 @@ class Table extends Component {
     })
   }
 
+  infoFilter = (obj) => {
+    const { info } = this.props.state.ordersFilter;
+    if (info.length === 0) return obj;
+    return obj.filter((item) => {
+      return item.customer.toLowerCase()
+                 .indexOf(info.toLowerCase()) > -1
+    })
+  }
+
   sortOrders = (obj, type, method = true) => {
     const compare = (a, b) => {
       let val_a, val_b, var_1, var_2, comparison;
@@ -92,8 +101,9 @@ class Table extends Component {
 
       const mounth_filter = this.mounthFilter();
       const day_filter = this.dayFilter(mounth_filter);
+      const info_filter = this.infoFilter(day_filter);
       this.sortOrders(day_filter, col, method);
-      items = day_filter.map((item, i) => {
+      items = info_filter.map((item, i) => {
         return (
           <tr key={ item._id }>
             <th>{ item.namber }</th>
