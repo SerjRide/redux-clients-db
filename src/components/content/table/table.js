@@ -9,7 +9,7 @@ class Table extends Component {
     super(props);
     const { year } = this.props.state.period
     this.props.getData(year);
-    this.state = { col: 'namber', method: false }
+    this.state = { col: 'namber', method: true }
   }
 
   mounthFilter = () => {
@@ -40,6 +40,14 @@ class Table extends Component {
           val_a = a[type][0].toUpperCase();
           val_b = b[type][0].toUpperCase();
           break;
+        case 'date':
+          val_a = a[type].slice(3,-3);
+          val_b = b[type].slice(3,-3);
+          break;
+        case 'dateDay':
+          val_a = a.date.slice(0,2);
+          val_b = b.date.slice(0,2);
+          break;
         case 'price':
           val_a = a[type];
           val_b = b[type];
@@ -55,8 +63,10 @@ class Table extends Component {
       if (val_a > val_b) comparison = var_1;
       else if (val_a < val_b) comparison = var_2;
 
+
       return comparison;
     }
+    if (type === "date") this.sortOrders(obj.sort(compare), 'dateDay', method);
     return obj.sort(compare)
   }
 
@@ -66,11 +76,9 @@ class Table extends Component {
     if (e.target.lastChild.className === 'fas fa-caret-down'){
       e.target.lastChild.className = 'fas fa-caret-up'
     } else e.target.lastChild.className = 'fas fa-caret-down'
-    console.log(e.target.lastChild.className);
     if (this.state.method) method = false;
     else  method = true
 
-    console.log(method);
     this.setState({ col, method })
   }
 
