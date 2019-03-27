@@ -58,31 +58,33 @@ const addProducts = (arr, i, profit) => {
 }
 
 const baseGenerator = (year = 18, profit = 'low') => {
-  let date, namber, newArr = [], orders_count = 0;
-  if (profit === 'low') orders_count += (1000 + Math.floor(Math.random() * 500))
-  if (profit === 'mid') orders_count += (1500 + Math.floor(Math.random() * 500))
-  if (profit === 'hight') orders_count += (2000 + Math.floor(Math.random() * 500))
-  for (let i = 0; i < orders_count; i++) {
-    const rndDay = ('0' + (Math.floor(Math.random() * 27) + 1)).slice(-2);
-    const rndMonth = ('0' + (Math.floor(Math.random() * 11) + 1)).slice(-2);
-    namber = year + '' + ((100000 + i) + '').slice(2);
-    date = `${rndDay}.${rndMonth}.${year}` ;
-    newArr[i] = { namber, date }
-  }
-  for (var i = 0; i < newArr.length; i++) {
-    addCustomers(newArr, i, profit);
-    addNames(newArr, i);
-    addContacts(newArr, i);
-    addProducts(newArr, i, profit);
-  }
-  fs.writeFile(`./server/build/${profit}_base.json`, JSON.stringify(newArr), (err) => {
+  const random = Math.floor(Math.random()*9)
+  let date, namber, orders_count = 0;
+  if (profit === 'low') orders_count = 20 + random
+  if (profit === 'mid') orders_count = 30 + random
+  if (profit === 'hight') orders_count = 40 + random
+  let arrOfOrders = [], counter = 0, serving_size = 50;
 
-    if(err) throw err;
-    console.log('**************')
-    console.log(`File ${profit}_base.json was successfully recorded in folder build`);
-
-  });
-  return newArr;
+  for (let j = 0; j < orders_count; j++) {
+    if (j === orders_count - 1) serving_size -= random;
+    let newArr = [];
+    for (let i = 0; i < serving_size; i++) {
+      const rndDay = ('0' + (Math.floor(Math.random() * 27) + 1)).slice(-2);
+      const rndMonth = ('0' + (Math.floor(Math.random() * 11) + 1)).slice(-2);
+      namber = year + '' + ((100000 + (i + counter) + '')).slice(2);
+      date = `${rndDay}.${rndMonth}.${year}` ;
+      newArr[i] = { namber, date }
+    }
+    for (let i = 0; i < serving_size; i++) {
+      addCustomers(newArr, i, profit);
+      addNames(newArr, i);
+      addContacts(newArr, i);
+      addProducts(newArr, i, profit);
+    }
+    counter += serving_size;
+    arrOfOrders[j] = newArr;
+  }
+  return arrOfOrders;
 }
 
 export default baseGenerator;

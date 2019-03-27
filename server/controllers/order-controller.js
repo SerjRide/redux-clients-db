@@ -1,5 +1,6 @@
 import Order from '../models/order';
 import Orders from '../models/orders';
+import baseGenerator from './base-generator';
 
 class OrderController {
   index(req, res) {
@@ -47,6 +48,23 @@ class OrderController {
       else res.json({ status: 'All orders added' })
     }
     Orders.collection.insertMany(data, onInsert);
+  }
+
+  createRandomDate(req, res) {
+    const { year, profit } = req.query
+    const clientsBase = baseGenerator(Number(year), profit);
+    function onInsert(err, docs) {
+      if (err) { res.send(err) }
+      else {
+        res.json({ status: 'All orders have been generated' });
+        console.log(`Data for ${year} was successfully generated.`)
+      }
+    }
+    for (let i = 0; i < clientsBase.length; i++) {
+      const data = clientsBase[i]
+      if (i !== clientsBase.length - 1) Orders.collection.insertMany(data);
+      else Orders.collection.insertMany(data, onInsert);
+    }
   }
 
   read(req, res) {

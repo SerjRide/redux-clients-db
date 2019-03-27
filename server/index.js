@@ -1,10 +1,12 @@
 import mongoose from 'mongoose';
 import express from 'express';
 import bodyParser from 'body-parser';
+import axios from 'axios';
 import Order from './models/order';
 import OrderController from './controllers/order-controller';
 import baseGenerator from './controllers/base-generator';
 const exel = require('../etc/exel-to-json.json');
+const url = 'http://localhost:8080';
 
 const ORC = new OrderController();
 
@@ -18,15 +20,31 @@ app.get('/getorders', ORC.index);
 app.get('/getbyyear/:year', ORC.getByYear);
 app.post('/setorder', ORC.create);
 app.post('/setorders', ORC.createMany);
+app.post('/setrandomdata/gen?', ORC.createRandomDate);
 app.get('/orders/:id', ORC.read);
 app.delete('/delorder/:id', ORC.delete);
 app.delete('/delallorders', ORC.deleteAll);
 app.put('/orders/:id', ORC.update);
 
-// 1-ый аргумент - год
-// 2-й аргумент - рентабельность
+const generateRandomBase = (year, profit) => {
+  axios.post(`${url}/setrandomdata/gen?year=${year}&profit=${profit}`);
+  console.log(`The process of generating data for ${year}...`)
+}
 
-// baseGenerator(16, 'low');
+const deleteAllOrders = () => {
+  axios.delete(`${url}/delallorders`);
+  console.log('All orders was be deleted')
+}
+
+const randomData = () => {
+  deleteAllOrders();
+  generateRandomBase(16, 'low');
+  generateRandomBase(17, 'low');
+  generateRandomBase(18, 'mid');
+  generateRandomBase(19, 'hight');
+}
+
+// randomData();
 
 app.listen(8080, () => {
   console.log('server started on 8080 port...')
