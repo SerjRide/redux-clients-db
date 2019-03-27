@@ -111,6 +111,16 @@ html {
     margin-top: -17px; }
     .content .table .sort-btn th {
       cursor: pointer; }
+    .content .table .sort-btn th[data-name=customer] {
+      width: 15%; }
+    .content .table .sort-btn th[data-name=date] {
+      width: 10%; }
+    .content .table .sort-btn th[data-name=name] {
+      width: 15%; }
+    .content .table .sort-btn th[data-name=contacts] {
+      width: 25%; }
+    .content .table .sort-btn th[data-name=product] {
+      width: 25%; }
 
 .add-order p {
   margin-bottom: 2px; }
