@@ -7,14 +7,14 @@ class Table extends Component {
 
   constructor(props) {
     super(props);
-    const { year } = this.props.state.period
+    const { year } = this.props.state.ordersFilter
     this.props.getData(year);
-    this.state = { col: 'namber', method: true }
+    this.state = { col: 'date', method: true }
   }
 
   mounthFilter = () => {
     const { orders } = this.props.state;
-    const { mounth } = this.props.state.period;
+    const { mounth } = this.props.state.ordersFilter;
     if (mounth.length === 0) return orders;
     return orders.filter((item) => {
       const state_mounth = item.date.slice(3,5);
@@ -23,7 +23,7 @@ class Table extends Component {
   }
 
   dayFilter = (obj) => {
-    const day = ('0' + this.props.state.period.day).slice(-2)
+    const day = ('0' + this.props.state.ordersFilter.day).slice(-2)
     if (day === '0' || day === '00') return obj;
     return obj.filter((item) => {
       const state_day = item.date.slice(0,2);

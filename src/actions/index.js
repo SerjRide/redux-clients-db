@@ -6,7 +6,7 @@ import {
   setData,
   alertSaccess,
   delData,
-  changePeriod
+  changeFilter
 
 } from './actions';
 
@@ -18,6 +18,6 @@ export {
   setData,
   alertSaccess,
   delData,
-  changePeriod
+  changeFilter
 
 }

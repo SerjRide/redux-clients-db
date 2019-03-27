@@ -2,13 +2,13 @@ import { combineReducers } from 'redux';
 import navbarPanel from './navbar-panel';
 import orders from './orders';
 import alert from './alert';
-import period from './period';
+import ordersFilter from './orders-filter';
 
 const rootReducer = combineReducers({
   navbarPanel,
   orders,
   alert,
-  period
+  ordersFilter
 });
 
 export default rootReducer;

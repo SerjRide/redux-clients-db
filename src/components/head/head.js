@@ -1,29 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getData, showNavbar, changePeriod } from '../../actions';
+import { getData, showNavbar, changeFilter } from '../../actions';
 import { Link } from 'react-router-dom';
 
 class Head extends Component {
 
   componentDidMount() {
-    this.inputYear.value = this.props.state.period.year;
-    this.inputMounth.value = this.props.state.period.mounth;
-    this.inputDay.value = this.props.state.period.day;
-    if (this.props.state.period.mounth === '') this.inputMounth.value = ''
+    this.inputYear.value = this.props.state.ordersFilter.year;
+    this.inputMounth.value = this.props.state.ordersFilter.mounth;
+    this.inputDay.value = this.props.state.ordersFilter.day;
+    if (this.props.state.ordersFilter.mounth === '') this.inputMounth.value = ''
   }
 
   componentDidUpdate() {
-    const { year, mounth, day } = this.props.state.period;
+    const { year, mounth, day } = this.props.state.ordersFilter;
     this.inputYear.value = year;
     this.inputMounth.value = mounth;
     this.inputDay.value = day;
   }
 
-  applyPeriod = () => {
+  applyFilter = () => {
     const { value: year } = this.inputYear;
     const { value: mounth } = this.inputMounth;
     const { value: day } = this.inputDay;
-    this.props.changePeriod(year, mounth, day);
+    this.props.changeFilter(year, mounth, day);
     this.props.getData(year);
   }
 
@@ -56,6 +56,7 @@ class Head extends Component {
               <div className="form-group col-md-2 filter middle">
                 <select id="inputYear"
                   ref={ (e) => { this.inputYear = e} }
+                  onChange={ this.applyFilter }
                   className="form-control">
                   <option value="19">2019</option>
                   <option value="18">2018</option>
@@ -66,6 +67,7 @@ class Head extends Component {
 
               <div className="form-group col-md-2 filter middle">
                 <select id="inputMounth"
+                  onChange={ this.applyFilter }
                   ref={ (e) => { this.inputMounth = e} }
                   className="form-control">
                   <option value=''>Все месяцы</option>
@@ -86,6 +88,7 @@ class Head extends Component {
 
               <div className="form-group col-md-1 filter middle">
                 <input id="inputDay" type="number"
+                  onChange={ this.applyFilter }
                   min="0" max="31"
                   ref={ (e) => { this.inputDay = e} }
                   className="form-control" />
@@ -94,7 +97,7 @@ class Head extends Component {
               <div className="form-group col-md-2 filter last">
               <button
                 className="btn btn-outline-primary"
-                onClick={ this.applyPeriod }
+                onClick={ this.applyFilter }
                 type="button">
                 <i className="fas fa-search"></i>
               </button>
@@ -122,7 +125,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getData: (url) => dispatch(getData(url)),
     showNavbar: () => dispatch(showNavbar()),
-    changePeriod: (year, mounth, day) => dispatch(changePeriod(year, mounth, day))
+    changeFilter: (year, mounth, day) => dispatch(changeFilter(year, mounth, day))
   }
 };
 

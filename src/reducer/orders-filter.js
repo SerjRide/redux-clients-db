@@ -4,9 +4,9 @@ const initial_state = {
   day: ''
 }
 
-const period = (state = initial_state, action) => {
+const ordersFilter = (state = initial_state, action) => {
   switch (action.type) {
-    case "PERIOD_CHANGE":
+    case "FILTER_CHANGE":
       return {
         year: action.year,
         mounth: action.mounth,
@@ -17,4 +17,4 @@ const period = (state = initial_state, action) => {
   }
 }
 
-export default period;
+export default ordersFilter;

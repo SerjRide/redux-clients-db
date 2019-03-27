@@ -45,7 +45,7 @@ const delData = (id) => {
   };
 };
 
-const changePeriod = (year, mounth, day) => ({ type: "PERIOD_CHANGE", year, mounth, day })
+const changeFilter = (year, mounth, day) => ({ type: "FILTER_CHANGE", year, mounth, day })
 
 const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text })
 
@@ -56,5 +56,5 @@ export {
   setData,
   alertSaccess,
   delData,
-  changePeriod
+  changeFilter
 }
