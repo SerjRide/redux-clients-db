@@ -118,9 +118,9 @@ html {
     .content .table .sort-btn th[data-name=name] {
       width: 15%; }
     .content .table .sort-btn th[data-name=contacts] {
-      width: 25%; }
+      width: 30%; }
     .content .table .sort-btn th[data-name=product] {
-      width: 25%; }
+      width: 20%; }
     .content .table .sort-btn th[data-name=price] {
       width: 5%; }
 

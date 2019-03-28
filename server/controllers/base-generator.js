@@ -3,6 +3,7 @@ const surnames = require('../../etc/russian-surnames.json');
 const contacts = require('../../etc/contacts.json');
 const products = require('../../etc/products-and-price.json');
 const customers = require('../../etc/customers.json');
+const managers = require('../../etc/managers.json');
 const fs = require("fs");
 
 const addCustomers = (arr, i) => {
@@ -27,6 +28,15 @@ const addContacts = (arr, i) => {
   const rndPhone = contacts[Math.floor(Math.random() * 100)].phone;
   const rndEmail = contacts[Math.floor(Math.random() * 100)].email;
   newArr[i].contacts = `${rndPhone} / ${rndEmail}`;
+  return newArr;
+}
+
+const addManager = (arr, i) => {
+  let newArr = arr, pass;
+  newArr[i].manager = managers[Math.floor(Math.random() * 5)];
+  if ((Math.floor(Math.random() * 10)) > 1) pass = true;
+  else pass = false;
+  newArr[i].passed = pass;
   return newArr;
 }
 
@@ -80,6 +90,7 @@ const baseGenerator = (year = 18, profit = 'low') => {
       addNames(newArr, i);
       addContacts(newArr, i);
       addProducts(newArr, i, profit);
+      addManager(newArr, i);
     }
     counter += serving_size;
     arrOfOrders[j] = newArr;

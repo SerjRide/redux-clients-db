@@ -44,7 +44,7 @@ const randomData = () => {
   generateRandomBase(19, 'hight');
 }
 
-// randomData();
+randomData();
 
 app.listen(8080, () => {
   console.log('server started on 8080 port...')

@@ -14,7 +14,6 @@ class OrderController {
   getByYear(req, res) {
     const { year } = req.params;
     const reg = new RegExp(`^${year}\\w+`, 'i')
-    console.log(reg);
     Order.find({ namber: reg })
     .exec((err, orders) => {
       if (err) throw err;

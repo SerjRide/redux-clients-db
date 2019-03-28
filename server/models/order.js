@@ -7,7 +7,9 @@ const OrderSchema = new Schema({
   name: String,
   contacts: String,
   product: [],
-  price: Number
+  price: Number,
+  passed: Boolean,
+  manager: String
 });
 
 // date: {type: Date, required:true },
