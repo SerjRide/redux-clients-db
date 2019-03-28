@@ -25,3 +25,28 @@
 	"product": [{"name":"Визитки","tech":"Цифровая печать","count":"500","format":"90x50","material":"Обычная","colors":"4+0","lam":"","border":false,"price":3000}],
 	"price": 4300
 }
+
+{
+        "product": [
+				 	{
+            "name": "Визитки",
+						"tech": "Цифровая печать",
+						"count": "1000",
+						"format": "90x50",
+						"material": "Обычная",
+						"colors": "1+0",
+						"lam": "",
+						"border": false,
+						"price": 2900
+					}
+        ],
+        "_id": "5c9bf244386cf82bcc474e22",
+        "namber": "192199",
+        "date": "10.10.19",
+        "customer": "АСТ",
+        "name": "Тамара Яицкийа",
+        "contacts": "+7(495)513-05-17 / scotfl@sbcglobal.net",
+        "price": 2900,
+				"passed": true,
+				"manager": "admin"
+}

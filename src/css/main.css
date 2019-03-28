@@ -121,6 +121,8 @@ html {
       width: 25%; }
     .content .table .sort-btn th[data-name=product] {
       width: 25%; }
+    .content .table .sort-btn th[data-name=price] {
+      width: 5%; }
 
 .add-order p {
   margin-bottom: 2px; }
