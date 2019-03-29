@@ -6,12 +6,12 @@ const findCountByCustomer = (arr, term) => {
   }
 }
 
-const extracter = (res, year = 16) => {
+const extracter = (res, year = 0) => {
   const { data } = res;
   let customers = [];
 
   for (let key in data) {
-    let obj = {}, overlap = false;
+    let obj = {}, overlap = false, controller;
     for (let i = 0; i < customers.length; i++) {
       const arr = customers[i].customer.toUpperCase();
       const value = data[key].customer.toUpperCase();
@@ -22,7 +22,11 @@ const extracter = (res, year = 16) => {
         }
       }
     }
-    if (Number((data[key].date).slice(-2)) === year) {
+
+    if (year === 0) controller = year
+    else controller = Number((data[key].date).slice(-2));
+
+    if (controller === year) {
       if (!overlap) {
         obj.customer = data[key].customer;
         obj.price = data[key].price;

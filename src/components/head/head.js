@@ -40,6 +40,11 @@ class Head extends Component {
   }
 
   render() {
+
+    const { pathname } = document.location;
+    let extra = null;
+    if (pathname === '/customers') extra = <option value="0">Все года</option>;
+
     return (
       <div className="head">
         <nav className="navbar navbar-light bg-light">
@@ -72,6 +77,7 @@ class Head extends Component {
                   ref={ (e) => { this.inputYear = e} }
                   onChange={ this.applyFilter }
                   className="form-control">
+                  { extra }
                   <option value="19">2019</option>
                   <option value="18">2018</option>
                   <option value="17">2017</option>
