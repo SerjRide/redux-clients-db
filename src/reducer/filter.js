@@ -1,6 +1,6 @@
 const initial_state = {
-  year: '18',
-  mounth: '',
+  year: (((new Date()).getFullYear()) + '').slice(-2),
+  mounth: '0' + ((new Date()).getMonth() + 1),
   day: '',
   info: ''
 }

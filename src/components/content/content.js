@@ -10,6 +10,10 @@ import { Route } from 'react-router-dom';
 class Content extends Component {
 
   render() {
+
+    const date = (((new Date()).getFullYear()) + '').slice(-2);
+    console.log(date)
+
     return (
         <div className="content">
           <Route path='/' component = { Table } exact/>

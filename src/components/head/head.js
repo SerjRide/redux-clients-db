@@ -22,8 +22,10 @@ class Head extends Component {
   }
 
   removeFilter = () => {
-    this.props.changeFilter('18', '', '', '');
-    this.props.getData('18');
+    const nowYear = (((new Date()).getFullYear()) + '').slice(-2);
+    const nowMounth = '0' + ((new Date()).getMonth() + 1)
+    this.props.changeFilter(nowYear, nowMounth, '', '');
+    this.props.getData(nowYear);
     this.inputMounth.value = '';
     this.inputInfo.value = '';
   }
