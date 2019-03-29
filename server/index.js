@@ -2,13 +2,13 @@ import mongoose from 'mongoose';
 import express from 'express';
 import bodyParser from 'body-parser';
 import axios from 'axios';
-import Order from './models/order';
 import OrderController from './controllers/order-controller';
-import baseGenerator from './controllers/base-generator';
-const exel = require('../etc/exel-to-json.json');
+import CustomersController from './controllers/customers-controller';
+import extracter from './controllers/extracter';
 const url = 'http://localhost:8080';
 
 const ORC = new OrderController();
+const CC = new CustomersController();
 
 const app = express();
 mongoose.connect('mongodb://localhost/orders', { useNewUrlParser: true });
@@ -26,6 +26,11 @@ app.delete('/delorder/:id', ORC.delete);
 app.delete('/delallorders', ORC.deleteAll);
 app.put('/orders/:id', ORC.update);
 
+app.get('/getcustomers', CC.index);
+app.get('/getcustomersbyyear/:year', CC.getByYear);
+app.post('/setcustomers', CC.createMany);
+app.delete('/delallcustomers', CC.deleteAll);
+
 const generateRandomBase = (year, profit) => {
   axios.post(`${url}/setrandomdata/gen?year=${year}&profit=${profit}`);
   console.log(`The process of generating data for ${year}...`)
@@ -36,15 +41,27 @@ const deleteAllOrders = () => {
   console.log('All orders was be deleted')
 }
 
+const extractClients = () => {
+  axios.delete(`${url}/delallcustomers`);
+  axios.get(`${url}/getorders`)
+       .then((res) => {
+         const customers = extracter(res);
+         axios.post(`${url}/setcustomers`, customers)
+         .then((res) => console.log(res.statusText))
+         .catch((err) => console.log(err))
+       })
+}
+
 const randomData = () => {
   deleteAllOrders();
   generateRandomBase(16, 'low');
   generateRandomBase(17, 'low');
   generateRandomBase(18, 'mid');
   generateRandomBase(19, 'hight');
-}
+};
 
-randomData();
+// randomData();
+extractClients();
 
 app.listen(8080, () => {
   console.log('server started on 8080 port...')
