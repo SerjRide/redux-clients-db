@@ -1,7 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getData, showNavbar, changeFilter } from '../../actions';
 import { Link } from 'react-router-dom';
+
+import {
+  getData,
+  showNavbar,
+  changeFilter,
+  extractCustomersByYeat } from '../../actions';
 
 class Head extends Component {
 
@@ -17,15 +22,19 @@ class Head extends Component {
     const { value: mounth } = this.inputMounth;
     const { value: day } = this.inputDay;
     const { value: info } = this.inputInfo;
+    const { pathname } = document.location;
+    if (pathname === '/orders') this.props.getData(year);
+    if (pathname === '/customers') this.props.extractCustomersByYeat(year);
     this.props.changeFilter(year, mounth, day, info);
-    this.props.getData(year);
   }
 
   removeFilter = () => {
     const nowYear = (((new Date()).getFullYear()) + '').slice(-2);
     const nowMounth = '0' + ((new Date()).getMonth() + 1)
+    const { pathname } = document.location;
+    if (pathname === '/orders') this.props.getData(nowYear);
+    if (pathname === '/customers') this.props.extractCustomersByYeat(nowYear);
     this.props.changeFilter(nowYear, nowMounth, '', '');
-    this.props.getData(nowYear);
     this.inputMounth.value = '';
     this.inputInfo.value = '';
   }
@@ -130,6 +139,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getData: (url) => dispatch(getData(url)),
     showNavbar: () => dispatch(showNavbar()),
+    extractCustomersByYeat: (year) => dispatch(extractCustomersByYeat(year)),
     changeFilter: (year, mounth, day, info) => dispatch(changeFilter(
       year,
       mounth,

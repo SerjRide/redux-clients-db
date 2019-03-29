@@ -6,13 +6,18 @@ import AddOrder from './add-order';
 import DeleteOrder from './delete-order';
 import Customers from './customers';
 import { Route } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 class Content extends Component {
 
   render() {
+
+    const Main = () => <Redirect to='/orders'/>;
+
     return (
         <div className="content">
-          <Route path='/' component = { Table } exact/>
+          <Route path='/' component = { Main } exact/>
+          <Route path='/orders' component = { Table } exact/>
           <Route path='/customers' component = { Customers } />
           <Route path='/add-order' component = { AddOrder } />
           <Route path='/del-order' component = { DeleteOrder } />

@@ -6,8 +6,8 @@ class Customers extends Component {
 
   constructor(props) {
     super(props);
-    // this.props.extractCustomersByYeat(17);
-    this.props.getAllCustomers();
+    const { year } = this.props.state.filter
+    this.props.extractCustomersByYeat(year);
     this.state = { col: 'date', method: true, dateType: '' }
   }
 

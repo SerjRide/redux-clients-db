@@ -30,6 +30,20 @@ app.put('/orders/:id', ORC.update);
 app.get('/getcustomers', CC.index);
 app.post('/setcustomers', CC.createMany);
 app.delete('/delallcustomers', CC.deleteAll);
+app.get('/getcustomersbyyear/:year', (req, res) => {
+  const year = Number(req.params.year);
+  axios.delete(`${url}/delallcustomers`).then(() => {
+    axios.get(`${url}/getorders`).then((allCustomers) => {
+      const customers = extracter(allCustomers, year);
+      axios.post(`${url}/setcustomers`, customers).then((status) => {
+        Customers.find().then((err, getCustomers) => {
+           if (err) res.send(err);
+           res.json(getCustomers)
+        })
+      })
+    });
+  });
+});
 
 const generateRandomBase = (year, profit) => {
   axios.post(`${url}/setrandomdata/gen?year=${year}&profit=${profit}`);
@@ -40,43 +54,6 @@ const deleteAllOrders = () => {
   axios.delete(`${url}/delallorders`);
   console.log('All orders was be deleted')
 }
-
-const extractClients = async (year) => {
-  axios.delete(`${url}/delallcustomers`);
-  axios.get(`${url}/getorders`)
-       .then((res) => {
-         const customers = extracter(res, year);
-         axios.post(`${url}/setcustomers`, customers)
-         .then((res) => console.log(res.data))
-         .catch((err) => console.log(err))
-       });
-}
-
-app.get('/getcustomersbyyear/:year', (req, res, next) => {
-
-  axios.delete(`${url}/delallcustomers`)
-    .then(() => console.log('Все предыдущие записи удалены...'));
-
-next();
-}, (req, res) => {
-
-  const year = Number(req.params.year);
-  axios.get(`${url}/getorders`)
-       .then((allCustomers) => {
-         const customers = extracter(allCustomers, year);
-
-         axios.post(`${url}/setcustomers`, customers)
-         .then((status) => {
-           Customers.find().then((err, getCustomers) => {
-             if (err) res.send(err);
-             console.log('get all customers');
-             res.json(getCustomers)
-           })
-         })
-       });
-
-
-});
 
 const randomData = () => {
   deleteAllOrders()
@@ -92,31 +69,3 @@ const randomData = () => {
 app.listen(8080, () => {
   console.log('server started on 8080 port...')
 })
-
-// app.get('/getcustomersbyyear/:year', (req, res, next) => {
-//
-//   axios.delete(`${url}/delallcustomers`)
-//     .then(() => console.log('Все предыдущие записи удалены...'));
-//
-// next();
-// }, (req, res) => {
-//
-//   const year = Number(req.params.year);
-//   axios.get(`${url}/getorders`)
-//        .then((allCustomers) => {
-//          const customers = extracter(allCustomers, year);
-//
-//          axios.post(`${url}/setcustomers`, customers)
-//          .then((status) => {
-//            Customers.find().then((err, getCustomers) => {
-//              if (err) res.send(err);
-//              console.log('get all customers');
-//              res.json(getCustomers)
-//            })
-//              .catch(() => {})
-//          })
-//          .catch((err) => console.log(err))
-//        });
-//
-//
-// });

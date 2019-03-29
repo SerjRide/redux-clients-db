@@ -71,7 +71,7 @@ const extractCustomersByYeat = (year) => {
       return res;
     })
     .then((res) => res.json())
-    .then(() => dispatch(getAllCustomers()))
+    .then((customers) => dispatch(reqCustomersDone(customers)))
   };
 }
 
