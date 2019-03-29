@@ -7,7 +7,8 @@ import {
   alertSaccess,
   delData,
   changeFilter,
-  getAllCustomers
+  getAllCustomers,
+  extractCustomersByYeat
 
 } from './actions';
 
@@ -20,6 +21,7 @@ export {
   alertSaccess,
   delData,
   changeFilter,
-  getAllCustomers
+  getAllCustomers,
+  extractCustomersByYeat
 
 }

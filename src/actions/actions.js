@@ -1,7 +1,7 @@
 const showNavbar = () => ({ type: 'SHOW_NAVBAR' })
 const hideNavbar = () => ({ type: 'HIDE_NAVBAR' })
 const reqOrdersDone = (orders) => ({ type: "ORDERS_FETCH_DATA_SUCCESS", orders })
-const reqCustomersDone = (orders) => ({ type: "CUSTOMERS_FETCH_DATA_SUCCESS", orders })
+const reqCustomersDone = (customers) => ({ type: "CUSTOMERS_FETCH_DATA_SUCCESS", customers })
 
 const getData = (request) => {
   return (dispatch) => {
@@ -63,6 +63,18 @@ const getAllCustomers = () => {
   };
 };
 
+const extractCustomersByYeat = (year) => {
+  return (dispatch) => {
+    fetch('/getcustomersbyyear/' + year)
+    .then((res) => {
+      if(!res.ok) throw new Error(res.statusText)
+      return res;
+    })
+    .then((res) => res.json())
+    .then(() => dispatch(getAllCustomers()))
+  };
+}
+
 export {
   showNavbar,
   hideNavbar,
@@ -71,5 +83,6 @@ export {
   alertSaccess,
   delData,
   changeFilter,
-  getAllCustomers
+  getAllCustomers,
+  extractCustomersByYeat
 }

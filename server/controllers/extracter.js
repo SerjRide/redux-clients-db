@@ -6,7 +6,7 @@ const findCountByCustomer = (arr, term) => {
   }
 }
 
-const extracter = (res) => {
+const extracter = (res, year = 16) => {
   const { data } = res;
   let customers = [];
 
@@ -22,15 +22,17 @@ const extracter = (res) => {
         }
       }
     }
-    if (!overlap) {
-      obj.customer = data[key].customer;
-      obj.price = data[key].price;
-      obj.date = [data[key].date];
-      customers[customers.length] = obj;
-    } else {
-      const count = findCountByCustomer(customers, data[key].customer)
-      customers[count].price += data[key].price;
-      customers[count].date.push(data[key].date);
+    if (Number((data[key].date).slice(-2)) === year) {
+      if (!overlap) {
+        obj.customer = data[key].customer;
+        obj.price = data[key].price;
+        obj.date = [data[key].date];
+        customers[customers.length] = obj;
+      } else {
+        const count = findCountByCustomer(customers, data[key].customer)
+        customers[count].price += data[key].price;
+        customers[count].date.push(data[key].date);
+      }
     }
   }
 

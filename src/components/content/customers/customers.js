@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getAllCustomers } from '../../../actions';
+import { getAllCustomers, extractCustomersByYeat } from '../../../actions';
 
 class Customers extends Component {
 
   constructor(props) {
     super(props);
+    // this.props.extractCustomersByYeat(17);
     this.props.getAllCustomers();
     this.state = { col: 'date', method: true, dateType: '' }
   }
@@ -151,7 +152,8 @@ class Customers extends Component {
 const mapStateToProps = (state) => ({ state });
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAllCustomers: (url) => dispatch(getAllCustomers(url))
+    getAllCustomers: () => dispatch(getAllCustomers()),
+    extractCustomersByYeat: (year) => dispatch(extractCustomersByYeat(year))
   }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Customers);

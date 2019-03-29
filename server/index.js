@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import axios from 'axios';
 import OrderController from './controllers/order-controller';
 import CustomersController from './controllers/customers-controller';
+import Customers from './models/customers';
 import extracter from './controllers/extracter';
 const url = 'http://localhost:8080';
 
@@ -27,7 +28,6 @@ app.delete('/delallorders', ORC.deleteAll);
 app.put('/orders/:id', ORC.update);
 
 app.get('/getcustomers', CC.index);
-app.get('/getcustomersbyyear/:year', CC.getByYear);
 app.post('/setcustomers', CC.createMany);
 app.delete('/delallcustomers', CC.deleteAll);
 
@@ -41,19 +41,45 @@ const deleteAllOrders = () => {
   console.log('All orders was be deleted')
 }
 
-const extractClients = () => {
+const extractClients = async (year) => {
   axios.delete(`${url}/delallcustomers`);
   axios.get(`${url}/getorders`)
        .then((res) => {
-         const customers = extracter(res);
+         const customers = extracter(res, year);
          axios.post(`${url}/setcustomers`, customers)
-         .then((res) => console.log(res.statusText))
+         .then((res) => console.log(res.data))
          .catch((err) => console.log(err))
-       })
+       });
 }
 
+app.get('/getcustomersbyyear/:year', (req, res, next) => {
+
+  axios.delete(`${url}/delallcustomers`)
+    .then(() => console.log('Все предыдущие записи удалены...'));
+
+next();
+}, (req, res) => {
+
+  const year = Number(req.params.year);
+  axios.get(`${url}/getorders`)
+       .then((allCustomers) => {
+         const customers = extracter(allCustomers, year);
+
+         axios.post(`${url}/setcustomers`, customers)
+         .then((status) => {
+           Customers.find().then((err, getCustomers) => {
+             if (err) res.send(err);
+             console.log('get all customers');
+             res.json(getCustomers)
+           })
+         })
+       });
+
+
+});
+
 const randomData = () => {
-  deleteAllOrders();
+  deleteAllOrders()
   generateRandomBase(16, 'low');
   generateRandomBase(17, 'low');
   generateRandomBase(18, 'mid');
@@ -61,8 +87,36 @@ const randomData = () => {
 };
 
 // randomData();
-extractClients();
+// extractClients(18);
 
 app.listen(8080, () => {
   console.log('server started on 8080 port...')
 })
+
+// app.get('/getcustomersbyyear/:year', (req, res, next) => {
+//
+//   axios.delete(`${url}/delallcustomers`)
+//     .then(() => console.log('Все предыдущие записи удалены...'));
+//
+// next();
+// }, (req, res) => {
+//
+//   const year = Number(req.params.year);
+//   axios.get(`${url}/getorders`)
+//        .then((allCustomers) => {
+//          const customers = extracter(allCustomers, year);
+//
+//          axios.post(`${url}/setcustomers`, customers)
+//          .then((status) => {
+//            Customers.find().then((err, getCustomers) => {
+//              if (err) res.send(err);
+//              console.log('get all customers');
+//              res.json(getCustomers)
+//            })
+//              .catch(() => {})
+//          })
+//          .catch((err) => console.log(err))
+//        });
+//
+//
+// });

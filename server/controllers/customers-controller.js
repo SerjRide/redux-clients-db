@@ -7,6 +7,7 @@ class CustomersController {
   index(req, res) {
     Customers.find().then((err, customers) => {
       if (err) res.send(err);
+      console.log('get all customers');
       res.json(customers);
     })
     .catch(() => {})
