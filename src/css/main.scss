@@ -154,8 +154,9 @@ html {
   padding-top: 75px;
   .table {
     margin-top: -17px;
+    td, th { vertical-align: middle }
     .sort-btn {
-      th { cursor: pointer }
+      th{ cursor: pointer }
       th[data-name=customer] { width: 15% }
       th[data-name=date] { width: 10% }
       th[data-name=name] { width: 15% }

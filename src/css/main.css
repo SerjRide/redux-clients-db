@@ -109,6 +109,8 @@ html {
   padding-top: 75px; }
   .content .table {
     margin-top: -17px; }
+    .content .table td, .content .table th {
+      vertical-align: middle; }
     .content .table .sort-btn th {
       cursor: pointer; }
     .content .table .sort-btn th[data-name=customer] {
