@@ -7,14 +7,14 @@ class Table extends Component {
 
   constructor(props) {
     super(props);
-    const { year } = this.props.state.ordersFilter
+    const { year } = this.props.state.filter
     this.props.getData(year);
     this.state = { col: 'date', method: true }
   }
 
   mounthFilter = () => {
     const { orders } = this.props.state;
-    const { mounth } = this.props.state.ordersFilter;
+    const { mounth } = this.props.state.filter;
     if (mounth.length === 0) return orders;
     return orders.filter((item) => {
       const state_mounth = item.date.slice(3,5);
@@ -23,7 +23,7 @@ class Table extends Component {
   }
 
   dayFilter = (obj) => {
-    const day = ('0' + this.props.state.ordersFilter.day).slice(-2)
+    const day = ('0' + this.props.state.filter.day).slice(-2)
     if (day === '0' || day === '00') return obj;
     return obj.filter((item) => {
       const state_day = item.date.slice(0,2);
@@ -32,7 +32,7 @@ class Table extends Component {
   }
 
   infoFilter = (obj) => {
-    const { info } = this.props.state.ordersFilter;
+    const { info } = this.props.state.filter;
     if (info.length === 0) return obj;
     return obj.filter((item) => {
       return item.customer.toLowerCase()
@@ -102,7 +102,7 @@ class Table extends Component {
       const mounth_filter = this.mounthFilter();
       const day_filter = this.dayFilter(mounth_filter);
       const info_filter = this.infoFilter(day_filter);
-      this.sortOrders(day_filter, col, method);
+      this.sortOrders(info_filter, col, method);
       items = info_filter.map((item, i) => {
         return (
           <tr key={ item._id }>

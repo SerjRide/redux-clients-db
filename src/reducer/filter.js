@@ -5,7 +5,7 @@ const initial_state = {
   info: ''
 }
 
-const ordersFilter = (state = initial_state, action) => {
+const filter = (state = initial_state, action) => {
   switch (action.type) {
     case "FILTER_CHANGE":
       return {
@@ -19,4 +19,4 @@ const ordersFilter = (state = initial_state, action) => {
   }
 }
 
-export default ordersFilter;
+export default filter;

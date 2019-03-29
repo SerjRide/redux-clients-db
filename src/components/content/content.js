@@ -4,6 +4,7 @@ import Table from '../content/table';
 import { connect } from 'react-redux';
 import AddOrder from './add-order';
 import DeleteOrder from './delete-order';
+import Customers from './customers';
 import { Route } from 'react-router-dom';
 
 class Content extends Component {
@@ -12,6 +13,7 @@ class Content extends Component {
     return (
         <div className="content">
           <Route path='/' component = { Table } exact/>
+          <Route path='/customers' component = { Customers } />
           <Route path='/add-order' component = { AddOrder } />
           <Route path='/del-order' component = { DeleteOrder } />
         </div>

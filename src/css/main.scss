@@ -164,6 +164,16 @@ html {
       th[data-name=price] { width: 5% }
     }
   }
+  .customers {
+    margin-top: -17px;
+    .sort-btn {
+      th { cursor: pointer }
+      th[data-name=customer] { width: 40% }
+      th[data-name=count] { width: 15% }
+      th[data-name=date] { width: 15% }
+      th[data-name=price] { width: 15% }
+    }
+  }
 }
 
 .add-order {

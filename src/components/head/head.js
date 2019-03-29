@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 class Head extends Component {
 
   componentDidUpdate() {
-    const { year, mounth, day } = this.props.state.ordersFilter;
+    const { year, mounth, day } = this.props.state.filter;
     this.inputYear.value = year;
     this.inputMounth.value = mounth;
     this.inputDay.value = day;

@@ -6,7 +6,8 @@ import {
   setData,
   alertSaccess,
   delData,
-  changeFilter
+  changeFilter,
+  getAllCustomers
 
 } from './actions';
 
@@ -18,6 +19,7 @@ export {
   setData,
   alertSaccess,
   delData,
-  changeFilter
+  changeFilter,
+  getAllCustomers
 
 }

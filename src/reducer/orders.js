@@ -1,6 +1,6 @@
 const orders = (state = [], action) => {
   switch (action.type) {
-    case "ITEMS_FETCH_DATA_SUCCESS":
+    case "ORDERS_FETCH_DATA_SUCCESS":
       return action.orders;
     default:
       return state;

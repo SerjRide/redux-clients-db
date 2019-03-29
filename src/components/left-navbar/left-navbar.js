@@ -35,6 +35,11 @@ class LeftNavbar extends Component {
           <Link className="nav-link"
             to="/"
             onClick={ () => hideNavbar() }>
+            База заказов
+          </Link>
+          <Link className="nav-link"
+            to="/customers"
+            onClick={ () => hideNavbar() }>
             База клиентов
           </Link>
           <Link className="nav-link"

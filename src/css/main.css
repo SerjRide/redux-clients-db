@@ -123,6 +123,18 @@ html {
       width: 20%; }
     .content .table .sort-btn th[data-name=price] {
       width: 5%; }
+  .content .customers {
+    margin-top: -17px; }
+    .content .customers .sort-btn th {
+      cursor: pointer; }
+    .content .customers .sort-btn th[data-name=customer] {
+      width: 40%; }
+    .content .customers .sort-btn th[data-name=count] {
+      width: 15%; }
+    .content .customers .sort-btn th[data-name=date] {
+      width: 15%; }
+    .content .customers .sort-btn th[data-name=price] {
+      width: 15%; }
 
 .add-order p {
   margin-bottom: 2px; }

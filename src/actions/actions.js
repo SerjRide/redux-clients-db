@@ -1,6 +1,7 @@
 const showNavbar = () => ({ type: 'SHOW_NAVBAR' })
 const hideNavbar = () => ({ type: 'HIDE_NAVBAR' })
-const reqDone = (orders) => ({ type: "ITEMS_FETCH_DATA_SUCCESS", orders })
+const reqOrdersDone = (orders) => ({ type: "ORDERS_FETCH_DATA_SUCCESS", orders })
+const reqCustomersDone = (orders) => ({ type: "CUSTOMERS_FETCH_DATA_SUCCESS", orders })
 
 const getData = (request) => {
   return (dispatch) => {
@@ -10,7 +11,7 @@ const getData = (request) => {
       return res;
     })
     .then((res) => res.json())
-    .then((orders) => dispatch(reqDone(orders)))
+    .then((orders) => dispatch(reqOrdersDone(orders)))
   };
 };
 
@@ -26,7 +27,7 @@ const setData = (request, body) => {
       return res;
     })
     .then((res) => res.json())
-    .then((orders) => dispatch(reqDone(orders)))
+    .then((orders) => dispatch(reqOrdersDone(orders)))
   };
 };
 
@@ -41,7 +42,7 @@ const delData = (id) => {
       return res;
     })
     .then((res) => res.json())
-    .then((orders) => dispatch(reqDone(orders)))
+    .then((orders) => dispatch(reqOrdersDone(orders)))
   };
 };
 
@@ -50,6 +51,18 @@ const changeFilter = (year, mounth, day, info) => ({ type: "FILTER_CHANGE",
 
 const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text })
 
+const getAllCustomers = () => {
+  return (dispatch) => {
+    fetch('/getcustomers')
+    .then((res) => {
+      if(!res.ok) throw new Error(res.statusText)
+      return res;
+    })
+    .then((res) => res.json())
+    .then((customers) => dispatch(reqCustomersDone(customers)))
+  };
+};
+
 export {
   showNavbar,
   hideNavbar,
@@ -57,5 +70,6 @@ export {
   setData,
   alertSaccess,
   delData,
-  changeFilter
+  changeFilter,
+  getAllCustomers
 }
