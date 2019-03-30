@@ -104,8 +104,10 @@ class Table extends Component {
       const info_filter = this.infoFilter(day_filter);
       this.sortOrders(info_filter, col, method);
       items = info_filter.map((item, i) => {
+        let passed = item.passed === true ? 'passed' : 'not-passed'
         return (
-          <tr key={ item._id }>
+          <tr key={ item._id }
+            className={ passed }>
             <th>{ item.namber }</th>
             <td>{ item.customer }</td>
             <td>{ item.date }</td>

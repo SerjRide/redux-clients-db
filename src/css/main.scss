@@ -154,6 +154,11 @@ html {
   padding-top: 75px;
   .table {
     margin-top: -17px;
+    tr { cursor: default; }
+    .passed { background-color: rgba(#3CA826, 0.10) }
+    .not-passed { background-color: rgba(#A82626, 0.1) }
+    .passed:hover { background-color: rgba(#3CA826, 0.05) }
+    .not-passed:hover { background-color: rgba(#A82626, 0.05) }
     td, th { vertical-align: middle }
     .sort-btn {
       th{ cursor: pointer }
