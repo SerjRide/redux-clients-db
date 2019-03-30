@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getAllCustomers, extractCustomersByYeat } from '../../../actions';
+import { extractCustomersByYeat } from '../../../actions';
 
 class Customers extends Component {
 
@@ -167,7 +167,6 @@ class Customers extends Component {
 const mapStateToProps = (state) => ({ state });
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAllCustomers: () => dispatch(getAllCustomers()),
     extractCustomersByYeat: (year) => dispatch(extractCustomersByYeat(year))
   }
 };

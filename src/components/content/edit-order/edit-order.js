@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getOrderById } from '../../../service'
 
-import { alertSaccess, delData, hideModal } from '../../../actions';
+import { alertSaccess, getData, hideModal, editOrder } from '../../../actions';
 
 class EditOrder extends Component {
 
@@ -24,6 +24,27 @@ class EditOrder extends Component {
     }
   }
 
+  applyEdit = () => {
+    const { year } = this.props.state.filter
+    const { orders } = this.props.state
+    const { id } = this.props.state.modal;
+    const order = getOrderById(orders, id);
+    const obj = {
+      namber: order.namber,
+      customer: this.editCustomer.value,
+      date: order.date,
+      name: this.editName.value,
+      contacts: this.editContacts.value,
+      product: order.product,
+      price: Number(this.editPrice.value),
+      passed: order.passed,
+      manager: this.editManager.value
+    }
+    this.props.editOrder(id, obj)
+    this.props.getData(year)
+    this.props.alertSaccess('Данные о заказе успешно обновлены')
+  }
+
   render() {
     const { orders } = this.props.state
     const { id } = this.props.state.modal;
@@ -35,7 +56,8 @@ class EditOrder extends Component {
     if (this.state.editMode) editMode = {
       getEditButton: 'times',
       applyButton: (
-        <button type="button" className="btn btn-primary">
+        <button type="button" className="btn btn-primary"
+          onClick={ this.applyEdit }>
           Применить
         </button>
       ),
@@ -137,8 +159,9 @@ const mapStateToProps = (state) => ({ state: state });
 const mapDispatchToProps = (dispatch) => {
   return {
     alertSaccess: (text) => dispatch(alertSaccess(text)),
-    delData: (url) =>dispatch(delData(url)),
-    hideModal: () => dispatch(hideModal())
+    getData: (year) =>dispatch(getData(year)),
+    hideModal: () => dispatch(hideModal()),
+    editOrder: (id, body) => dispatch(editOrder(id, body))
   }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(EditOrder);

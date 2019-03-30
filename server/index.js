@@ -25,7 +25,7 @@ app.post('/setrandomdata/gen?', ORC.createRandomDate);
 app.get('/orders/:id', ORC.read);
 app.delete('/delorder/:id', ORC.delete);
 app.delete('/delallorders', ORC.deleteAll);
-app.put('/orders/:id', ORC.update);
+app.put('/updateorder/:id', ORC.update);
 
 app.get('/getcustomers', CC.index);
 app.post('/setcustomers', CC.createMany);

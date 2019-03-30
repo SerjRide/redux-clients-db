@@ -245,6 +245,8 @@ html {
         width: 300px; }
       .edit-order .my-modal .my-modal-content input:focus {
         outline: solid 0px #fff; }
+      .edit-order .my-modal .my-modal-content .modal-footer {
+        border: solid 0px #fff; }
 
 @keyframes modal {
   from {

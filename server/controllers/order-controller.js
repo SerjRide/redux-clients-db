@@ -1,5 +1,4 @@
 import Order from '../models/order';
-import Orders from '../models/orders';
 import baseGenerator from './base-generator';
 
 class OrderController {
@@ -79,7 +78,6 @@ class OrderController {
   update(req, res) {
     Order.findByIdAndUpdate(req.params.id, { $set: req.body }, err => {
       if (err) res.send(err)
-      res.json({ status: 'updated' });
     });
   }
 

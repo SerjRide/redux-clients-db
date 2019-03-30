@@ -7,10 +7,11 @@ import {
   alertSaccess,
   delData,
   changeFilter,
-  getAllCustomers,
   extractCustomersByYeat,
   showModal,
-  hideModal
+  hideModal,
+  editOrder
+
 
 } from './actions';
 
@@ -23,9 +24,9 @@ export {
   alertSaccess,
   delData,
   changeFilter,
-  getAllCustomers,
   extractCustomersByYeat,
   showModal,
-  hideModal
+  hideModal,
+  editOrder
 
 }

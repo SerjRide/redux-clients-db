@@ -4,6 +4,9 @@ const showModal = (id) => ({ type: 'SHOW_MODAL', id })
 const hideModal = () => ({ type: 'HIDE_MODAL' })
 const reqOrdersDone = (orders) => ({ type: "ORDERS_FETCH_DATA_SUCCESS", orders })
 const reqCustomersDone = (customers) => ({ type: "CUSTOMERS_FETCH_DATA_SUCCESS", customers })
+const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text })
+const changeFilter = (year, mounth, day, info) => ({ type: "FILTER_CHANGE",
+                                                  year, mounth, day, info })
 
 const getData = (request) => {
   return (dispatch) => {
@@ -48,23 +51,6 @@ const delData = (id) => {
   };
 };
 
-const changeFilter = (year, mounth, day, info) => ({ type: "FILTER_CHANGE",
-                                                      year, mounth, day, info })
-
-const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text })
-
-const getAllCustomers = () => {
-  return (dispatch) => {
-    fetch('/getcustomers')
-    .then((res) => {
-      if(!res.ok) throw new Error(res.statusText)
-      return res;
-    })
-    .then((res) => res.json())
-    .then((customers) => dispatch(reqCustomersDone(customers)))
-  };
-};
-
 const extractCustomersByYeat = (year) => {
   return (dispatch) => {
     fetch('/getcustomersbyyear/' + year)
@@ -77,6 +63,22 @@ const extractCustomersByYeat = (year) => {
   };
 }
 
+const editOrder = (id, body) => {
+  return (dispatch) => {
+    fetch('/updateorder/' + id, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+      headers:{'content-type': 'application/json'}
+    })
+    .then((res) => {
+      if(!res.ok) throw new Error(res.statusText)
+      return res;
+    })
+    .then((res) => res.json())
+    .then((orders) => dispatch(reqOrdersDone(orders)))
+  };
+};
+
 export {
   showNavbar,
   hideNavbar,
@@ -85,8 +87,8 @@ export {
   alertSaccess,
   delData,
   changeFilter,
-  getAllCustomers,
   extractCustomersByYeat,
   showModal,
-  hideModal
+  hideModal,
+  editOrder
 }
