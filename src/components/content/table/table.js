@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getData } from '../../../actions';
+import { getData, showModal } from '../../../actions';
 import { getProductsNames } from '../../../service';
 
 class Table extends Component {
@@ -107,6 +107,7 @@ class Table extends Component {
         let passed = item.passed === true ? 'passed' : 'not-passed'
         return (
           <tr key={ item._id }
+            onDoubleClick= { () => this.props.showModal() }
             className={ passed }>
             <th>{ item.namber }</th>
             <td>{ item.customer }</td>
@@ -162,7 +163,8 @@ class Table extends Component {
 const mapStateToProps = (state) => ({ state });
 const mapDispatchToProps = (dispatch) => {
   return {
-    getData: (url) => dispatch(getData(url))
+    getData: (url) => dispatch(getData(url)),
+    showModal: () => dispatch(showModal())
   }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

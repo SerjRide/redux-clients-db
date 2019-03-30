@@ -208,3 +208,27 @@ html {
 
 .main-analisis .card {
   margin-bottom: 20px; }
+
+.edit-order {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%; }
+  .edit-order .my-modal {
+    display: flex;
+    position: fixed;
+    background-color: #fff;
+    border-radius: 5px;
+    z-index: 10;
+    padding: 20px 20px 10px 20px;
+    animation: modal 0.1s; }
+
+@keyframes modal {
+  from {
+    transform: scale(2);
+    opacity: 0; }
+  to {
+    transform: scale(1);
+    opacity: 1; } }

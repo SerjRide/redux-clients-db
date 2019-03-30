@@ -8,7 +8,9 @@ import {
   delData,
   changeFilter,
   getAllCustomers,
-  extractCustomersByYeat
+  extractCustomersByYeat,
+  showModal,
+  hideModal
 
 } from './actions';
 
@@ -22,6 +24,8 @@ export {
   delData,
   changeFilter,
   getAllCustomers,
-  extractCustomersByYeat
+  extractCustomersByYeat,
+  showModal,
+  hideModal
 
 }

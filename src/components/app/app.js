@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Head from '../head';
 import Content from '../content';
 import LeftNavbar from '../left-navbar';
+import EditOrder from '../content/edit-order';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Alert from '../alerts';
@@ -11,19 +12,25 @@ import '../../css/main.css';
 class App extends Component {
 
   render() {
-    let leftNavbar = null, alert;
-    const { navbarPanel } = this.props.state
+    let leftNavbar = null, get_alert, get_modal;
+    const { navbarPanel, alert, modal } = this.props.state
+
     if (navbarPanel === true) {
       leftNavbar = <LeftNavbar />
     }
 
-    if (this.props.state.alert.text) {
-      alert = <Alert />
+    if (modal) {
+      get_modal = <EditOrder />
+    }
+
+    if (alert.text) {
+      get_alert = <Alert />
     }
 
     return (
       <React.Fragment>
-        { alert }
+        { get_alert }
+        { get_modal }
         <Router>
           <div className="App">
             { leftNavbar }
