@@ -55,7 +55,7 @@ class LeftNavbar extends Component {
           <hr />
           <Link className="nav-link"
             onClick={ () => hideNavbar() }
-            to="/">
+            to="/main-analisis">
             Аналитика
           </Link>
           <Link className="nav-link disabled"

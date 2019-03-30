@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import AddOrder from './add-order';
 import DeleteOrder from './delete-order';
 import Customers from './customers';
+import MainAnalisis from './main-analisis';
 import { Route } from 'react-router-dom';
 import { Redirect } from 'react-router-dom';
 
@@ -21,6 +22,7 @@ class Content extends Component {
           <Route path='/customers' component = { Customers } />
           <Route path='/add-order' component = { AddOrder } />
           <Route path='/del-order' component = { DeleteOrder } />
+          <Route path='/main-analisis' component = { MainAnalisis } />
         </div>
     );
   }

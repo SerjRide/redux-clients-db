@@ -205,3 +205,6 @@ html {
     transform: translateY(0px); }
   to {
     transform: translateY(-50px); } }
+
+.main-analisis .card {
+  margin-bottom: 20px; }
