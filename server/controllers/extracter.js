@@ -29,12 +29,14 @@ const extracter = (res, year = 0) => {
     if (controller === year) {
       if (!overlap) {
         obj.customer = data[key].customer;
-        obj.price = data[key].price;
         obj.date = [data[key].date];
+        obj.total_amount = data[key].price;
+        obj.true_amount = data[key].passed ? data[key].price : 0
         customers[customers.length] = obj;
       } else {
         const count = findCountByCustomer(customers, data[key].customer)
-        customers[count].price += data[key].price;
+        customers[count].total_amount += data[key].price;
+        customers[count].true_amount += data[key].passed ? data[key].price : 0;
         customers[count].date.push(data[key].date);
       }
     }

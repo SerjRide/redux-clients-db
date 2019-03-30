@@ -11,10 +11,13 @@ class Customers extends Component {
     this.state = { col: 'date', method: true, dateType: '' }
   }
 
-  addCounts = () => {
+  addExtra = () => {
     const newArr = this.props.state.customers;
     for (var i = 0; i < newArr.length; i++) {
+      const { true_amount : TruA, total_amount: TotA } = newArr[i]
       newArr[i].count = newArr[i].date.length
+      newArr[i].deviation = TruA - TotA
+      newArr[i].percent = Number(((TruA / TotA) * 100).toFixed())
     }
     return newArr;
   }
@@ -56,10 +59,6 @@ class Customers extends Component {
           val_a = a.date[col_a].slice(0,2);
           val_b = b.date[col_b].slice(0,2);
           break;
-        case 'price':
-          val_a = a[type];
-          val_b = b[type];
-          break;
         default:
           val_a = a[type];
           val_b = b[type];
@@ -100,17 +99,24 @@ class Customers extends Component {
 
     if (length !== 0) {
 
-      const newArr = this.addCounts();
+      const newArr = this.addExtra();
       const info_filter = this.infoFilter(newArr);
       this.sortCustomers(info_filter, col, method);
       items = info_filter.map((item, i) => {
+        const condition = (item.true_amount - item.total_amount < 0 )
+        let color = condition ? 'text-danger' : 'text-success'
         return (
           <tr key={ item._id }>
             <td>{ item.customer }</td>
             <td>{ item.count }</td>
             <td>{ item.date[0] }</td>
             <td>{ item.date[item.date.length - 1] }</td>
-            <td>{ item.price }</td>
+            <td>{ `${item.true_amount} ₽` }</td>
+            <td>{ `${item.total_amount} ₽` }</td>
+            <td className = { color }>
+                { `${item.deviation} ₽` }
+            </td>
+            <td>{ `${item.percent} %` }</td>
           </tr>
         )
       });
@@ -131,16 +137,25 @@ class Customers extends Component {
               Заказчик <i className={`fas fa-caret-${type}`}></i></th>
             <th onClick={ (e) => this.changeSort(e) } scope="col"
               data-name="count">
-              Кол-во заказов <i className={`fas fa-caret-${type}`}></i></th>
+              Заказы <i className={`fas fa-caret-${type}`}></i></th>
             <th onClick={ (e) => this.changeSort(e) } scope="col"
               data-name="date" data-type="first">
-              Первый заказ <i className={`fas fa-caret-${type}`}></i></th>
+              Первый<i className={`fas fa-caret-${type}`}></i></th>
             <th onClick={ (e) => this.changeSort(e) } scope="col"
               data-name="date" data-type="last">
-              Последний заказ <i className={`fas fa-caret-${type}`}></i></th>
+              Последний<i className={`fas fa-caret-${type}`}></i></th>
             <th onClick={ (e) => this.changeSort(e) } scope="col"
-              data-name="price">
-              Сумма <i className={`fas fa-caret-${type}`}></i></th>
+              data-name="true_amount">
+              Выполненные <i className={`fas fa-caret-${type}`}></i></th>
+            <th onClick={ (e) => this.changeSort(e) } scope="col"
+              data-name="total_amount">
+              Общая Сумма <i className={`fas fa-caret-${type}`}></i></th>
+            <th onClick={ (e) => this.changeSort(e) } scope="col"
+              data-name="deviation">
+              Отклонение <i className={`fas fa-caret-${type}`}></i></th>
+            <th onClick={ (e) => this.changeSort(e) } scope="col"
+              data-name="percent">
+              % <i className={`fas fa-caret-${type}`}></i></th>
           </tr>
         </thead>
         <tbody>{ items }</tbody>
