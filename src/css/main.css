@@ -15,7 +15,8 @@ html {
     position: fixed;
     z-index: 8;
     width: 100%;
-    padding: 10px 10px; }
+    padding: 10px 10px;
+    box-shadow: 0 0 10px #A6A6A6; }
   .App .head .form {
     display: flex;
     justify-content: space-between;
@@ -218,12 +219,32 @@ html {
   height: 100%; }
   .edit-order .my-modal {
     display: flex;
+    width: 80%;
     position: fixed;
     background-color: #fff;
     border-radius: 5px;
     z-index: 10;
     padding: 20px 20px 10px 20px;
     animation: modal 0.1s; }
+    .edit-order .my-modal .my-modal-content {
+      width: 100%; }
+      .edit-order .my-modal .my-modal-content p {
+        margin: 0; }
+      .edit-order .my-modal .my-modal-content .header {
+        display: flex; }
+        .edit-order .my-modal .my-modal-content .header h5 {
+          margin: 2px 0 0 0; }
+        .edit-order .my-modal .my-modal-content .header button {
+          padding: 0 12px 10px 12px;
+          color: rgba(163, 163, 163, 0.2); }
+        .edit-order .my-modal .my-modal-content .header button:hover {
+          color: #A3A3A3; }
+      .edit-order .my-modal .my-modal-content input {
+        border: solid 0px #fff;
+        border-bottom: solid 1px #D6D6D6;
+        width: 300px; }
+      .edit-order .my-modal .my-modal-content input:focus {
+        outline: solid 0px #fff; }
 
 @keyframes modal {
   from {

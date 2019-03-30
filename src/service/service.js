@@ -42,12 +42,31 @@ const getProductsNames = (obj) => {
   return productsNames;
 }
 
+const getOrderById = (obj, id) => {
+  let item = {}
+  for (let i = 0; i < obj.length; i++) {
+    if (id === obj[i]._id) {
+      item.product = obj[i].product
+      item.namber = obj[i].namber
+      item.date = obj[i].date
+      item.name = obj[i].name
+      item.contacts = obj[i].contacts
+      item.customer = obj[i].customer
+      item.price = obj[i].price
+      item.manager = obj[i].manager
+      item.passed = obj[i].passed
+      return item
+    }
+  }
+}
+
 export {
 
   timestampToDate,
   getNewOrederNamber,
   calcVis,
   calcProductsSumm,
-  getProductsNames
+  getProductsNames,
+  getOrderById
 
 }

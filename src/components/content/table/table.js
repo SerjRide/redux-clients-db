@@ -107,7 +107,7 @@ class Table extends Component {
         let passed = item.passed === true ? 'passed' : 'not-passed'
         return (
           <tr key={ item._id }
-            onDoubleClick= { () => this.props.showModal() }
+            onDoubleClick= { () => this.props.showModal(item._id) }
             className={ passed }>
             <th>{ item.namber }</th>
             <td>{ item.customer }</td>
@@ -164,7 +164,7 @@ const mapStateToProps = (state) => ({ state });
 const mapDispatchToProps = (dispatch) => {
   return {
     getData: (url) => dispatch(getData(url)),
-    showModal: () => dispatch(showModal())
+    showModal: (id) => dispatch(showModal(id))
   }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Table);

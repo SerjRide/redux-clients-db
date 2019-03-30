@@ -1,6 +1,6 @@
 const showNavbar = () => ({ type: 'SHOW_NAVBAR' })
 const hideNavbar = () => ({ type: 'HIDE_NAVBAR' })
-const showModal = () => ({ type: 'SHOW_MODAL' })
+const showModal = (id) => ({ type: 'SHOW_MODAL', id })
 const hideModal = () => ({ type: 'HIDE_MODAL' })
 const reqOrdersDone = (orders) => ({ type: "ORDERS_FETCH_DATA_SUCCESS", orders })
 const reqCustomersDone = (customers) => ({ type: "CUSTOMERS_FETCH_DATA_SUCCESS", customers })

@@ -1,13 +1,21 @@
 import {
+
   timestampToDate,
   getNewOrederNamber,
   calcVis,
   calcProductsSumm,
-  getProductsNames } from './service';
+  getProductsNames,
+  getOrderById
+
+} from './service';
 
 export {
+
     timestampToDate,
     getNewOrederNamber,
     calcVis,
     calcProductsSumm,
-    getProductsNames };
+    getProductsNames,
+    getOrderById 
+
+  };

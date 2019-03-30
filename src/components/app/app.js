@@ -19,7 +19,7 @@ class App extends Component {
       leftNavbar = <LeftNavbar />
     }
 
-    if (modal) {
+    if (modal.active) {
       get_modal = <EditOrder />
     }
 

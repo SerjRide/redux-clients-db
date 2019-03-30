@@ -1,8 +1,9 @@
-const modal = (state = false, action) => {
+const modal = (state = {}, action) => {
 
-  if (action.type === 'SHOW_MODAL') {
-    return state = true
-  } else return state = false
+  const { type, id } = action
+  if (type === 'SHOW_MODAL') {
+    return state = { active: true, id }
+  } else return state = { active: false, id: null }
 
 }
 
