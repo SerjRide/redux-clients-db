@@ -12,7 +12,7 @@ import {
 
 import { connect } from 'react-redux';
 
-import { alertSaccess, delData } from '../../../actions';
+import { alertSaccess, delData, getCustomers } from '../../../actions';
 
 import '../../../../node_modules/react-vis/dist/style.css';
 
@@ -20,9 +20,24 @@ class MainAnalisis extends Component {
 
   constructor(props) {
     super(props);
+    const { year } = this.props.state.filter
+    this.props.getCustomers(year);
     this.state = {
       crosshairValues: []
     };
+  };
+
+  getGlobal = (type) => {
+    const { customers } = this.props.state
+    let res = 0;
+    for (let i = 0; i < customers.length; i++) {
+      res += (type === 'orders') ? customers[i].date.length : null
+      if (type === 'price') for (let j = 0; j < customers[i].date.length; j++) {
+        res += customers[i].date[j].price
+      }
+      if (type === 'customers') res = customers.length;
+    }
+    return res;
   }
 
   render() {
@@ -52,19 +67,19 @@ class MainAnalisis extends Component {
         </div>
         <div className="col-md-2">
           <h6>Всего заказов:</h6>
-          <h3>5000</h3>
+          <h3>{ this.getGlobal('orders') }</h3>
         </div>
         <div className="col-md-2">
           <h6>Новых клиентов:</h6>
-          <h3>142</h3>
+          <h3>{ this.getGlobal('customers') }</h3>
         </div>
         <div className="col-md-2">
           <h6>Прошлый год:</h6>
-          <h3>23%</h3>
+          <h3>100%</h3>
         </div>
         <div className="col-md-2">
           <h6>Сумма:</h6>
-          <h3>1 196 752 Р</h3>
+          <h3>{ this.getGlobal('price') } Р</h3>
         </div>
       </div>
     )
@@ -132,11 +147,14 @@ class MainAnalisis extends Component {
     )
   }
 }
+
 const mapStateToProps = (state) => ({ state: state });
 const mapDispatchToProps = (dispatch) => {
   return {
     alertSaccess: (text) => dispatch(alertSaccess(text)),
-    delData: (url) =>dispatch(delData(url))
+    delData: (url) => dispatch(delData(url)),
+    getCustomers: (year) => dispatch(getCustomers(year))
   }
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(MainAnalisis);

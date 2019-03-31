@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { extractCustomersByYeat } from '../../../actions';
+import { getCustomers } from '../../../actions';
 
 class Customers extends Component {
 
   constructor(props) {
     super(props);
     const { year } = this.props.state.filter
-    this.props.extractCustomersByYeat(year);
+    this.props.getCustomers(year);
     this.state = { col: 'date', method: true, dateType: '' }
   }
 
@@ -44,20 +44,20 @@ class Customers extends Component {
         case 'date':
           if (dateType === 'first') { col_a = 0; col_b = 0 }
           else { col_a = a[type].length - 1; col_b = b[type].length - 1};
-          val_a = a[type][col_a].slice(6);
-          val_b = b[type][col_b].slice(6);
+          val_a = a[type][col_a].date.slice(6);
+          val_b = b[type][col_b].date.slice(6);
           break;
         case 'dateMounth':
           if (dateType === 'first') { col_a = 0; col_b = 0 }
           else { col_a = a.date.length - 1; col_b = b.date.length - 1 };
-          val_a = a.date[col_a].slice(3,-3);
-          val_b = b.date[col_b].slice(3,-3);
+          val_a = a.date[col_a].date.slice(3,-3);
+          val_b = b.date[col_b].date.slice(3,-3);
           break;
         case 'dateDay':
           if (dateType === 'first') { col_a = 0; col_b = 0 }
           else { col_a = a.date.length - 1; col_b = b.date.length - 1 };
-          val_a = a.date[col_a].slice(0,2);
-          val_b = b.date[col_b].slice(0,2);
+          val_a = a.date[col_a].date.slice(0,2);
+          val_b = b.date[col_b].date.slice(0,2);
           break;
         default:
           val_a = a[type];
@@ -109,8 +109,8 @@ class Customers extends Component {
           <tr key={ item._id }>
             <td>{ item.customer }</td>
             <td>{ item.count }</td>
-            <td>{ item.date[0] }</td>
-            <td>{ item.date[item.date.length - 1] }</td>
+            <td>{ item.date[0].date }</td>
+            <td>{ item.date[item.date.length - 1].date }</td>
             <td>{ `${item.true_amount} ₽` }</td>
             <td>{ `${item.total_amount} ₽` }</td>
             <td className = { color }>
@@ -167,7 +167,7 @@ class Customers extends Component {
 const mapStateToProps = (state) => ({ state });
 const mapDispatchToProps = (dispatch) => {
   return {
-    extractCustomersByYeat: (year) => dispatch(extractCustomersByYeat(year))
+    getCustomers: (year) => dispatch(getCustomers(year))
   }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Customers);

@@ -6,7 +6,7 @@ const findCountByCustomer = (arr, term) => {
   }
 }
 
-const extracter = (res, year = 0) => {
+const extracter = (res) => {
   const { data } = res;
   let customers = [];
 
@@ -23,22 +23,25 @@ const extracter = (res, year = 0) => {
       }
     }
 
-    if (year === 0) controller = year
-    else controller = Number((data[key].date).slice(-2));
-
-    if (controller === year) {
-      if (!overlap) {
-        obj.customer = data[key].customer;
-        obj.date = [data[key].date];
-        obj.total_amount = data[key].price;
-        obj.true_amount = data[key].passed ? data[key].price : 0
-        customers[customers.length] = obj;
-      } else {
-        const count = findCountByCustomer(customers, data[key].customer)
-        customers[count].total_amount += data[key].price;
-        customers[count].true_amount += data[key].passed ? data[key].price : 0;
-        customers[count].date.push(data[key].date);
-      }
+    if (!overlap) {
+      obj.customer = data[key].customer;
+      obj.total_amount = data[key].price;
+      obj.true_amount = data[key].passed ? data[key].price : 0
+      obj.date = [{
+        date: data[key].date,
+        price: data[key].price,
+        passed: data[key].passed
+      }];
+      customers[customers.length] = obj;
+    } else {
+      const count = findCountByCustomer(customers, data[key].customer)
+      customers[count].total_amount += data[key].price;
+      customers[count].true_amount += data[key].passed ? data[key].price : 0;
+      customers[count].date.push({
+        date: data[key].date,
+        price: data[key].price,
+        passed: data[key].passed
+      });
     }
   }
 

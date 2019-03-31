@@ -6,7 +6,7 @@ import {
   getData,
   showNavbar,
   changeFilter,
-  extractCustomersByYeat } from '../../actions';
+  getCustomers } from '../../actions';
 
 class Head extends Component {
 
@@ -24,7 +24,7 @@ class Head extends Component {
     const { value: info } = this.inputInfo;
     const { pathname } = document.location;
     if (pathname === '/orders') this.props.getData(year);
-    if (pathname === '/customers') this.props.extractCustomersByYeat(year);
+    if (pathname === '/customers') this.props.getCustomers(year);
     this.props.changeFilter(year, mounth, day, info);
   }
 
@@ -33,7 +33,7 @@ class Head extends Component {
     const nowMounth = '0' + ((new Date()).getMonth() + 1)
     const { pathname } = document.location;
     if (pathname === '/orders') this.props.getData(nowYear);
-    if (pathname === '/customers') this.props.extractCustomersByYeat(nowYear);
+    if (pathname === '/customers') this.props.getCustomers(nowYear);
     this.props.changeFilter(nowYear, nowMounth, '', '');
     this.inputMounth.value = '';
     this.inputInfo.value = '';
@@ -145,7 +145,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getData: (url) => dispatch(getData(url)),
     showNavbar: () => dispatch(showNavbar()),
-    extractCustomersByYeat: (year) => dispatch(extractCustomersByYeat(year)),
+    getCustomers: (year) => dispatch(getCustomers(year)),
     changeFilter: (year, mounth, day, info) => dispatch(changeFilter(
       year,
       mounth,

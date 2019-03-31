@@ -61,8 +61,8 @@ class OrderController {
     }
     for (let i = 0; i < clientsBase.length; i++) {
       const data = clientsBase[i]
-      if (i !== clientsBase.length - 1) Orders.collection.insertMany(data);
-      else Orders.collection.insertMany(data, onInsert);
+      if (i !== clientsBase.length - 1) Order.collection.insertMany(data);
+      else Order.collection.insertMany(data, onInsert);
     }
   }
 

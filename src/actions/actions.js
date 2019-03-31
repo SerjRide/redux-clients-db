@@ -51,17 +51,33 @@ const delData = (id) => {
   };
 };
 
-const extractCustomersByYeat = (year) => {
+const controller = async (year, dispatch) => {
+  const res = await fetch('/getcustomers');
+  const body = await res.json();
+  await dispatch(reqCustomersDone(body))
+  return body
+}
+
+const getCustomers = (year) => {
   return (dispatch) => {
-    fetch('/getcustomersbyyear/' + year)
-    .then((res) => {
-      if(!res.ok) throw new Error(res.statusText)
-      return res;
-    })
-    .then((res) => res.json())
-    .then((customers) => dispatch(reqCustomersDone(customers)))
+    controller(year, dispatch)
   };
 }
+
+// const extractCustomersByYeat = (year) => {
+//   return (dispatch) => {
+//     fetch('/getcustomersbyyear/' + year)
+//     .then((res) => {
+//       if(!res.ok) throw new Error(res.statusText)
+//       return res;
+//     })
+//     .then((res) => res.json())
+//     .then((customers) => {
+//       console.log(customers);
+//       dispatch(reqCustomersDone(customers))
+//     })
+//   };
+// }
 
 const editOrder = (id, body) => {
   return (dispatch) => {
@@ -87,8 +103,8 @@ export {
   alertSaccess,
   delData,
   changeFilter,
-  extractCustomersByYeat,
   showModal,
   hideModal,
-  editOrder
+  editOrder,
+  getCustomers
 }

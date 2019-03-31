@@ -34,7 +34,7 @@ const addContacts = (arr, i) => {
 const addManager = (arr, i) => {
   let newArr = arr, pass;
   newArr[i].manager = managers[Math.floor(Math.random() * 5)];
-  if ((Math.floor(Math.random() * 10)) > 1) pass = true;
+  if ((Math.floor(Math.random() * 100)) > 3) pass = true;
   else pass = false;
   newArr[i].passed = pass;
   return newArr;

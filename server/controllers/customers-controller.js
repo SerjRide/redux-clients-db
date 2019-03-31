@@ -11,16 +11,12 @@ class CustomersController {
     }).catch(() => {})
   }
 
-  createMany(req, res) {
+  createOne(req, res) {
     const data = req.body;
-    function onInsert(err, docs) {
+    const onInsert = (err, docs) => {
       if (err) res.send(err)
-      else {
-        res.json({ status: 'All customers added' });
-        console.log('All customers added...');
-      }
     }
-    Customers.collection.insertMany(data, onInsert);
+    Customers.collection.insertOne(data, onInsert);
   }
 
   deleteAll(req, res) {
