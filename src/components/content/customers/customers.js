@@ -13,8 +13,19 @@ class Customers extends Component {
 
   addExtra = (obj) => {
     const newArr = obj;
-    for (var i = 0; i < newArr.length; i++) {
-      const { true_amount : TruA, total_amount: TotA } = newArr[i]
+    for (let i = 0; i < newArr.length; i++) {
+      newArr[i].total_amount = 0;
+      newArr[i].true_amount = 0;
+      for (let j = 0; j < obj[i].date.length; j++) {
+        newArr[i].total_amount += obj[i].date[j].price
+        if (obj[i].date[j].passed) {
+          newArr[i].true_amount += obj[i].date[j].price
+        }
+      }
+    }
+    for (let i = 0; i < newArr.length; i++) {
+      const  TruA = newArr[i].true_amount,
+             TotA = newArr[i].total_amount;
       newArr[i].count = newArr[i].date.length
       newArr[i].deviation = TruA - TotA
       newArr[i].percent = Number(((TruA / TotA) * 100).toFixed())
@@ -29,10 +40,8 @@ class Customers extends Component {
     let newArr = []
     for (let i = 0; i < customers.length; i++) {
       let obj = {};
-      obj.id = customers[i]._id
+      obj._id = customers[i]._id
       obj.customer = customers[i].customer;
-      obj.total_amount = customers[i].total_amount;
-      obj.true_amount = customers[i].true_amount;
       obj.date = [];
       for (let j = 0; j < customers[i].date.length; j++) {
         let date_item = {}
@@ -132,7 +141,7 @@ class Customers extends Component {
         const condition = (item.true_amount - item.total_amount < 0 )
         let color = condition ? 'text-danger' : 'text-success'
         return (
-          <tr key={ item.id }>
+          <tr key={ item._id }>
             <td>{ item.customer }</td>
             <td>{ item.count }</td>
             <td>{ item.date[0].date }</td>
