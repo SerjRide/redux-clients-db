@@ -79,7 +79,7 @@ class MainAnalisis extends Component {
         </div>
         <div className="col-md-2">
           <h6>Сумма:</h6>
-          <h3>{ this.getGlobal('price') } Р</h3>
+          <h3>{ this.getGlobal('price') } ₽</h3>
         </div>
       </div>
     )

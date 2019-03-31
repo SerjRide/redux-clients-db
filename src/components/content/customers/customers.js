@@ -11,13 +11,39 @@ class Customers extends Component {
     this.state = { col: 'date', method: true, dateType: '' }
   }
 
-  addExtra = () => {
-    const newArr = this.props.state.customers;
+  addExtra = (obj) => {
+    const newArr = obj;
     for (var i = 0; i < newArr.length; i++) {
       const { true_amount : TruA, total_amount: TotA } = newArr[i]
       newArr[i].count = newArr[i].date.length
       newArr[i].deviation = TruA - TotA
       newArr[i].percent = Number(((TruA / TotA) * 100).toFixed())
+    }
+    return newArr;
+  }
+
+  yearFilter = () => {
+    const { customers } = this.props.state;
+    const { year } = this.props.state.filter;
+    if (year === '0') return customers;
+    let newArr = []
+    for (let i = 0; i < customers.length; i++) {
+      let obj = {};
+      obj.id = customers[i]._id
+      obj.customer = customers[i].customer;
+      obj.total_amount = customers[i].total_amount;
+      obj.true_amount = customers[i].true_amount;
+      obj.date = [];
+      for (let j = 0; j < customers[i].date.length; j++) {
+        let date_item = {}
+        if (customers[i].date[j].date.slice(-2) === year) {
+          date_item.date = customers[i].date[j].date;
+          date_item.price = customers[i].date[j].price;
+          date_item.passed = customers[i].date[j].passed;
+          obj.date.push(date_item);
+        }
+      }
+      if (obj.date.length !== 0) newArr.push(obj);
     }
     return newArr;
   }
@@ -98,15 +124,15 @@ class Customers extends Component {
     let items;
 
     if (length !== 0) {
-
-      const newArr = this.addExtra();
+      const year_filter = this.yearFilter()
+      const newArr = this.addExtra(year_filter);
       const info_filter = this.infoFilter(newArr);
       this.sortCustomers(info_filter, col, method);
       items = info_filter.map((item, i) => {
         const condition = (item.true_amount - item.total_amount < 0 )
         let color = condition ? 'text-danger' : 'text-success'
         return (
-          <tr key={ item._id }>
+          <tr key={ item.id }>
             <td>{ item.customer }</td>
             <td>{ item.count }</td>
             <td>{ item.date[0].date }</td>
