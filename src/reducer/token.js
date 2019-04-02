@@ -1,12 +1,12 @@
-// const initial_state = 'eyJhbGciOiJIUzI1NiJ9.NWNhMjc3YjM3Zjg5NWFmZWE3NzVjMjEz.QlEWqOo_4QVak0YAiW8ZaimV3dYbDU6cX4_b_Y-r7OA';
-const initial_state = null;
-
-const token = (state = initial_state, action) => {
+const token = (state = {}, action) => {
   switch (action.type) {
     case "AUTHORIZE":
-      return state = action.token;
+      return state = {
+        token: action.token,
+        rights: action.rights
+      };
     case "SIGN_OUT":
-      return state = null;
+      return state = {};
     default:
       return state;
   }

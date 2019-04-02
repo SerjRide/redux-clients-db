@@ -12,7 +12,7 @@ const hideModal = () => ({ type: 'HIDE_MODAL' })
 const reqOrdersDone = (orders) => ({ type: "ORDERS_FETCH_DATA_SUCCESS", orders })
 const reqCustomersDone = (customers) => ({ type: "CUSTOMERS_FETCH_DATA_SUCCESS", customers })
 const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text })
-const authorization = (token) => ({ type: 'AUTHORIZE', token })
+const authorization = (token, rights) => ({ type: 'AUTHORIZE', token, rights })
 const sign_out = () => ({ type: 'SIGN_OUT' })
 const changeFilter = (year, mounth, day, info) => ({ type: "FILTER_CHANGE",
                                                   year, mounth, day, info })
@@ -137,7 +137,7 @@ const autorize = async (dispatch, log, pass) => {
   }
   const res = await fetch('/signin', options);
   const body = await res.json();
-  await dispatch(authorization(body.token));
+  await dispatch(authorization(body.token, body.rights));
   if (body.token !== null) {
     localStorage.setItem('token', body.token);
     localStorage.setItem('login', log);

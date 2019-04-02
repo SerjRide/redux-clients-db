@@ -49,7 +49,6 @@ class Head extends Component {
   }
 
   render() {
-
     const { pathname } = document.location;
     let extra = null;
     if (pathname === '/customers') extra = <option value="0">Все года</option>;

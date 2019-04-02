@@ -4,7 +4,6 @@ const config = require('../../etc/config.json');
 const { secret } = config.jwt;
 import Users from '../models/users';
 
-
 const signIn = (req, res) => {
   const { login, password } = req.body;
   Users.findOne({ login })
@@ -16,7 +15,7 @@ const signIn = (req, res) => {
       const isValid = bCrypt.compareSync(password, user.password);
       if (isValid) {
         const token = jwt.sign(user._id.toString(), secret);
-        res.json({ token });
+        res.json({ token, rights: user.rights });
       } else {
         res.status(401).json({ token: null });
       }
