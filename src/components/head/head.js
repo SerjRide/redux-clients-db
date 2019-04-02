@@ -44,7 +44,8 @@ class Head extends Component {
 
   sign_out = () => {
     this.props.sign_out();
-    localStorage.removeItem('token')
+    localStorage.removeItem('token');
+    localStorage.removeItem('login');
   }
 
   render() {
@@ -134,6 +135,7 @@ class Head extends Component {
           </div>
 
             <div className="form-group col-md-2 end">
+              <span>{ localStorage.getItem('login') }</span>
               <Link
                 className="btn btn-outline-danger"
                 to="/login"

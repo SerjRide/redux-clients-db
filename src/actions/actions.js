@@ -140,6 +140,7 @@ const autorize = async (dispatch, log, pass) => {
   await dispatch(authorization(body.token));
   if (body.token !== null) {
     localStorage.setItem('token', body.token);
+    localStorage.setItem('login', log);
   }
   return body.token
 }
