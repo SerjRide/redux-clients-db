@@ -47,7 +47,7 @@ class AddOrder extends Component {
       product: products,
       price: price
     }
-    this.props.setData('setorder', obj)
+    this.props.setData(obj)
     this.props.alertSaccess('Added');
     this.refreshForm();
   };
@@ -136,7 +136,7 @@ class AddOrder extends Component {
 const mapStateToProps = (state) => ({ state: state });
 const mapDispatchToProps = (dispatch) => {
   return {
-    setData: (url, body) => dispatch(setData(url, body)),
+    setData: (body) => dispatch(setData(body)),
     alertSaccess: (text) => dispatch(alertSaccess(text))
   }
 };

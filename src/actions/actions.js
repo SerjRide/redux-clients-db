@@ -10,7 +10,7 @@ const changeFilter = (year, mounth, day, info) => ({ type: "FILTER_CHANGE",
 
 const getData = (request) => {
   return (dispatch) => {
-    fetch('/getbyyear/' + request)
+    fetch('/orders/' + request)
     .then((res) => {
       if(!res.ok) throw new Error(res.statusText)
       return res;
@@ -20,9 +20,9 @@ const getData = (request) => {
   };
 };
 
-const setData = (request, body) => {
+const setData = (body) => {
   return (dispatch) => {
-    fetch('/' + request, {
+    fetch('/order', {
       method: 'POST',
       body: JSON.stringify(body),
       headers:{'content-type': 'application/json'}
@@ -38,7 +38,7 @@ const setData = (request, body) => {
 
 const delData = (id) => {
   return (dispatch) => {
-    fetch('/delorder/' + id, {
+    fetch('/order/' + id, {
       method: 'DELETE',
       headers:{'content-type': 'application/json'}
     })
@@ -52,7 +52,7 @@ const delData = (id) => {
 };
 
 const controller = async (year, dispatch) => {
-  const res = await fetch('/getcustomers');
+  const res = await fetch('/customers');
   const body = await res.json();
   await dispatch(reqCustomersDone(body))
   return body
@@ -81,7 +81,7 @@ const getCustomers = (year) => {
 
 const editOrder = (id, body) => {
   return (dispatch) => {
-    fetch('/updateorder/' + id, {
+    fetch('/order/' + id, {
       method: 'PUT',
       body: JSON.stringify(body),
       headers:{'content-type': 'application/json'}

@@ -66,15 +66,6 @@ class OrderController {
     }
   }
 
-  read(req, res) {
-    Order.findOne({ _id: req.params.id })
-    .then(post => {
-      if (!post) { res.send({ error: 'not found' }) }
-      else res.json(post);
-    })
-    .catch(() => {})
-  }
-
   update(req, res) {
     Order.findByIdAndUpdate(req.params.id, { $set: req.body }, err => {
       if (err) res.send(err)

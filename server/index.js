@@ -2,62 +2,68 @@ import mongoose from 'mongoose';
 import express from 'express';
 import bodyParser from 'body-parser';
 import axios from 'axios';
+import bCrypt from 'bcrypt';
 import OrderController from './controllers/order-controller';
 import CustomersController from './controllers/customers-controller';
 import Customers from './models/customers';
 import extracter from './controllers/extracter';
-const url = 'http://localhost:8080';
+import signIn from './controllers/auth';
+import authMiddleware from './middleware/auth';
+const config = require('../etc/config.json');
+const url = config.apiPrefix;
 
 const ORC = new OrderController();
 const CC = new CustomersController();
+const { prefix, name } = config.db
 
 const app = express();
-mongoose.connect('mongodb://localhost/orders', { useNewUrlParser: true });
+mongoose.connect(`${prefix}/${name}`, { useNewUrlParser: true });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/getorders', ORC.index);
-app.get('/getbyyear/:year', ORC.getByYear);
-app.post('/setorder', ORC.create);
-app.post('/setorders', ORC.createMany);
-app.post('/setrandomdata/gen?', ORC.createRandomDate);
-app.get('/orders/:id', ORC.read);
-app.delete('/delorder/:id', ORC.delete);
-app.delete('/delallorders', ORC.deleteAll);
-app.put('/updateorder/:id', ORC.update);
+app.get('/orders', authMiddleware ,ORC.index);
+app.get('/orders/:year', ORC.getByYear);
+app.post('/order', ORC.create);
+app.post('/orders', ORC.createMany);
+app.post('/random-orders/gen?', ORC.createRandomDate);
+app.delete('/order/:id', ORC.delete);
+app.delete('/orders', ORC.deleteAll);
+app.put('/order/:id', ORC.update);
 
-app.get('/getcustomers', CC.index);
-app.post('/setcustomer', CC.createOne);
-app.delete('/delallcustomers', CC.deleteAll);
+app.get('/customers', CC.index);
+app.post('/customer', CC.createOne);
+app.delete('/customers', CC.deleteAll);
 
-app.get('/extract-customers', (req, res) => {
-  axios.get(`${url}/getorders`).then((allCustomers) => {
+app.put('/customers', (req, res) => {
+  axios.get(`${url}/orders`).then((allCustomers) => {
     const customers = extracter(allCustomers);
     for (let i = 0; i < customers.length; i++) {
-      axios.post(`${url}/setcustomer`, customers[i])
+      axios.post(`${url}/customer`, customers[i])
     }
     console.log('all customers was be extracted...');
   });
 });
 
+app.post('/signin', signIn);
+
 const generateRandomBase = async (year, profit) => {
   await console.log(`The process of generating data for ${year}, profit: ${profit}`)
-  await axios.post(`${url}/setrandomdata/gen?year=${year}&profit=${profit}`)
+  await axios.post(`${url}/random-orders/gen?year=${year}&profit=${profit}`)
 }
 
 const deleteAllOrders = async () => {
-  await axios.delete(`${url}/delallorders`).then(() => {
+  await axios.delete(`${url}/orders`).then(() => {
     console.log('All orders was be deleted')
   });
 }
 
 const deleteAllCustomers = async () => {
-  await axios.delete(`${url}/delallcustomers`)
+  await axios.delete(`${url}/customers`)
 }
 
 const extractCustomers =  async () => {
-  await axios.get(`${url}/extract-customers`);
+  await axios.put(`${url}/customers`);
 }
 
 const randomData = (withYear) => {
@@ -75,8 +81,17 @@ const randomData = (withYear) => {
   });
 };
 
-randomData(16);
+const genBCryptHash = (text) => {
+  const saltRounds = 10;
+  const myPlaintextPassword = text;
+  const hash = bCrypt.hashSync(myPlaintextPassword, saltRounds);
+  console.log('hash was be generated');
+  console.log(hash);
+}
 
-app.listen(8080, () => {
-  console.log('server started on 8080 port...')
+// randomData(16);
+// genBCryptHash('ytrewq');
+
+app.listen(config.serverPort, () => {
+  console.log(`server started on ${config.serverPort} port...`)
 })
