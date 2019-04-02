@@ -8,7 +8,8 @@ class Table extends Component {
   constructor(props) {
     super(props);
     const { year } = this.props.state.filter
-    this.props.getData(year);
+    const token = localStorage.getItem('token')
+    this.props.getData(year, token);
     this.state = { col: 'date', method: true }
   }
 
@@ -163,7 +164,7 @@ class Table extends Component {
 const mapStateToProps = (state) => ({ state });
 const mapDispatchToProps = (dispatch) => {
   return {
-    getData: (url) => dispatch(getData(url)),
+    getData: (url, token) => dispatch(getData(url, token)),
     showModal: (id) => dispatch(showModal(id))
   }
 };

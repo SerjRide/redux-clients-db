@@ -7,7 +7,8 @@ class Customers extends Component {
   constructor(props) {
     super(props);
     const { year } = this.props.state.filter
-    this.props.getCustomers(year);
+    const token = localStorage.getItem('token')
+    this.props.getCustomers(year, token);
     this.state = { col: 'date', method: true, dateType: '' }
   }
 
@@ -202,7 +203,7 @@ class Customers extends Component {
 const mapStateToProps = (state) => ({ state });
 const mapDispatchToProps = (dispatch) => {
   return {
-    getCustomers: (year) => dispatch(getCustomers(year))
+    getCustomers: (year, token) => dispatch(getCustomers(year, token))
   }
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Customers);

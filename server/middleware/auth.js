@@ -12,7 +12,7 @@ module.exports = (req, res, next) => {
     jwt.verify(token, secret);
   } catch (e) {
     if (e instanceof jwt.JsonWebTokenError) {
-      res.status(401).json({ message: "Invalid Token!" });
+      return res.status(401).send({ message: "Invalid Token!" });
     }
   }
 

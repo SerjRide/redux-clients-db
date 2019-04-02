@@ -10,7 +10,9 @@ import {
   showModal,
   hideModal,
   editOrder,
-  getCustomers
+  getCustomers,
+  sign_out,
+  getAutorize
 
 
 } from './actions';
@@ -27,6 +29,8 @@ export {
   showModal,
   hideModal,
   editOrder,
-  getCustomers
+  getCustomers,
+  sign_out,
+  getAutorize
 
 }

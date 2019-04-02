@@ -12,12 +12,15 @@ import { Redirect } from 'react-router-dom';
 class Content extends Component {
 
   render() {
-
-    const Main = () => <Redirect to='/orders'/>;
+    const { authorize } = this.props.state;
+    const log = <Redirect to='/login'/>;
+    const content = <Redirect to='/orders'/>;
+    let Main = () => authorize === null ? log : content
 
     return (
         <div className="content">
           <Route path='/' component = { Main } exact/>
+          <Route path='/login' component = { Main } exact/>
           <Route path='/orders' component = { Table } exact/>
           <Route path='/customers' component = { Customers } />
           <Route path='/add-order' component = { AddOrder } />

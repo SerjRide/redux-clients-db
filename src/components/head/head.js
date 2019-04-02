@@ -6,7 +6,8 @@ import {
   getData,
   showNavbar,
   changeFilter,
-  getCustomers } from '../../actions';
+  getCustomers,
+  sign_out } from '../../actions';
 
 class Head extends Component {
 
@@ -23,8 +24,9 @@ class Head extends Component {
     const { value: day } = this.inputDay;
     const { value: info } = this.inputInfo;
     const { pathname } = document.location;
-    if (pathname === '/orders') this.props.getData(year);
-    if (pathname === '/customers') this.props.getCustomers(year);
+    const token = localStorage.getItem('token');
+    if (pathname === '/orders') this.props.getData(year, token);
+    if (pathname === '/customers') this.props.getCustomers(year, token);
     this.props.changeFilter(year, mounth, day, info);
   }
 
@@ -32,11 +34,17 @@ class Head extends Component {
     const nowYear = (((new Date()).getFullYear()) + '').slice(-2);
     const nowMounth = '0' + ((new Date()).getMonth() + 1)
     const { pathname } = document.location;
-    if (pathname === '/orders') this.props.getData(nowYear);
-    if (pathname === '/customers') this.props.getCustomers(nowYear);
+    const token = localStorage.getItem('token');
+    if (pathname === '/orders') this.props.getData(nowYear, token);
+    if (pathname === '/customers') this.props.getCustomers(nowYear, token);
     this.props.changeFilter(nowYear, nowMounth, '', '');
     this.inputMounth.value = '';
     this.inputInfo.value = '';
+  }
+
+  sign_out = () => {
+    this.props.sign_out();
+    localStorage.removeItem('token')
   }
 
   render() {
@@ -126,11 +134,13 @@ class Head extends Component {
           </div>
 
             <div className="form-group col-md-2 end">
-              <button
+              <Link
                 className="btn btn-outline-danger"
+                to="/login"
+                onClick={ this.sign_out }
                 type="button">
                 Выход
-              </button>
+              </Link>
             </div>
 
           </div>
@@ -143,9 +153,10 @@ class Head extends Component {
 const mapStateToProps = (state) => ({ state: state })
 const mapDispatchToProps = (dispatch) => {
   return {
-    getData: (url) => dispatch(getData(url)),
+    getData: (url, token) => dispatch(getData(url, token)),
     showNavbar: () => dispatch(showNavbar()),
-    getCustomers: (year) => dispatch(getCustomers(year)),
+    getCustomers: (year, token) => dispatch(getCustomers(year, token)),
+    sign_out: () => dispatch(sign_out()),
     changeFilter: (year, mounth, day, info) => dispatch(changeFilter(
       year,
       mounth,

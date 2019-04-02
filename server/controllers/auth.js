@@ -11,14 +11,14 @@ const signIn = (req, res) => {
     .exec()
     .then((user) => {
       if (!user) {
-        res.status(401).json({ message: 'User does not exist!' });
+        res.status(401).json({ token: null });
       }
       const isValid = bCrypt.compareSync(password, user.password);
       if (isValid) {
         const token = jwt.sign(user._id.toString(), secret);
         res.json({ token });
       } else {
-        res.status(401).json({ message: 'Invalid credentails!' });
+        res.status(401).json({ token: null });
       }
     })
     .catch((err) => res.status(500).json({ message: err.message }));

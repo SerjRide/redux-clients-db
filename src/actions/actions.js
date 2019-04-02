@@ -1,3 +1,10 @@
+const checkToken = (token) => {
+  const headers = new Headers();
+  headers.append("content-type", "application/json");
+  headers.append("Authorization", token);
+  return headers;
+};
+
 const showNavbar = () => ({ type: 'SHOW_NAVBAR' })
 const hideNavbar = () => ({ type: 'HIDE_NAVBAR' })
 const showModal = (id) => ({ type: 'SHOW_MODAL', id })
@@ -5,14 +12,22 @@ const hideModal = () => ({ type: 'HIDE_MODAL' })
 const reqOrdersDone = (orders) => ({ type: "ORDERS_FETCH_DATA_SUCCESS", orders })
 const reqCustomersDone = (customers) => ({ type: "CUSTOMERS_FETCH_DATA_SUCCESS", customers })
 const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text })
+const authorization = (token) => ({ type: 'AUTHORIZE', token })
+const sign_out = () => ({ type: 'SIGN_OUT' })
 const changeFilter = (year, mounth, day, info) => ({ type: "FILTER_CHANGE",
                                                   year, mounth, day, info })
 
-const getData = (request) => {
+const getData = (year, token) => {
+
   return (dispatch) => {
-    fetch('/orders/' + request)
+    fetch('/orders/' + year, {
+      method: 'GET',
+      headers: checkToken(token)
+    })
     .then((res) => {
-      if(!res.ok) throw new Error(res.statusText)
+      if (!res.ok) {
+        if (res.statusText !== 'Unauthorized') throw new Error(res.statusText)
+      }
       return res;
     })
     .then((res) => res.json())
@@ -20,12 +35,25 @@ const getData = (request) => {
   };
 };
 
-const setData = (body) => {
+// const controller = async (year, dispatch) => {
+//   const res = await fetch('/customers');
+//   const body = await res.json();
+//   await dispatch(reqCustomersDone(body))
+//   return body
+// }
+//
+// const getCustomers = (year) => {
+//   return (dispatch) => {
+//     controller(year, dispatch)
+//   };
+// }
+
+const setData = (body, token) => {
   return (dispatch) => {
     fetch('/order', {
       method: 'POST',
       body: JSON.stringify(body),
-      headers:{'content-type': 'application/json'}
+      headers: checkToken(token)
     })
     .then((res) => {
       if(!res.ok) throw new Error(res.statusText)
@@ -36,11 +64,11 @@ const setData = (body) => {
   };
 };
 
-const delData = (id) => {
+const delData = (id, token) => {
   return (dispatch) => {
     fetch('/order/' + id, {
       method: 'DELETE',
-      headers:{'content-type': 'application/json'}
+      headers: checkToken(token)
     })
     .then((res) => {
       if(!res.ok) throw new Error(res.statusText)
@@ -51,16 +79,19 @@ const delData = (id) => {
   };
 };
 
-const controller = async (year, dispatch) => {
-  const res = await fetch('/customers');
+const controller = async (dispatch, year, token) => {
+  const res = await fetch('/customers', {
+    method: 'GET',
+    headers: checkToken(token)
+  });
   const body = await res.json();
   await dispatch(reqCustomersDone(body))
   return body
 }
 
-const getCustomers = (year) => {
+const getCustomers = (year, token) => {
   return (dispatch) => {
-    controller(year, dispatch)
+    controller(dispatch, year, token)
   };
 }
 
@@ -79,7 +110,7 @@ const getCustomers = (year) => {
 //   };
 // }
 
-const editOrder = (id, body) => {
+const editOrder = (id, body, token) => {
   return (dispatch) => {
     fetch('/order/' + id, {
       method: 'PUT',
@@ -95,6 +126,30 @@ const editOrder = (id, body) => {
   };
 };
 
+const autorize = async (dispatch, log, pass) => {
+  const options = {
+    method: 'POST',
+    body: JSON.stringify({
+      login: log,
+      password: pass
+    }),
+    headers:{'content-type': 'application/json'}
+  }
+  const res = await fetch('/signin', options);
+  const body = await res.json();
+  await dispatch(authorization(body.token));
+  if (body.token !== null) {
+    localStorage.setItem('token', body.token);
+  }
+  return body.token
+}
+
+const getAutorize = (log, pass) => {
+  return (dispatch) => {
+    autorize(dispatch, log, pass)
+  };
+}
+
 export {
   showNavbar,
   hideNavbar,
@@ -106,5 +161,7 @@ export {
   showModal,
   hideModal,
   editOrder,
-  getCustomers
+  getCustomers,
+  sign_out,
+  getAutorize
 }

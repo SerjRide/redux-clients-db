@@ -22,20 +22,20 @@ mongoose.connect(`${prefix}/${name}`, { useNewUrlParser: true });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/orders', authMiddleware ,ORC.index);
-app.get('/orders/:year', ORC.getByYear);
-app.post('/order', ORC.create);
-app.post('/orders', ORC.createMany);
-app.post('/random-orders/gen?', ORC.createRandomDate);
-app.delete('/order/:id', ORC.delete);
-app.delete('/orders', ORC.deleteAll);
-app.put('/order/:id', ORC.update);
+app.get('/orders', authMiddleware, ORC.index);
+app.get('/orders/:year', authMiddleware, ORC.getByYear);
+app.post('/order', authMiddleware, ORC.create);
+app.post('/orders', authMiddleware, ORC.createMany);
+app.post('/random-orders/gen?', authMiddleware, ORC.createRandomDate);
+app.delete('/order/:id', authMiddleware, ORC.delete);
+app.delete('/orders', authMiddleware, ORC.deleteAll);
+app.put('/order/:id', authMiddleware, ORC.update);
 
-app.get('/customers', CC.index);
-app.post('/customer', CC.createOne);
-app.delete('/customers', CC.deleteAll);
+app.get('/customers', authMiddleware, CC.index);
+app.post('/customer', authMiddleware, CC.createOne);
+app.delete('/customers', authMiddleware, CC.deleteAll);
 
-app.put('/customers', (req, res) => {
+app.put('/customers', authMiddleware, (req, res) => {
   axios.get(`${url}/orders`).then((allCustomers) => {
     const customers = extracter(allCustomers);
     for (let i = 0; i < customers.length; i++) {

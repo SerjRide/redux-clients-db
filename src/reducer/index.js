@@ -5,6 +5,7 @@ import customers from './customers';
 import alert from './alert';
 import filter from './filter';
 import modal from './modal';
+import token from './token';
 
 const rootReducer = combineReducers({
   navbarPanel,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
   alert,
   filter,
   customers,
-  modal
+  modal,
+  token
 });
 
 export default rootReducer;
