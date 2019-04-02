@@ -134,7 +134,7 @@ class Head extends Component {
 
           </div>
 
-            <div className="form-group col-md-2 end">
+            <div className="form-group col-md-3 end">
               <span>{ localStorage.getItem('login') }</span>
               <Link
                 className="btn btn-outline-danger"
