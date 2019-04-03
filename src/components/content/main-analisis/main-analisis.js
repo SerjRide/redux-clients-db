@@ -12,7 +12,7 @@ import {
 
 import { connect } from 'react-redux';
 
-import { alertSaccess, delData, getCustomers } from '../../../actions';
+import { alertSaccess, getCustomers } from '../../../actions';
 
 import '../../../../node_modules/react-vis/dist/style.css';
 
@@ -20,16 +20,37 @@ class MainAnalisis extends Component {
 
   constructor(props) {
     super(props);
-    const { year } = this.props.state.filter
+    const { year, mounth, day } = this.props.state.filter
     const token = localStorage.getItem('token')
     this.props.getCustomers(year, token);
     this.state = {
-      crosshairValues: []
+      crosshairValues: [],
+      orders: this.getGlobal('orders', year, mounth, day),
+      customers: this.getGlobal('customers', year, mounth, day),
+      percent: this.getGlobal('percent', year, mounth, day),
+      price: this.getGlobal('price', year, mounth, day),
+      prev_filter: null
+    };
+  };
+
+  componentDidUpdate(pp, ps) {
+    const { filter } = this.props.state;
+    const { prev_filter } = this.state;
+    const { year, mounth, day } = filter;
+    if (filter !== prev_filter) {
+      this.setState({
+        orders: this.getGlobal('orders', year, mounth, day),
+        customers: this.getGlobal('customers', year, mounth, day),
+        percent: this.getGlobal('percent', year, mounth, day),
+        price: this.getGlobal('price', year, mounth, day),
+        prev_filter: filter
+      });
     };
   };
 
   getGlobal = (type, year, mounth = '', day = '') => {
     const { customers } = this.props.state
+    if (day === '0')  day = '';
     let res = 0;
     for (let i = 0; i < customers.length; i++) {
       for (let j = 0; j < customers[i].date.length; j++) {
@@ -69,7 +90,7 @@ class MainAnalisis extends Component {
   }
 
   render() {
-    const { year, mounth, day } = this.props.state.filter
+    const { year } = this.props.state.filter;
     let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:'
 
     const forSchedule = [
@@ -97,19 +118,19 @@ class MainAnalisis extends Component {
         </div>
         <div className="col-md-2">
           <h6>Всего заказов:</h6>
-          <h3>{ this.getGlobal('orders', year, mounth, day) }</h3>
+          <h3>{ this.state.orders }</h3>
         </div>
         <div className="col-md-2">
           <h6>{ changed_text }</h6>
-          <h3>{ this.getGlobal('customers', year, mounth, day) }</h3>
+          <h3>{ this.state.customers }</h3>
         </div>
         <div className="col-md-2">
           <h6>Прошлый период:</h6>
-          <h3>{ this.getGlobal('percent', year, mounth, day) }%</h3>
+          <h3>{ this.state.percent }%</h3>
         </div>
         <div className="col-md-2">
           <h6>Сумма:</h6>
-          <h3>{ this.getGlobal('price', year, mounth,  day) } ₽</h3>
+          <h3>{ this.state.price } ₽</h3>
         </div>
       </div>
     )
@@ -182,7 +203,6 @@ const mapStateToProps = (state) => ({ state: state });
 const mapDispatchToProps = (dispatch) => {
   return {
     alertSaccess: (text) => dispatch(alertSaccess(text)),
-    delData: (url) => dispatch(delData(url)),
     getCustomers: (year, token) => dispatch(getCustomers(year, token))
   }
 };
