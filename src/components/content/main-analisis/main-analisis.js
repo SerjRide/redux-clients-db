@@ -28,40 +28,48 @@ class MainAnalisis extends Component {
     };
   };
 
-  getGlobal = (type, year) => {
+  getGlobal = (type, year, mounth = '', day = '') => {
     const { customers } = this.props.state
     let res = 0;
     for (let i = 0; i < customers.length; i++) {
       for (let j = 0; j < customers[i].date.length; j++) {
-        const expression = customers[i].date[j].date.slice(-2)
-        let condition = (year === '0') ? year : expression;
+
+        const year_exp = customers[i].date[j].date.slice(-2);
+        const mounth_exp = customers[i].date[j].date.slice(3, 5);
+        const day_exp = customers[i].date[j].date.slice(0, 2);
+        let year_condition = (year === '0') ? year : year_exp;
+        let mounth_condition = (mounth === '') ? mounth : mounth_exp;
+        let day_condition = (day === '') ? ('0' + day).slice(-2) : day_exp;
 
         if (type === 'percent') {
-          const this_year = this.getGlobal('customers', year);
-          const all_year = this.getGlobal('customers', '0');
+          const this_year = this.getGlobal('customers', year, mounth, day);
+          const all_year = this.getGlobal('customers', '0', '', '');
           res = Math.round((this_year / all_year) * 100);
         }
 
-        if (condition === year) {
-          if (type === 'orders') res += customers[i].date.length;
-          if (type === 'price') res += customers[i].date[j].price;
-          if (type === 'customers') {
-            res += 1;
-            j = customers[i].date.length;
-          }
-        }
-
-        else {
-          if (type === 'customers') j = customers[i].date.length;
-        }
-
+        if (year_condition === year) {
+          if (mounth_condition === mounth) {
+            if (day_condition === ('0' + day).slice(-2)) {
+              if (type === 'orders') res += 1;
+              if (type === 'price') res += customers[i].date[j].price;
+              if (type === 'customers') {
+                if (year === '0' && mounth !== '') {
+                  return this.getGlobal('customers', '0', '');
+                } else {
+                  res += 1;
+                  j = customers[i].date.length;
+                }
+              }
+            } else if (type === 'customers') j = customers[i].date.length;
+          } else if (type === 'customers') j = customers[i].date.length;
+        } else if (type === 'customers') j = customers[i].date.length;
       }
     }
     return res;
   }
 
   render() {
-    const { year } = this.props.state.filter
+    const { year, mounth, day } = this.props.state.filter
     let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:'
 
     const forSchedule = [
@@ -89,19 +97,19 @@ class MainAnalisis extends Component {
         </div>
         <div className="col-md-2">
           <h6>Всего заказов:</h6>
-          <h3>{ this.getGlobal('orders', year) }</h3>
+          <h3>{ this.getGlobal('orders', year, mounth, day) }</h3>
         </div>
         <div className="col-md-2">
           <h6>{ changed_text }</h6>
-          <h3>{ this.getGlobal('customers', year) }</h3>
+          <h3>{ this.getGlobal('customers', year, mounth, day) }</h3>
         </div>
         <div className="col-md-2">
           <h6>Прошлый период:</h6>
-          <h3>{ this.getGlobal('percent', year) }%</h3>
+          <h3>{ this.getGlobal('percent', year, mounth, day) }%</h3>
         </div>
         <div className="col-md-2">
           <h6>Сумма:</h6>
-          <h3>{ this.getGlobal('price', year) } ₽</h3>
+          <h3>{ this.getGlobal('price', year, mounth,  day) } ₽</h3>
         </div>
       </div>
     )

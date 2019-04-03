@@ -141,6 +141,7 @@ class Customers extends Component {
       const date_filter = this.dateFilter()
       const newArr = this.addExtra(date_filter);
       const info_filter = this.infoFilter(newArr);
+      console.log(info_filter);
       this.sortCustomers(info_filter, col, method);
       items = info_filter.map((item, i) => {
         const condition = (item.true_amount - item.total_amount < 0 )
@@ -167,6 +168,19 @@ class Customers extends Component {
   render() {
     const items = this.renderRow();
     let type = 'down';
+
+    // const { customers } = this.props.state;
+    // let count = 0;
+    // if (customers !== []){
+    //   for (let i = 0; i < customers.length; i++) {
+    //     count += customers[i].date.length;
+    //     // for (let j = 0; j < customers[i].date.length; j++) {
+    //     // }
+    //   }
+    // }
+    //
+    // console.log(count);
+
     return (
       <div className="customers">
       <table className="table table-hover table-sm">
