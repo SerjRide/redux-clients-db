@@ -78,6 +78,7 @@ class MainAnalisis extends Component {
 
   render() {
     const { year } = this.props.state.filter
+    let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:'
 
     const forSchedule = [
       [
@@ -107,7 +108,7 @@ class MainAnalisis extends Component {
           <h3>{ this.getGlobal('orders', year) }</h3>
         </div>
         <div className="col-md-2">
-          <h6>Новых клиентов:</h6>
+          <h6>{ changed_text }</h6>
           <h3>{ this.getGlobal('customers', year) }</h3>
         </div>
         <div className="col-md-2">
