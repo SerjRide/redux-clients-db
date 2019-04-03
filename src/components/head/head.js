@@ -11,17 +11,23 @@ import {
 
 class Head extends Component {
 
+  comonentDidMount() {
+
+  }
+
   componentDidUpdate() {
+    const { pathname } = document.location;
     const { year, mounth, day } = this.props.state.filter;
     this.inputYear.value = year;
     this.inputMounth.value = mounth;
-    this.inputDay.value = day;
+    if (pathname === '/customers') this.inputDay.value = '';
+    else this.inputDay.value = day;
   }
 
   applyFilter = () => {
     const { value: year } = this.inputYear;
     const { value: mounth } = this.inputMounth;
-    const { value: day } = this.inputDay;
+    let { value: day } = this.inputDay;
     const { value: info } = this.inputInfo;
     const { pathname } = document.location;
     const token = localStorage.getItem('token');
@@ -50,8 +56,17 @@ class Head extends Component {
 
   render() {
     const { pathname } = document.location;
-    let extra = null;
-    if (pathname === '/customers') extra = <option value="0">Все года</option>;
+    let extra = null, disabled = null;
+    if (pathname === '/customers') {
+      extra = <option value="0">Все года</option>;
+      if (this.inputDay !== undefined) {
+        this.inputDay.disabled = true;
+      }
+    } else {
+      if (this.inputDay !== undefined) {
+        this.inputDay.disabled = false;
+      }
+    }
 
     return (
       <div className="head">
@@ -119,7 +134,7 @@ class Head extends Component {
                   onChange={ this.applyFilter }
                   min="0" max="31"
                   ref={ (e) => { this.inputDay = e} }
-                  className="form-control" />
+                  className="form-control"/>
               </div>
 
               <div className="form-group col-md-2 filter last">

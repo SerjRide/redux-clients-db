@@ -34,9 +34,9 @@ class Customers extends Component {
     return newArr;
   }
 
-  yearFilter = () => {
+  dateFilter = () => {
     const { customers } = this.props.state;
-    const { year } = this.props.state.filter;
+    const { year, mounth } = this.props.state.filter;
     if (year === '0') return customers;
     let newArr = []
     for (let i = 0; i < customers.length; i++) {
@@ -47,10 +47,14 @@ class Customers extends Component {
       for (let j = 0; j < customers[i].date.length; j++) {
         let date_item = {}
         if (customers[i].date[j].date.slice(-2) === year) {
-          date_item.date = customers[i].date[j].date;
-          date_item.price = customers[i].date[j].price;
-          date_item.passed = customers[i].date[j].passed;
-          obj.date.push(date_item);
+          const expression = customers[i].date[j].date.slice(3, 5)
+          let condition = (mounth === '') ? mounth : expression;
+          if(condition === mounth) {
+            date_item.date = customers[i].date[j].date;
+            date_item.price = customers[i].date[j].price;
+            date_item.passed = customers[i].date[j].passed;
+            obj.date.push(date_item);
+          }
         }
       }
       if (obj.date.length !== 0) newArr.push(obj);
@@ -134,8 +138,8 @@ class Customers extends Component {
     let items;
 
     if (length !== 0) {
-      const year_filter = this.yearFilter()
-      const newArr = this.addExtra(year_filter);
+      const date_filter = this.dateFilter()
+      const newArr = this.addExtra(date_filter);
       const info_filter = this.infoFilter(newArr);
       this.sortCustomers(info_filter, col, method);
       items = info_filter.map((item, i) => {
