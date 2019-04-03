@@ -32,46 +32,30 @@ class MainAnalisis extends Component {
     const { customers } = this.props.state
     let res = 0;
     for (let i = 0; i < customers.length; i++) {
+      for (let j = 0; j < customers[i].date.length; j++) {
+        const expression = customers[i].date[j].date.slice(-2)
+        let condition = (year === '0') ? year : expression;
 
-      switch (type) {
-        case 'orders':
-          for (let j = 0; j < customers[i].date.length; j++) {
-            const expression = customers[i].date[j].date.slice(-2)
-            let condition = (year === '0') ? year : expression;
-            if (condition === year) {
-              res += customers[i].date.length
-            }
-          }
-          break;
-        case 'price':
-          for (let j = 0; j < customers[i].date.length; j++) {
-            const expression = customers[i].date[j].date.slice(-2)
-            let condition = (year === '0') ? year : expression;
-            if (condition === year) {
-              res += customers[i].date[j].price
-            }
-          }
-          break;
-        case 'customers' :
-          for (let j = 0; j < customers[i].date.length; j++) {
-            const expression = customers[i].date[j].date.slice(-2)
-            let condition = (year === '0') ? year : expression;
-            if (condition !== year) j = customers[i].date.length;
-            else {
-              res += 1;
-              j = customers[i].date.length;
-            }
-          }
-          break;
-        case 'percent' :
+        if (type === 'percent') {
           const this_year = this.getGlobal('customers', year);
           const all_year = this.getGlobal('customers', '0');
           res = Math.round((this_year / all_year) * 100);
-          break;
-        default :
-          res = null;
-      }
+        }
 
+        if (condition === year) {
+          if (type === 'orders') res += customers[i].date.length;
+          if (type === 'price') res += customers[i].date[j].price;
+          if (type === 'customers') {
+            res += 1;
+            j = customers[i].date.length;
+          }
+        }
+
+        else {
+          if (type === 'customers') j = customers[i].date.length;
+        }
+
+      }
     }
     return res;
   }
