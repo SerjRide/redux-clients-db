@@ -28,22 +28,58 @@ class MainAnalisis extends Component {
     };
   };
 
-  getGlobal = (type) => {
+  getGlobal = (type, year) => {
     const { customers } = this.props.state
     let res = 0;
     for (let i = 0; i < customers.length; i++) {
-      res += (type === 'orders') ? customers[i].date.length : null
-      if (type === 'price') for (let j = 0; j < customers[i].date.length; j++) {
-        res += customers[i].date[j].price
+
+      switch (type) {
+        case 'orders':
+          for (let j = 0; j < customers[i].date.length; j++) {
+            const expression = customers[i].date[j].date.slice(-2)
+            let condition = (year === '0') ? year : expression;
+            if (condition === year) {
+              res += customers[i].date.length
+            }
+          }
+          break;
+        case 'price':
+          for (let j = 0; j < customers[i].date.length; j++) {
+            const expression = customers[i].date[j].date.slice(-2)
+            let condition = (year === '0') ? year : expression;
+            if (condition === year) {
+              res += customers[i].date[j].price
+            }
+          }
+          break;
+        case 'customers' :
+          for (let j = 0; j < customers[i].date.length; j++) {
+            const expression = customers[i].date[j].date.slice(-2)
+            let condition = (year === '0') ? year : expression;
+            if (condition !== year) j = customers[i].date.length;
+            else {
+              res += 1;
+              j = customers[i].date.length;
+            }
+          }
+          break;
+        case 'percent' :
+          const this_year = this.getGlobal('customers', year);
+          const all_year = this.getGlobal('customers', '0');
+          res = Math.round((this_year / all_year) * 100);
+          break;
+        default :
+          res = null;
       }
-      if (type === 'customers') res = customers.length;
+
     }
     return res;
   }
 
   render() {
+    const { year } = this.props.state.filter
 
-    const DATA = [
+    const forSchedule = [
       [
         {x: 1, y: 10},
         {x: 2, y: 7},
@@ -51,7 +87,7 @@ class MainAnalisis extends Component {
       ]
     ];
 
-    const myData = [
+    const forDiagram = [
       {angle: 1, radius: 10},
       {angle: 2, label: 'Super Custom label', subLabel: 'With annotation', radius: 20},
       {angle: 5, radius: 5, label: 'Alt Label'},
@@ -68,19 +104,19 @@ class MainAnalisis extends Component {
         </div>
         <div className="col-md-2">
           <h6>Всего заказов:</h6>
-          <h3>{ this.getGlobal('orders') }</h3>
+          <h3>{ this.getGlobal('orders', year) }</h3>
         </div>
         <div className="col-md-2">
           <h6>Новых клиентов:</h6>
-          <h3>{ this.getGlobal('customers') }</h3>
+          <h3>{ this.getGlobal('customers', year) }</h3>
         </div>
         <div className="col-md-2">
-          <h6>Прошлый год:</h6>
-          <h3>100%</h3>
+          <h6>Прошлый период:</h6>
+          <h3>{ this.getGlobal('percent', year) }%</h3>
         </div>
         <div className="col-md-2">
           <h6>Сумма:</h6>
-          <h3>{ this.getGlobal('price') } ₽</h3>
+          <h3>{ this.getGlobal('price', year) } ₽</h3>
         </div>
       </div>
     )
@@ -94,10 +130,10 @@ class MainAnalisis extends Component {
           <HorizontalGridLines />
           <XAxis />
           <YAxis />
-          <LineSeries data = {DATA[0]}
+          <LineSeries data = {forSchedule[0]}
             onNearestX = {(value, {index} ) =>
-              this.setState( {crosshairValues: DATA.map(d => d[index])} )}/>
-          <LineSeries data = {DATA[1]}/>
+              this.setState( {crosshairValues: forSchedule.map(d => d[index])} )}/>
+          <LineSeries data = {forSchedule[1]}/>
           <Crosshair values={ this.state.crosshairValues }/>
         </XYPlot>
         </div>
@@ -108,7 +144,7 @@ class MainAnalisis extends Component {
       <div>
         <h6>Статистика</h6>
         <div>
-          <RadialChart data={myData} height={300} width={490} />
+          <RadialChart data={forDiagram} height={300} width={490} />
         </div>
       </div>
     )

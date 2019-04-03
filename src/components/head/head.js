@@ -56,17 +56,20 @@ class Head extends Component {
 
   render() {
     const { pathname } = document.location;
-    let extra = null, disabled = null;
-    if (pathname === '/customers') {
+    let extra = null;
+    if (pathname === '/customers' || pathname === '/main-analisis') {
       extra = <option value="0">Все года</option>;
-      if (this.inputDay !== undefined) {
-        this.inputDay.disabled = true;
-      }
-    } else {
       if (this.inputDay !== undefined) {
         this.inputDay.disabled = false;
       }
     }
+    if (pathname === '/customers') {
+      if (this.inputDay !== undefined) {
+        this.inputDay.disabled = true;
+      }
+    }
+
+
 
     return (
       <div className="head">
