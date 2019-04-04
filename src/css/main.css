@@ -214,6 +214,14 @@ html {
 .main-analisis .card {
   margin-bottom: 20px; }
 
+.main-analisis .schedule select {
+  border: solid 0px #fff;
+  color: #555;
+  width: auto; }
+
+.main-analisis .schedule select:focus {
+  outline: solid 0px #fff; }
+
 .edit-order {
   position: absolute;
   display: flex;

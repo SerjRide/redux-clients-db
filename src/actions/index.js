@@ -13,7 +13,7 @@ import {
   getCustomers,
   sign_out,
   getAutorize,
-  mainAnalysis
+  mainAnalysis,
 
 
 } from './actions';
@@ -33,6 +33,6 @@ export {
   getCustomers,
   sign_out,
   getAutorize,
-  mainAnalysis
+  mainAnalysis,
 
 }

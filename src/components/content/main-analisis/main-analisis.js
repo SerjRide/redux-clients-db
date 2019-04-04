@@ -31,7 +31,8 @@ class MainAnalisis extends Component {
       price: this.getGlobal('price', year, mounth, day),
       prev_filter: null,
       prev_main_analysis: -1,
-      forSchedule: []
+      forSchedule: [],
+      schedule: 'orders'
     };
   };
 
@@ -93,24 +94,25 @@ class MainAnalisis extends Component {
     return res;
   }
 
-  getSchedule = () => {
-    const { customers } = this.props.state
+  getSchedule = (schedule = this.selectSchedule.value) => {
+    const { year } = this.props.state.filter;
     let arr = [];
     arr[0] = [];
-    for (let i = 0; i < 12; i++) {
-      arr[0][i] = {x: i + 1, y: Math.floor(Math.random()*100)};
+    for (let i = 0; i < 11; i++) {
+      arr[0][i] = {x: i + 1, y: this.getGlobal(schedule, year, ('0' + (i + 1)).slice(-2), '')};
     }
     return arr;
   }
 
+  changeSchedule = () => {
+    const { value } = this.selectSchedule;
+    setTimeout(this.setState({ forSchedule : this.getSchedule(value) }));
+  }
+
   render() {
     const { year } = this.props.state.filter;
-    let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:'
-
-    // по x будет время
-    // по y прибыль
-
     const { forSchedule } = this.state
+    let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:'
 
     const forDiagram = [
       {angle: 1, radius: 10},
@@ -124,7 +126,7 @@ class MainAnalisis extends Component {
       <div className="row">
         <div className="col-md-3">
           <h6>Статистика</h6>
-          <p>Результаты анализа представлены на установленный в фильтре период времени</p>
+          <p>Результаты анализа по установленному в фильтре периоду времени</p>
         </div>
         <div className="col-md-2">
           <h6>Всего заказов:</h6>
@@ -146,16 +148,23 @@ class MainAnalisis extends Component {
     )
 
     const schedule = (
-      <div>
-        <h6>Статистика</h6>
+      <div className="schedule">
+      <span>Кривая</span>
+        <select
+          ref={ (e) => {this.selectSchedule = e } }
+          onChange={ this.changeSchedule }>
+          <option value="orders">Количества заказов от периода</option>
+          <option value="customers">Новых клиентов от периода</option>
+          <option value="price">Суммы от периода</option>
+        </select>
         <div>
         <XYPlot height={300} width={650}>
           <VerticalGridLines />
           <HorizontalGridLines />
           <XAxis />
           <YAxis />
-          <LineSeries data = {forSchedule[0]}
-            onNearestX = {(value, {index} ) =>
+          <LineSeries data = { forSchedule[0] }
+            onNearestX = { (value, {index} ) =>
               this.setState( {crosshairValues: forSchedule.map(d => d[index])} )}/>
           <LineSeries data = {forSchedule[1]}/>
           <Crosshair values={ this.state.crosshairValues }/>

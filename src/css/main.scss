@@ -256,6 +256,16 @@ html {
   .card {
     margin-bottom: 20px;
   }
+  .schedule {
+    select {
+      border: solid 0px #fff;
+      color: #555;
+      width: auto;
+    }
+    select:focus {
+      outline: solid 0px #fff;
+    }
+  }
 }
 
 .edit-order {
