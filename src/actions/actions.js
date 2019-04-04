@@ -5,15 +5,16 @@ const checkToken = (token) => {
   return headers;
 };
 
-const showNavbar = () => ({ type: 'SHOW_NAVBAR' })
-const hideNavbar = () => ({ type: 'HIDE_NAVBAR' })
-const showModal = (id) => ({ type: 'SHOW_MODAL', id })
-const hideModal = () => ({ type: 'HIDE_MODAL' })
-const reqOrdersDone = (orders) => ({ type: "ORDERS_FETCH_DATA_SUCCESS", orders })
-const reqCustomersDone = (customers) => ({ type: "CUSTOMERS_FETCH_DATA_SUCCESS", customers })
-const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text })
-const authorization = (token, rights) => ({ type: 'AUTHORIZE', token, rights })
-const sign_out = () => ({ type: 'SIGN_OUT' })
+const showNavbar = () => ({ type: 'SHOW_NAVBAR' });
+const hideNavbar = () => ({ type: 'HIDE_NAVBAR' });
+const showModal = (id) => ({ type: 'SHOW_MODAL', id });
+const hideModal = () => ({ type: 'HIDE_MODAL' });
+const reqOrdersDone = (orders) => ({ type: "ORDERS_FETCH_DATA_SUCCESS", orders });
+const reqCustomersDone = (customers) => ({ type: "CUSTOMERS_FETCH_DATA_SUCCESS", customers });
+const alertSaccess = (text) => ({ type: 'ALERT_SUCCESS', text: text });
+const authorization = (token, rights) => ({ type: 'AUTHORIZE', token, rights });
+const sign_out = () => ({ type: 'SIGN_OUT' });
+const mainAnalysis = () => ({ type: 'MAIN_ANALYSIS' });
 const changeFilter = (year, mounth, day, info) => ({ type: "FILTER_CHANGE",
                                                   year, mounth, day, info })
 
@@ -164,5 +165,6 @@ export {
   editOrder,
   getCustomers,
   sign_out,
-  getAutorize
+  getAutorize,
+  mainAnalysis
 }

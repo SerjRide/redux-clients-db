@@ -7,7 +7,8 @@ import {
   showNavbar,
   changeFilter,
   getCustomers,
-  sign_out } from '../../actions';
+  sign_out,
+  mainAnalysis } from '../../actions';
 
 class Head extends Component {
 
@@ -54,22 +55,34 @@ class Head extends Component {
     localStorage.removeItem('login');
   }
 
+  calcMainAnalysis = () => {
+    this.props.mainAnalysis();
+  }
+
   render() {
     const { pathname } = document.location;
-    let extra = null;
+    let extra = null, filter_action, filter_button;
+
     if (pathname === '/customers' || pathname === '/main-analisis') {
       extra = <option value="0">Все года</option>;
       if (this.inputDay !== undefined) {
         this.inputDay.disabled = false;
       }
     }
+
     if (pathname === '/customers') {
       if (this.inputDay !== undefined) {
         this.inputDay.disabled = true;
       }
     }
 
-
+    if (pathname === '/main-analisis') {
+      filter_action  = this.calcMainAnalysis;
+      filter_button = 'Рассчитать';
+    } else {
+      filter_action  = this.removeFilter;
+      filter_button = 'Сброс';
+    }
 
     return (
       <div className="head">
@@ -143,9 +156,9 @@ class Head extends Component {
               <div className="form-group col-md-2 filter last">
               <button
                 className="btn btn-outline-primary"
-                onClick={ this.removeFilter }
+                onClick={ filter_action }
                 type="button">
-                Сброс
+                { filter_button }
               </button>
               </div>
 
@@ -176,6 +189,7 @@ const mapDispatchToProps = (dispatch) => {
     showNavbar: () => dispatch(showNavbar()),
     getCustomers: (year, token) => dispatch(getCustomers(year, token)),
     sign_out: () => dispatch(sign_out()),
+    mainAnalysis: () => dispatch(mainAnalysis()),
     changeFilter: (year, mounth, day, info) => dispatch(changeFilter(
       year,
       mounth,

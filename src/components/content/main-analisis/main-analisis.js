@@ -29,23 +29,27 @@ class MainAnalisis extends Component {
       customers: this.getGlobal('customers', year, mounth, day),
       percent: this.getGlobal('percent', year, mounth, day),
       price: this.getGlobal('price', year, mounth, day),
-      prev_filter: null
+      prev_filter: null,
+      prev_main_analysis: -1,
+      forSchedule: []
     };
   };
 
   componentDidUpdate(pp, ps) {
-    const { filter } = this.props.state;
-    const { prev_filter } = this.state;
-    const { year, mounth, day } = filter;
-    if (filter !== prev_filter) {
+    const { mainAnalysis } = this.props.state;
+    const { prev_main_analysis } = this.state;
+    const { year, mounth, day } = this.props.state.filter;
+
+    if (mainAnalysis !== prev_main_analysis) {
       this.setState({
         orders: this.getGlobal('orders', year, mounth, day),
         customers: this.getGlobal('customers', year, mounth, day),
         percent: this.getGlobal('percent', year, mounth, day),
         price: this.getGlobal('price', year, mounth, day),
-        prev_filter: filter
+        prev_main_analysis: mainAnalysis,
+        forSchedule : this.getSchedule()
       });
-    };
+    }
   };
 
   getGlobal = (type, year, mounth = '', day = '') => {
@@ -89,17 +93,24 @@ class MainAnalisis extends Component {
     return res;
   }
 
+  getSchedule = () => {
+    const { customers } = this.props.state
+    let arr = [];
+    arr[0] = [];
+    for (let i = 0; i < 12; i++) {
+      arr[0][i] = {x: i + 1, y: Math.floor(Math.random()*100)};
+    }
+    return arr;
+  }
+
   render() {
     const { year } = this.props.state.filter;
     let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:'
 
-    const forSchedule = [
-      [
-        {x: 1, y: 10},
-        {x: 2, y: 7},
-        {x: 3, y: 15}
-      ]
-    ];
+    // по x будет время
+    // по y прибыль
+
+    const { forSchedule } = this.state
 
     const forDiagram = [
       {angle: 1, radius: 10},
@@ -113,8 +124,7 @@ class MainAnalisis extends Component {
       <div className="row">
         <div className="col-md-3">
           <h6>Статистика</h6>
-          <p>Welcom to the SerjRide dashboard</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+          <p>Результаты анализа представлены на установленный в фильтре период времени</p>
         </div>
         <div className="col-md-2">
           <h6>Всего заказов:</h6>

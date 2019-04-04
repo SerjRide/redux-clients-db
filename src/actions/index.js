@@ -12,7 +12,8 @@ import {
   editOrder,
   getCustomers,
   sign_out,
-  getAutorize
+  getAutorize,
+  mainAnalysis
 
 
 } from './actions';
@@ -31,6 +32,7 @@ export {
   editOrder,
   getCustomers,
   sign_out,
-  getAutorize
+  getAutorize,
+  mainAnalysis
 
 }
