@@ -95,11 +95,31 @@ class MainAnalisis extends Component {
   }
 
   getSchedule = (schedule = this.selectSchedule.value) => {
-    const { year } = this.props.state.filter;
+    let { year, mounth } = this.props.state.filter;
+    let periods = 11;
+    if (year === '0') periods = 4;
+    if (year !== '0' && mounth !== '') periods = 30;
     let arr = [];
     arr[0] = [];
-    for (let i = 0; i < 11; i++) {
-      arr[0][i] = {x: i + 1, y: this.getGlobal(schedule, year, ('0' + (i + 1)).slice(-2), '')};
+    for (let i = 0; i < periods; i++) {
+      let year_condition = year;
+      let mounth_condition = ('0' + (i + 1)).slice(-2);
+      let day_condition = '';
+
+      if (year === '0' && schedule === 'customers') {
+        mounth_condition = '';
+        year_condition = i + 16 + '';
+      }
+
+      if (mounth !== '') {
+        mounth_condition = mounth;
+        day_condition = ('0' + (i + 1)).slice(-2);
+      }
+
+      arr[0][i] = {
+        x: i + 1,
+        y: this.getGlobal(schedule, year_condition, mounth_condition, day_condition)
+      };
     }
     return arr;
   }
