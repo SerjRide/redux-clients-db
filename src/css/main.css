@@ -83,10 +83,11 @@ html {
     border-left: solid 5px #D2DFFF; }
   .left-navbar hr {
     border: solid 0.5px #ECECEC;
-    width: 100%; }
+    width: 100%;
+    margin-top: 3px; }
   .left-navbar .navbar-head {
     display: flex;
-    padding-top: 20px;
+    padding-top: 11px;
     margin-bottom: 0px; }
     .left-navbar .navbar-head .el {
       padding-left: 10px; }

@@ -1,11 +1,23 @@
-import express from 'express';
-import Order from '../models/order';
 
-const app = express();
+renderRow = () => {
+  const { col, method } = this.state;
+  const { orders } = this.props.state;
+  let items;
 
-app.get('/orders', (req, res) => {
-  Order.find().then((err, orders) => {
-    if (err) res.send(err);
-    res.json(orders);
-  })
-});
+  items = orders.map((item) => {
+    return (
+      <tr key={ item._id }
+        onDoubleClick= { () => this.props.showModal(item._id) }>
+        <th>{ item.namber }</th>
+        <td>{ item.customer }</td>
+        <td>{ item.date }</td>
+        <td>{ item.name }</td>
+        <td>{ item.contacts }</td>
+        <td>{ getProductsNames(item) }</td>
+        <td>{ item.price }</td>
+      </tr>
+    )
+  });
+
+  return items;
+}

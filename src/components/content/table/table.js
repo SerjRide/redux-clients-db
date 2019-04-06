@@ -104,7 +104,6 @@ class Table extends Component {
       const day_filter = this.dayFilter(mounth_filter);
       const info_filter = this.infoFilter(day_filter);
       this.sortOrders(info_filter, col, method);
-      console.log(info_filter);
       items = info_filter.map((item, i) => {
         let passed = item.passed === true ? 'passed' : 'not-passed'
         return (
@@ -128,6 +127,7 @@ class Table extends Component {
   render() {
     const items = this.renderRow();
     let type = 'down';
+
     return (
       <div className="table">
       <table className="table table-hover table-sm">
