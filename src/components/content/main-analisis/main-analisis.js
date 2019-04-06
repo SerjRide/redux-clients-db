@@ -8,13 +8,19 @@ import {
   XAxis,
   YAxis,
   Crosshair,
-  RadialChart } from 'react-vis';
+  RadialChart,
+  VerticalBarSeries } from 'react-vis';
 
 import { connect } from 'react-redux';
-
 import { alertSaccess, getCustomers } from '../../../actions';
-
 import '../../../../node_modules/react-vis/dist/style.css';
+
+const mounths_names = ['Янв.','Фев.','Март',
+                      'Апр.','Май','Июнь',
+                      'Июль','Авг.','Сен.',
+                      'Окт.','Ноя.','Дек.'];
+
+
 
 class MainAnalisis extends Component {
 
@@ -32,7 +38,8 @@ class MainAnalisis extends Component {
       prev_filter: null,
       prev_main_analysis: -1,
       forSchedule: [],
-      schedule: 'orders'
+      schedule: 'orders',
+      local_filter: { year: '0', mounth: '' }
     };
   };
 
@@ -48,10 +55,20 @@ class MainAnalisis extends Component {
         percent: this.getGlobal('percent', year, mounth, day),
         price: this.getGlobal('price', year, mounth, day),
         prev_main_analysis: mainAnalysis,
-        forSchedule : this.getSchedule()
+        forSchedule : this.getSchedule(),
+        local_filter: { year, mounth }
       });
     }
   };
+
+  days_names = (pos) => {
+    const { year, mounth, day } = this.props.state.filter
+    let arr = [];
+    for (let i = 0; i < 30; i++) {
+      arr[i] = `${('0' + (i + 1)).slice(-2)}.${mounth}.${year}`
+    }
+    return arr[pos];
+  }
 
   getGlobal = (type, year, mounth = '', day = '') => {
     const { customers } = this.props.state
@@ -104,20 +121,27 @@ class MainAnalisis extends Component {
     for (let i = 0; i < periods; i++) {
       let year_condition = year;
       let mounth_condition = ('0' + (i + 1)).slice(-2);
-      let day_condition = '';
+      let day_condition = '', x_name = mounths_names[i];
+
+      if (year === '0') {
+        x_name = '20' + (i + 16);
+      }
 
       if (year === '0' && schedule === 'customers') {
         mounth_condition = '';
         year_condition = i + 16 + '';
       }
 
-      if (mounth !== '') {
+      if (mounth !== '' && year !== '0') {
+        x_name = this.days_names(i);
         mounth_condition = mounth;
         day_condition = ('0' + (i + 1)).slice(-2);
       }
 
+      console.log(x_name);
+
       arr[0][i] = {
-        x: i + 1,
+        x: x_name,
         y: this.getGlobal(schedule, year_condition, mounth_condition, day_condition)
       };
     }
@@ -126,11 +150,12 @@ class MainAnalisis extends Component {
 
   changeSchedule = () => {
     const { value } = this.selectSchedule;
-    setTimeout(this.setState({ forSchedule : this.getSchedule(value) }));
+    this.setState({ forSchedule : this.getSchedule(value) });
   }
 
   render() {
-    const { year } = this.props.state.filter;
+    const { year, mounth } = this.props.state.filter;
+    const { year: local_year, mounth: local_mounth } = this.state.local_filter;
     const { forSchedule } = this.state
     let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:'
 
@@ -178,15 +203,18 @@ class MainAnalisis extends Component {
           <option value="price">Суммы от периода</option>
         </select>
         <div>
-        <XYPlot height={300} width={650}>
+        <XYPlot xType="ordinal" height={300} width={650}>
           <VerticalGridLines />
           <HorizontalGridLines />
-          <XAxis />
+          <XAxis tickLabelAngle={
+            (local_year !== '0' && local_mounth !== '') ? -45 : 0
+          }/>
           <YAxis />
-          <LineSeries data = { forSchedule[0] }
+          <VerticalBarSeries data = { forSchedule[0] }
             onNearestX = { (value, {index} ) =>
-              this.setState( {crosshairValues: forSchedule.map(d => d[index])} )}/>
-          <LineSeries data = {forSchedule[1]}/>
+              this.setState({
+                crosshairValues: forSchedule.map(d => d[index])
+              })}/>
           <Crosshair values={ this.state.crosshairValues }/>
         </XYPlot>
         </div>
