@@ -1,26 +1,21 @@
 import React, { Component } from 'react';
 
 import {
-  XYPlot,
-  LineSeries,
-  VerticalGridLines,
-  HorizontalGridLines,
-  XAxis,
-  YAxis,
-  Crosshair,
-  RadialChart,
-  VerticalBarSeries } from 'react-vis';
+  XYPlot, VerticalGridLines,
+  HorizontalGridLines, XAxis, YAxis,
+  Crosshair, RadialChart, VerticalBarSeries
+} from 'react-vis';
 
 import { connect } from 'react-redux';
 import { alertSaccess, getCustomers } from '../../../actions';
 import '../../../../node_modules/react-vis/dist/style.css';
 
-const mounths_names = ['Янв.','Фев.','Март',
-                      'Апр.','Май','Июнь',
-                      'Июль','Авг.','Сен.',
-                      'Окт.','Ноя.','Дек.'];
-
-
+const mounths_names = [
+  'Янв.','Фев.','Март',
+  'Апр.','Май','Июнь',
+  'Июль','Авг.','Сен.',
+  'Окт.','Ноя.','Дек.'
+];
 
 class MainAnalisis extends Component {
 
@@ -61,10 +56,63 @@ class MainAnalisis extends Component {
     }
   };
 
-  days_names = (pos) => {
-    const { year, mounth, day } = this.props.state.filter
+  buildRFM = () => {
+    const { customers } = this.props.state;
     let arr = [];
-    for (let i = 0; i < 30; i++) {
+
+    // R - последняя активность
+    // F - кол-во заказов
+    // M - Общая выручка от клиента
+
+    customers.map((item, i) => {
+      arr.push([{}]);
+      arr[i].customer = item.customer;
+      arr[i].M = item.true_amount;
+      arr[i].date = [];
+      for (let j = 0, length = item.date.length; j < length; j++) {
+        arr[i].date[j] = item.date[j].date;
+      }
+      return item.date
+    });
+
+    const daySort = (a, b) => {
+      let a_day = a.slice(0, 2);
+      let b_day = b.slice(0, 2);
+      if (a_day > b_day) return 1;
+      if (a_day < b_day) return -1;
+    }
+
+    const mounthSort = (a, b) => {
+      let a_mounth = a.slice(3, 5);
+      let b_mounth = b.slice(3, 5);
+      if (a_mounth > b_mounth) return 1;
+      if (a_mounth < b_mounth) return -1;
+    }
+
+    const yearSort = (a, b) => {
+      let a_year = a.slice(-2);
+      let b_year = b.slice(-2);
+      if (a_year > b_year) return 1;
+      if (a_year < b_year) return -1;
+    }
+
+    if (arr.length !== 0) {
+      for (let i = 0; i < arr[0].date.length; i++) {
+        arr[i].date.sort(daySort).sort(mounthSort).sort(yearSort)
+      }
+      for (let i = 0; i < arr.length; i++) {
+        arr[i].R = arr[i].date[arr[i].date.length - 1];
+        arr[i].F = arr[i].date.length;
+        delete arr[i].date;
+      }
+    }
+    return arr;
+  }
+
+  days_names = (pos) => {
+    const { year, mounth } = this.props.state.filter
+    let arr = [];
+    for (let i = 0; i <= 31; i++) {
       arr[i] = `${('0' + (i + 1)).slice(-2)}.${mounth}.${year}`
     }
     return arr[pos];
@@ -113,9 +161,9 @@ class MainAnalisis extends Component {
 
   getSchedule = (schedule = this.selectSchedule.value) => {
     let { year, mounth } = this.props.state.filter;
-    let periods = 11;
+    let periods = 12;
     if (year === '0') periods = 4;
-    if (year !== '0' && mounth !== '') periods = 30;
+    if (year !== '0' && mounth !== '') periods = 31;
     let arr = [];
     arr[0] = [];
     for (let i = 0; i < periods; i++) {
@@ -132,13 +180,16 @@ class MainAnalisis extends Component {
         year_condition = i + 16 + '';
       }
 
+      if (year === '0' && schedule === 'price') {
+        year_condition = i + 16 + '';
+        mounth_condition = '';
+      }
+
       if (mounth !== '' && year !== '0') {
         x_name = this.days_names(i);
         mounth_condition = mounth;
         day_condition = ('0' + (i + 1)).slice(-2);
       }
-
-      console.log(x_name);
 
       arr[0][i] = {
         x: x_name,
@@ -154,10 +205,12 @@ class MainAnalisis extends Component {
   }
 
   render() {
-    const { year, mounth } = this.props.state.filter;
+    const { year } = this.props.state.filter;
     const { year: local_year, mounth: local_mounth } = this.state.local_filter;
     const { forSchedule } = this.state
     let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:'
+
+    console.log(this.buildRFM());
 
     const forDiagram = [
       {angle: 1, radius: 10},
@@ -182,11 +235,11 @@ class MainAnalisis extends Component {
           <h3>{ this.state.customers }</h3>
         </div>
         <div className="col-md-2">
-          <h6>Прошлый период:</h6>
+          <h6>От прошлого периода:</h6>
           <h3>{ this.state.percent }%</h3>
         </div>
         <div className="col-md-2">
-          <h6>Сумма:</h6>
+          <h6>Выручка:</h6>
           <h3>{ this.state.price } ₽</h3>
         </div>
       </div>
@@ -194,13 +247,12 @@ class MainAnalisis extends Component {
 
     const schedule = (
       <div className="schedule">
-      <span>Кривая</span>
         <select
           ref={ (e) => {this.selectSchedule = e } }
           onChange={ this.changeSchedule }>
-          <option value="orders">Количества заказов от периода</option>
-          <option value="customers">Новых клиентов от периода</option>
-          <option value="price">Суммы от периода</option>
+          <option value="orders">Количесто заказов за период</option>
+          <option value="customers">Новых клиентов за период</option>
+          <option value="price">Выручки за период</option>
         </select>
         <div>
         <XYPlot xType="ordinal" height={300} width={650}>
@@ -210,16 +262,18 @@ class MainAnalisis extends Component {
             (local_year !== '0' && local_mounth !== '') ? -45 : 0
           }/>
           <YAxis />
-          <VerticalBarSeries data = { forSchedule[0] }
+          <VerticalBarSeries
+            data = { forSchedule[0] }
             onNearestX = { (value, {index} ) =>
               this.setState({
                 crosshairValues: forSchedule.map(d => d[index])
-              })}/>
+              })
+            }/>
           <Crosshair values={ this.state.crosshairValues }/>
         </XYPlot>
         </div>
       </div>
-    )
+    );
 
     const diagram = (
       <div>
@@ -228,7 +282,7 @@ class MainAnalisis extends Component {
           <RadialChart data={forDiagram} height={300} width={490} />
         </div>
       </div>
-    )
+    );
 
     return (
       <div className="main-analisis">

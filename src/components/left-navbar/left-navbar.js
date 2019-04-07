@@ -43,25 +43,20 @@ class LeftNavbar extends Component {
             База клиентов
           </Link>
           <Link className="nav-link"
-            to="/add-order"
-            onClick={ () => hideNavbar() }>
-            Добавить заказ
-          </Link>
-          <Link className="nav-link"
-            to="/del-order"
-            onClick={ () => hideNavbar() }>
-            Удалить заказ
+          onClick={ () => hideNavbar() }
+          to="/main-analisis">
+          Аналитика
           </Link>
           <hr />
           <Link className="nav-link"
-            onClick={ () => hideNavbar() }
-            to="/main-analisis">
-            Аналитика
+          to="/add-order"
+          onClick={ () => hideNavbar() }>
+          Добавить заказ
           </Link>
-          <Link className="nav-link disabled"
-            onClick={ () => hideNavbar() }
-            to="/">
-            Disabled
+          <Link className="nav-link"
+          to="/del-order"
+          onClick={ () => hideNavbar() }>
+          Удалить заказ
           </Link>
         </nav>
       </div>
