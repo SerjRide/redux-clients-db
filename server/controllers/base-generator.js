@@ -67,6 +67,28 @@ const addProducts = (arr, i, profit) => {
   return newArr;
 }
 
+const correctExtra = (arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].date.slice(-2) === '19') {
+      if (Number(arr[i].date.slice(3, 5)) > 3) {
+        const day = ('0' + (Math.floor(Math.random() * 31) + 1)).slice(-2);
+        const month = ('0' + (Math.floor(Math.random() * 3) + 1)).slice(-2);
+        const year = ('1' + (Math.floor(Math.random() * 2) + 6)).slice(-2);
+        const string = `${day}.${month}.${year}`
+        arr[i].date = string;
+      }
+    }
+    if (arr[i].date.slice(3, 5) === '02') {
+      if (Number(arr[i].date.slice(0, 3)) > 28) {
+        const day = ('0' + (Math.floor(Math.random() * 28) + 1)).slice(-2);
+        const string = `${day}.02.${arr[i].date.slice(-2)}`
+        arr[i].date = string;
+      }
+    }
+  }
+  return arr;
+}
+
 const baseGenerator = (year = 18, profit = 'low') => {
   const random = Math.floor(Math.random()*9)
   let date, namber, orders_count = 0;
@@ -79,8 +101,8 @@ const baseGenerator = (year = 18, profit = 'low') => {
     if (j === orders_count - 1) serving_size -= random;
     let newArr = [];
     for (let i = 0; i < serving_size; i++) {
-      const rndDay = ('0' + (Math.floor(Math.random() * 27) + 1)).slice(-2);
-      const rndMonth = ('0' + (Math.floor(Math.random() * 11) + 1)).slice(-2);
+      const rndDay = ('0' + (Math.floor(Math.random() * 31) + 1)).slice(-2);
+      const rndMonth = ('0' + (Math.floor(Math.random() * 12) + 1)).slice(-2);
       namber = year + '' + ((100000 + (i + counter) + '')).slice(2);
       date = `${rndDay}.${rndMonth}.${year}` ;
       newArr[i] = { namber, date }
@@ -93,7 +115,7 @@ const baseGenerator = (year = 18, profit = 'low') => {
       addManager(newArr, i);
     }
     counter += serving_size;
-    arrOfOrders[j] = newArr;
+    arrOfOrders[j] = correctExtra(newArr);
   }
   return arrOfOrders;
 }

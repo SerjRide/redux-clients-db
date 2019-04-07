@@ -51,7 +51,8 @@ class MainAnalisis extends Component {
         price: this.getGlobal('price', year, mounth, day),
         prev_main_analysis: mainAnalysis,
         forSchedule : this.getSchedule(),
-        local_filter: { year, mounth }
+        local_filter: { year, mounth },
+        RFM: this.buildRFM()
       });
     }
   };
@@ -101,7 +102,12 @@ class MainAnalisis extends Component {
         arr[i].date.sort(daySort).sort(mounthSort).sort(yearSort)
       }
       for (let i = 0; i < arr.length; i++) {
-        arr[i].R = arr[i].date[arr[i].date.length - 1];
+        const last_date = arr[i].date[arr[i].date.length - 1];
+        const day = last_date.slice(0,2);
+        const mounth = last_date.slice(3, 5);
+        const year = last_date.slice(-2);
+        arr[i].last_date = last_date;
+        arr[i].R = new Date() - new Date('20' + year, mounth, day).getTime();
         arr[i].F = arr[i].date.length;
         delete arr[i].date;
       }
@@ -142,7 +148,11 @@ class MainAnalisis extends Component {
           if (mounth_condition === mounth) {
             if (day_condition === ('0' + day).slice(-2)) {
               if (type === 'orders') res += 1;
-              if (type === 'price') res += customers[i].date[j].price;
+              if (type === 'price') {
+                if (customers[i].date[j].passed === true) {
+                  res += customers[i].date[j].price;
+                }
+              }
               if (type === 'customers') {
                 if (year === '0' && mounth !== '') {
                   return this.getGlobal('customers', '0', '');
@@ -210,7 +220,7 @@ class MainAnalisis extends Component {
     const { forSchedule } = this.state
     let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:'
 
-    console.log(this.buildRFM());
+    console.log(this.state.RFM);
 
     const forDiagram = [
       {angle: 1, radius: 10},
@@ -277,7 +287,7 @@ class MainAnalisis extends Component {
 
     const diagram = (
       <div>
-        <h6>Статистика</h6>
+        <h6>RFM-анализ</h6>
         <div>
           <RadialChart data={forDiagram} height={300} width={490} />
         </div>
