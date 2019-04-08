@@ -104,10 +104,11 @@ class MainAnalisis extends Component {
       for (let i = 0; i < arr.length; i++) {
         const last_date = arr[i].date[arr[i].date.length - 1];
         const day = last_date.slice(0,2);
-        const mounth = last_date.slice(3, 5);
+        const mounth = (Number(last_date.slice(4, 5)) - 1) + '';
         const year = last_date.slice(-2);
+        const timestamp_ago = new Date() - new Date('20' + year, mounth, day).getTime();
         arr[i].last_date = last_date;
-        arr[i].R = new Date() - new Date('20' + year, mounth, day).getTime();
+        arr[i].R = ((((timestamp_ago / 1000) / 60) / 60) / 24) | 0;
         arr[i].F = arr[i].date.length;
         delete arr[i].date;
       }
