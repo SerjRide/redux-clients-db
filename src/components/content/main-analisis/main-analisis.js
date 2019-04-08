@@ -124,6 +124,8 @@ class MainAnalisis extends Component {
       let day_condition = '', x_name = mounths_names[i];
 
       if (year === '0') {
+        year_condition = i + 16 + '';
+        mounth_condition = ''
         x_name = '20' + (i + 16);
       }
 
