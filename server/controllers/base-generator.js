@@ -72,9 +72,10 @@ const correctExtra = (arr) => {
     if (arr[i].date.slice(-2) === '19') {
       if (Number(arr[i].date.slice(3, 5)) > 3) {
         const day = ('0' + (Math.floor(Math.random() * 31) + 1)).slice(-2);
-        const month = ('0' + (Math.floor(Math.random() * 3) + 1)).slice(-2);
-        const year = ('1' + (Math.floor(Math.random() * 2) + 6)).slice(-2);
+        const month = ('0' + (Math.floor(Math.random() * 12) + 1)).slice(-2);
+        const year = ('1' + (Math.floor(Math.random() * 3) + 6)).slice(-2);
         const string = `${day}.${month}.${year}`
+        arr[i].namber = year + arr[i].namber.slice(-4);
         arr[i].date = string;
       }
     }
