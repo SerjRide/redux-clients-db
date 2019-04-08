@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 
 import {
-  XYPlot, VerticalGridLines,
+  XYPlot, VerticalGridLines, Hint,
   HorizontalGridLines, XAxis, YAxis,
   Crosshair, RadialChart, VerticalBarSeries
 } from 'react-vis';
 
 import { connect } from 'react-redux';
 import { alertSaccess, getCustomers } from '../../../actions';
+// import buildRFM from './build-RFM';
 import '../../../../node_modules/react-vis/dist/style.css';
 
 const mounths_names = [
@@ -52,69 +53,10 @@ class MainAnalisis extends Component {
         prev_main_analysis: mainAnalysis,
         forSchedule : this.getSchedule(),
         local_filter: { year, mounth },
-        RFM: this.buildRFM()
+        diagram_value: false
       });
     }
   };
-
-  buildRFM = () => {
-    const { customers } = this.props.state;
-    let arr = [];
-
-    // R - последняя активность
-    // F - кол-во заказов
-    // M - Общая выручка от клиента
-
-    customers.map((item, i) => {
-      arr.push([{}]);
-      arr[i].customer = item.customer;
-      arr[i].M = item.true_amount;
-      arr[i].date = [];
-      for (let j = 0, length = item.date.length; j < length; j++) {
-        arr[i].date[j] = item.date[j].date;
-      }
-      return item.date
-    });
-
-    const daySort = (a, b) => {
-      let a_day = a.slice(0, 2);
-      let b_day = b.slice(0, 2);
-      if (a_day > b_day) return 1;
-      if (a_day < b_day) return -1;
-    }
-
-    const mounthSort = (a, b) => {
-      let a_mounth = a.slice(3, 5);
-      let b_mounth = b.slice(3, 5);
-      if (a_mounth > b_mounth) return 1;
-      if (a_mounth < b_mounth) return -1;
-    }
-
-    const yearSort = (a, b) => {
-      let a_year = a.slice(-2);
-      let b_year = b.slice(-2);
-      if (a_year > b_year) return 1;
-      if (a_year < b_year) return -1;
-    }
-
-    if (arr.length !== 0) {
-      for (let i = 0; i < arr[0].date.length; i++) {
-        arr[i].date.sort(daySort).sort(mounthSort).sort(yearSort)
-      }
-      for (let i = 0; i < arr.length; i++) {
-        const last_date = arr[i].date[arr[i].date.length - 1];
-        const day = last_date.slice(0,2);
-        const mounth = (Number(last_date.slice(4, 5)) - 1) + '';
-        const year = last_date.slice(-2);
-        const timestamp_ago = new Date() - new Date('20' + year, mounth, day).getTime();
-        arr[i].last_date = last_date;
-        arr[i].R = ((((timestamp_ago / 1000) / 60) / 60) / 24) | 0;
-        arr[i].F = arr[i].date.length;
-        delete arr[i].date;
-      }
-    }
-    return arr;
-  }
 
   days_names = (pos) => {
     const { year, mounth } = this.props.state.filter
@@ -219,17 +161,8 @@ class MainAnalisis extends Component {
     const { year } = this.props.state.filter;
     const { year: local_year, mounth: local_mounth } = this.state.local_filter;
     const { forSchedule } = this.state
-    let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:'
+    let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:';
 
-    console.log(this.state.RFM);
-
-    const forDiagram = [
-      {angle: 1, radius: 10},
-      {angle: 2, label: 'Super Custom label', subLabel: 'With annotation', radius: 20},
-      {angle: 5, radius: 5, label: 'Alt Label'},
-      {angle: 3, radius: 14},
-      {angle: 5, radius: 12, subLabel: 'Sub Label only', className: 'custom-class'}
-    ];
 
     const content = (
       <div className="row">
@@ -286,11 +219,39 @@ class MainAnalisis extends Component {
       </div>
     );
 
+    const { diagram_value: value } = this.state
+    const forDiagram = [
+      {angle: 1, color: '#89DAC1', name: 'green', opacity: 0.2},
+      {angle: 2, color: '#F6D18A', name: 'yellow'},
+      {angle: 5, color: '#1E96BE', name: 'cyan'},
+      {angle: 3, color: '#DA70BF', name: 'magenta'},
+      {angle: 5, color: '#F6D18A', name: 'yellow again'}
+    ];
+
     const diagram = (
-      <div>
-        <h6>RFM-анализ</h6>
+      <div className="diagram">
+        <select
+          ref={ (e) => {this.selectDiagram = e } }
+          onChange={ this.changeDiagram }>
+          <option value="orders">Количесто заказов за период</option>
+          <option value="customers">Новых клиентов за период</option>
+          <option value="price">Выручки за период</option>
+        </select>
         <div>
-          <RadialChart data={forDiagram} height={300} width={490} />
+        <RadialChart
+      colorType={'literal'}
+      colorDomain={[0, 100]}
+      colorRange={[0, 10]}
+      margin={{top: 100}}
+      getLabel={d => d.name}
+      data={forDiagram}
+      labelsRadiusMultiplier={1.1}
+      labelsStyle={{fontSize: 16, fill: '#222'}}
+      showLabels
+      style={{stroke: '#fff', strokeWidth: 2}}
+      width={400}
+      height={300}
+    />
         </div>
       </div>
     );
