@@ -15,16 +15,6 @@ class Customers extends Component {
   addExtra = (obj) => {
     const newArr = obj;
     for (let i = 0; i < newArr.length; i++) {
-      newArr[i].total_amount = 0;
-      newArr[i].true_amount = 0;
-      for (let j = 0; j < obj[i].date.length; j++) {
-        newArr[i].total_amount += obj[i].date[j].price
-        if (obj[i].date[j].passed) {
-          newArr[i].true_amount += obj[i].date[j].price
-        }
-      }
-    }
-    for (let i = 0; i < newArr.length; i++) {
       const  TruA = newArr[i].true_amount,
              TotA = newArr[i].total_amount;
       newArr[i].count = newArr[i].date.length
@@ -41,8 +31,14 @@ class Customers extends Component {
     let newArr = []
     for (let i = 0; i < customers.length; i++) {
       let obj = {};
-      obj._id = customers[i]._id
+      obj._id = customers[i]._id;
+      obj.total_amount = customers[i].total_amount;
+      obj.true_amount = customers[i].true_amount;
+      obj.last_date = customers[i].last_date;
       obj.customer = customers[i].customer;
+      obj.day_ago = customers[i].day_ago;
+      obj.orders_count = customers[i].orders_count;
+      obj.RFM = customers[i].RFM;
       obj.date = [];
       for (let j = 0; j < customers[i].date.length; j++) {
         let date_item = {}
@@ -158,6 +154,7 @@ class Customers extends Component {
                 { `${item.deviation} ₽` }
             </td>
             <td>{ `${item.percent} %` }</td>
+            <td>{ `${item.RFM}` }</td>
           </tr>
         )
       });
@@ -168,18 +165,6 @@ class Customers extends Component {
   render() {
     const items = this.renderRow();
     let type = 'down';
-
-    // const { customers } = this.props.state;
-    // let count = 0;
-    // if (customers !== []){
-    //   for (let i = 0; i < customers.length; i++) {
-    //     count += customers[i].date.length;
-    //     // for (let j = 0; j < customers[i].date.length; j++) {
-    //     // }
-    //   }
-    // }
-    //
-    // console.log(count);
 
     return (
       <div className="customers">
@@ -210,6 +195,9 @@ class Customers extends Component {
             <th onClick={ (e) => this.changeSort(e) } scope="col"
               data-name="percent">
               % <i className={`fas fa-caret-${type}`}></i></th>
+            <th onClick={ (e) => this.changeSort(e) } scope="col"
+              data-name="RFM">
+              RFM <i className={`fas fa-caret-${type}`}></i></th>
           </tr>
         </thead>
         <tbody>{ items }</tbody>

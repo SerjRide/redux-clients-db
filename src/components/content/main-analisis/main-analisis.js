@@ -8,7 +8,6 @@ import {
 
 import { connect } from 'react-redux';
 import { alertSaccess, getCustomers } from '../../../actions';
-// import buildRFM from './build-RFM';
 import '../../../../node_modules/react-vis/dist/style.css';
 
 const mounths_names = [

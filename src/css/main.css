@@ -159,6 +159,8 @@ html {
       width: 5%; }
     .content .customers .sort-btn th[data-name=percent] {
       width: 5%; }
+    .content .customers .sort-btn th[data-name=RFM] {
+      width: 5%; }
 
 .add-order p {
   margin-bottom: 2px; }
