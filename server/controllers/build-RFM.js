@@ -6,9 +6,10 @@ const buildRFM = (customers) => {
   let arr = [];
 
   customers.map((item, i) => {
-    arr.push([{}]);
+    arr[i] = {};
     arr[i].customer = item.customer;
     arr[i].true_amount = item.true_amount;
+    arr[i].total_amount = item.total_amount;
     arr[i].date = [];
     for (let j = 0, length = item.date.length; j < length; j++) {
       arr[i].date[j] = item.date[j].date;
@@ -79,6 +80,7 @@ const buildRFM = (customers) => {
       arr[i].orders_count = orders_count;
       arr[i].RFM = '' + R(day_ago) + F(orders_count) + M(arr[i].true_amount);
       delete arr[i].date;
+      arr[i].date = customers[i].date;
     }
   }
   return arr;

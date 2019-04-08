@@ -1,3 +1,5 @@
+import buildRFM from './build-RFM'
+
 const findCountByCustomer = (arr, term) => {
   for (let i = 0; i < arr.length; i++) {
     const current_arr = arr[i].customer.toUpperCase();
@@ -44,8 +46,9 @@ const extracter = (res) => {
       });
     }
   }
-
-  return customers
+  // console.log(customers);
+  console.log(buildRFM(customers));
+  return buildRFM(customers);
 }
 
 export default extracter;

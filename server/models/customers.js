@@ -5,6 +5,10 @@ const CustomersSchema = new Schema({
   total_amount: Number,
   true_amount: Number,
   date: [],
+  last_date: String,
+  day_ago: Number,
+  orders_count: Number,
+  RFM: String
 });
 
 const Customers = mongoose.model('Customers', CustomersSchema);
