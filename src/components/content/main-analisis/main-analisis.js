@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import {
   XYPlot, VerticalGridLines, Sunburst,
-  HorizontalGridLines, XAxis, YAxis,
+  HorizontalGridLines, XAxis, YAxis, Hint,
   Crosshair, RadialChart, VerticalBarSeries
 } from 'react-vis';
 
@@ -33,9 +33,10 @@ class MainAnalisis extends Component {
       prev_filter: null,
       prev_main_analysis: -1,
       forSchedule: [],
+      forDiagram: [],
       schedule: 'orders',
       local_filter: { year: '0', mounth: '' },
-      hovering: false
+      value: false
     };
   };
 
@@ -52,6 +53,7 @@ class MainAnalisis extends Component {
         price: this.getGlobal('price', year, mounth, day),
         prev_main_analysis: mainAnalysis,
         forSchedule : this.getSchedule(),
+        forDiagram : this.getDiagram(),
         local_filter: { year, mounth },
         diagram_value: false
       });
@@ -65,7 +67,7 @@ class MainAnalisis extends Component {
       arr[i] = `${('0' + (i + 1)).slice(-2)}.${mounth}.${year}`
     }
     return arr[pos];
-  }
+  };
 
   getGlobal = (type, year, mounth = '', day = '') => {
     const { customers } = this.props.state
@@ -112,7 +114,7 @@ class MainAnalisis extends Component {
       }
     }
     return res;
-  }
+  };
 
   getSchedule = (schedule = this.selectSchedule.value) => {
     let { year, mounth } = this.props.state.filter;
@@ -154,17 +156,54 @@ class MainAnalisis extends Component {
       };
     }
     return arr;
-  }
+  };
+
+  getDiagram = (r = '0', f = '1', m = '0') => {
+    const {customers} = this.props.state;
+    const all_orders_count = this.getGlobal('orders', '0', '');
+    let arr = []
+    for (let i = 0; i < customers.length; i++) {
+      let r_condition = (customers[i].RFM).slice(0,1) === r;
+      if (r === '0') r_condition = (customers[i].RFM).slice(0,1) !== 0
+      let f_condition = (customers[i].RFM).slice(1,2) === f;
+      if (f === '0') f_condition = (customers[i].RFM).slice(1,2) !== 0
+      let m_condition = (customers[i].RFM).slice(2,3) === m;
+      if (m === '0') m_condition = (customers[i].RFM).slice(2,3) !== 0
+      if (r_condition) {
+        if (f_condition) {
+          if (m_condition) {
+            arr.push({
+              theta: customers[i].orders_count,
+              name: customers[i].customer,
+              RFM: customers[i].RFM,
+              percent: ((customers[i].orders_count / all_orders_count) * 100) | 0
+            });
+          }
+        }
+      }
+    };
+    this.selectDiagramR.value = r;
+    this.selectDiagramF.value = f;
+    this.selectDiagramM.value = m;
+    return arr;
+  };
 
   changeSchedule = () => {
     const { value } = this.selectSchedule;
     this.setState({ forSchedule : this.getSchedule(value) });
-  }
+  };
+
+  changeDiagram = () => {
+    const { value: R } = this.selectDiagramR;
+    const { value: F } = this.selectDiagramF;
+    const { value: M } = this.selectDiagramM;
+    this.setState({ forDiagram : this.getDiagram(R, F, M) });
+  };
 
   render() {
     const { year } = this.props.state.filter;
     const { year: local_year, mounth: local_mounth } = this.state.local_filter;
-    const { forSchedule } = this.state
+    const { forSchedule, forDiagram, value } = this.state
     let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:';
 
     const content = (
@@ -222,84 +261,59 @@ class MainAnalisis extends Component {
       </div>
     );
 
-    function randomLeaf() {
-      return {
-        size: Math.random() * 1000,
-        color: Math.random()
-      };
-    };
-
-    function updateData() {
-      const totalLeaves = Math.random() * 20;
-      const leaves = [];
-      for (let i = 0; i < totalLeaves; i++) {
-        const leaf = randomLeaf();
-        if (Math.random() > 0.8) {
-          leaf.children = [...new Array(3)].map(() => randomLeaf());
-        }
-        leaves.push(leaf);
-      }
-      return {
-        title: '',
-        color: 1,
-        children: leaves
-      };
-    };
-
-    const DIVERGING_COLOR_SCALE = ['#00939C', '#85C4C8', '#EC9370', '#C22E00'];
-    const {data, hovering} = this.state;
-
     const diagram = (
       <div className="diagram">
-      <button type="button"
-        onClick={() => this.setState({data: updateData()})}>
-        Update
-      </button>
-      <div>{hovering ? 'CURRENTLY HOVERING' : 'NOT HOVERED'}</div>
-      <Sunburst
-        animation={{damping: 20, stiffness: 300}}
-        data={[
-          {
-            title: '213',
-            size: 12,
-            color: DIVERGING_COLOR_SCALE[0]
-          },
-          {
-            title: '12312',
-            color: DIVERGING_COLOR_SCALE[1],
-            size: 12,
-            children: [{
-              size: Math.random() * 1000,
-              color: Math.random()
-            }]
-          },
-          {
-            title: '123123',
-            color: DIVERGING_COLOR_SCALE[2],
-            size: 12,
-            children: [{
-              size: Math.random() * 1000,
-              color: Math.random()
-            }]
-          },
-          {
-            title: '12312',
-            color: DIVERGING_COLOR_SCALE[4],
-            size: 12,
-            children: [{
-              size: Math.random() * 1000,
-              color: Math.random()
-            }]
-          },
-        ]}
-        colorType={'category'}
-        colorRange={DIVERGING_COLOR_SCALE}
-        style={{stroke: '#fff'}}
-        onValueMouseOver={() => this.setState({hovering: true})}
-        onValueMouseOut={() => this.setState({hovering: false})}
-        height={400}
+      R<select
+        ref={ (e) => {this.selectDiagramR = e } }
+        onChange={ this.changeDiagram }>
+        <option value="0">-</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+      F<select
+        ref={ (e) => {this.selectDiagramF = e } }
+        onChange={ this.changeDiagram }>
+        <option value="0">-</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+      M<select
+        ref={ (e) => {this.selectDiagramM = e } }
+        onChange={ this.changeDiagram }>
+        <option value="0">-</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+      <RadialChart
+        className={'donut-chart-example'}
+        innerRadius={100}
+        radius={140}
+        getAngle={d => d.theta}
+        data={ forDiagram }
+        onValueMouseOver={v => this.setState({value: v})}
+        onSeriesMouseOut={v => this.setState({value: false})}
         width={300}
-      />
+        height={300}
+        padAngle={0}>
+          {value !== false &&
+            <Hint value={value}>
+              <div className="diagram-tooltip">
+                <p>{`Заказчик: ${value.name}`}</p>
+                <p>{`RFM: ${value.RFM}`}</p>
+                <p>{`От всех заказов: ${value.percent}%`}</p>
+              </div>
+            </Hint>
+          }
+      </RadialChart>
       </div>
     );
 

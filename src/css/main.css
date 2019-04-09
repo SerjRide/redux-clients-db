@@ -225,6 +225,15 @@ html {
 .main-analisis .schedule select:focus, .main-analisis .diagram select:focus {
   outline: solid 0px #fff; }
 
+.main-analisis .schedule .diagram-tooltip, .main-analisis .diagram .diagram-tooltip {
+  background-color: #212121;
+  box-shadow: 0 0 2px #202020;
+  padding: 5px;
+  border-radius: 5px; }
+  .main-analisis .schedule .diagram-tooltip p, .main-analisis .diagram .diagram-tooltip p {
+    margin: 0;
+    padding: 0; }
+
 .edit-order {
   position: absolute;
   display: flex;
