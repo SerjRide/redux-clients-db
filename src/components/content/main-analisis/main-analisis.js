@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import {
-  XYPlot, VerticalGridLines, Hint,
+  XYPlot, VerticalGridLines, Sunburst,
   HorizontalGridLines, XAxis, YAxis,
   Crosshair, RadialChart, VerticalBarSeries
 } from 'react-vis';
@@ -34,7 +34,8 @@ class MainAnalisis extends Component {
       prev_main_analysis: -1,
       forSchedule: [],
       schedule: 'orders',
-      local_filter: { year: '0', mounth: '' }
+      local_filter: { year: '0', mounth: '' },
+      hovering: false
     };
   };
 
@@ -96,12 +97,14 @@ class MainAnalisis extends Component {
                 }
               }
               if (type === 'customers') {
+
                 if (year === '0' && mounth !== '') {
                   return this.getGlobal('customers', '0', '');
                 } else {
                   res += 1;
                   j = customers[i].date.length;
                 }
+
               }
             } else if (type === 'customers') j = customers[i].date.length;
           } else if (type === 'customers') j = customers[i].date.length;
@@ -164,7 +167,6 @@ class MainAnalisis extends Component {
     const { forSchedule } = this.state
     let changed_text = (year !== '0') ? 'Новых клиентов:' : 'Всего клиентов:';
 
-
     const content = (
       <div className="row">
         <div className="col-md-3">
@@ -220,40 +222,84 @@ class MainAnalisis extends Component {
       </div>
     );
 
-    const { diagram_value: value } = this.state
-    const forDiagram = [
-      {angle: 1, color: '#89DAC1', name: 'green', opacity: 0.2},
-      {angle: 2, color: '#F6D18A', name: 'yellow'},
-      {angle: 5, color: '#1E96BE', name: 'cyan'},
-      {angle: 3, color: '#DA70BF', name: 'magenta'},
-      {angle: 5, color: '#F6D18A', name: 'yellow again'}
-    ];
+    function randomLeaf() {
+      return {
+        size: Math.random() * 1000,
+        color: Math.random()
+      };
+    };
+
+    function updateData() {
+      const totalLeaves = Math.random() * 20;
+      const leaves = [];
+      for (let i = 0; i < totalLeaves; i++) {
+        const leaf = randomLeaf();
+        if (Math.random() > 0.8) {
+          leaf.children = [...new Array(3)].map(() => randomLeaf());
+        }
+        leaves.push(leaf);
+      }
+      return {
+        title: '',
+        color: 1,
+        children: leaves
+      };
+    };
+
+    const DIVERGING_COLOR_SCALE = ['#00939C', '#85C4C8', '#EC9370', '#C22E00'];
+    const {data, hovering} = this.state;
 
     const diagram = (
       <div className="diagram">
-        <select
-          ref={ (e) => {this.selectDiagram = e } }
-          onChange={ this.changeDiagram }>
-          <option value="orders">Количесто заказов за период</option>
-          <option value="customers">Новых клиентов за период</option>
-          <option value="price">Выручки за период</option>
-        </select>
-        <div>
-        <RadialChart
-      colorType={'literal'}
-      colorDomain={[0, 100]}
-      colorRange={[0, 10]}
-      margin={{top: 100}}
-      getLabel={d => d.name}
-      data={forDiagram}
-      labelsRadiusMultiplier={1.1}
-      labelsStyle={{fontSize: 16, fill: '#222'}}
-      showLabels
-      style={{stroke: '#fff', strokeWidth: 2}}
-      width={400}
-      height={300}
-    />
-        </div>
+      <button type="button"
+        onClick={() => this.setState({data: updateData()})}>
+        Update
+      </button>
+      <div>{hovering ? 'CURRENTLY HOVERING' : 'NOT HOVERED'}</div>
+      <Sunburst
+        animation={{damping: 20, stiffness: 300}}
+        data={[
+          {
+            title: '213',
+            size: 12,
+            color: DIVERGING_COLOR_SCALE[0]
+          },
+          {
+            title: '12312',
+            color: DIVERGING_COLOR_SCALE[1],
+            size: 12,
+            children: [{
+              size: Math.random() * 1000,
+              color: Math.random()
+            }]
+          },
+          {
+            title: '123123',
+            color: DIVERGING_COLOR_SCALE[2],
+            size: 12,
+            children: [{
+              size: Math.random() * 1000,
+              color: Math.random()
+            }]
+          },
+          {
+            title: '12312',
+            color: DIVERGING_COLOR_SCALE[4],
+            size: 12,
+            children: [{
+              size: Math.random() * 1000,
+              color: Math.random()
+            }]
+          },
+        ]}
+        colorType={'category'}
+        colorRange={DIVERGING_COLOR_SCALE}
+        style={{stroke: '#fff'}}
+        onValueMouseOver={() => this.setState({hovering: true})}
+        onValueMouseOut={() => this.setState({hovering: false})}
+        height={400}
+        width={300}
+      />
       </div>
     );
 

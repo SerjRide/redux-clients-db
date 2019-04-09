@@ -1,23 +1,14 @@
 
-renderRow = () => {
-  const { col, method } = this.state;
-  const { orders } = this.props.state;
-  let items;
 
-  items = orders.map((item) => {
-    return (
-      <tr key={ item._id }
-        onDoubleClick= { () => this.props.showModal(item._id) }>
-        <th>{ item.namber }</th>
-        <td>{ item.customer }</td>
-        <td>{ item.date }</td>
-        <td>{ item.name }</td>
-        <td>{ item.contacts }</td>
-        <td>{ getProductsNames(item) }</td>
-        <td>{ item.price }</td>
-      </tr>
-    )
-  });
+      if (year_condition === year) {
+        if (mounth_condition === mounth) {
+          if (day_condition === day) {
+              res += 1;
+              cycleEnd();
+            } else cycleEnd();
+          } else cycleEnd();
+        } else cycleEnd();
 
-  return items;
-}
+if ( year_condition === year &&
+     mounth_condition === mounth &&
+     day_condition === day )

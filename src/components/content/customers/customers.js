@@ -137,7 +137,6 @@ class Customers extends Component {
       const date_filter = this.dateFilter()
       const newArr = this.addExtra(date_filter);
       const info_filter = this.infoFilter(newArr);
-      console.log(info_filter);
       this.sortCustomers(info_filter, col, method);
       items = info_filter.map((item, i) => {
         const condition = (item.true_amount - item.total_amount < 0 )
