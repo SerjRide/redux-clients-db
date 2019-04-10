@@ -119,7 +119,7 @@ class MainAnalisis extends Component {
   getSchedule = (schedule = this.selectSchedule.value) => {
     let { year, mounth } = this.props.state.filter;
     let periods = 12;
-    if (year === '0') periods = 4;
+    if (year === '0') periods = 10;
     if (year !== '0' && mounth !== '') periods = 31;
     let arr = [];
     arr[0] = [];
@@ -129,18 +129,18 @@ class MainAnalisis extends Component {
       let day_condition = '', x_name = mounths_names[i];
 
       if (year === '0') {
-        year_condition = i + 16 + '';
+        year_condition = i + 10 + '';
         mounth_condition = ''
-        x_name = '20' + (i + 16);
+        x_name = '20' + (i + 10);
       }
 
       if (year === '0' && schedule === 'customers') {
         mounth_condition = '';
-        year_condition = i + 16 + '';
+        year_condition = i + 10 + '';
       }
 
       if (year === '0' && schedule === 'price') {
-        year_condition = i + 16 + '';
+        year_condition = i + 10 + '';
         mounth_condition = '';
       }
 

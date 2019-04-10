@@ -46,8 +46,6 @@ const extracter = (res) => {
       });
     }
   }
-  // console.log(customers);
-  console.log(buildRFM(customers));
   return buildRFM(customers);
 }
 
