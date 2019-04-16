@@ -11,41 +11,36 @@ const buildRFM = (customers) => {
     arr[i].total_amount = item.total_amount;
     arr[i].date = [];
     for (let j = 0, length = item.date.length; j < length; j++) {
-      arr[i].date[j] = item.date[j].date;
+      arr[i].date[j] = {};
+      arr[i].date[j].date = item.date[j].date;
+      arr[i].date[j].price = item.date[j].price;
+      arr[i].date[j].passed = item.date[j].price;
     }
     return item.date
   });
 
-  const daySort = (a, b) => {
-    let a_day = a.slice(0, 2);
-    let b_day = b.slice(0, 2);
-    if (a_day > b_day) return 1;
-    if (a_day < b_day) return -1;
-  };
-
-  const mounthSort = (a, b) => {
-    let a_mounth = a.slice(3, 5);
-    let b_mounth = b.slice(3, 5);
-    if (a_mounth > b_mounth) return 1;
-    if (a_mounth < b_mounth) return -1;
-  };
-
-  const yearSort = (a, b) => {
-    let a_year = a.slice(-2);
-    let b_year = b.slice(-2);
-    if (a_year > b_year) return 1;
-    if (a_year < b_year) return -1;
+  const timestamp_sort = (a, b) => {
+    const a_day = a.date.slice(0,2);
+    const b_day = b.date.slice(0,2);
+    const a_mounth = (Number(a.date.slice(4, 5)) - 1) + '';
+    const b_mounth = (Number(b.date.slice(4, 5)) - 1) + '';
+    const a_year = a.date.slice(-2);
+    const b_year = b.date.slice(-2);
+    let a_time = new Date('20' + a_year, a_mounth, a_day).getTime();
+    let b_time = new Date('20' + b_year, b_mounth, b_day).getTime();
+    if (a_time > b_time) return 1;
+    if (a_time < b_time) return -1;
   };
 
   if (arr.length !== 0) {
 
     for (let i = 0; i < arr[0].date.length; i++) {
-      arr[i].date.sort(daySort).sort(mounthSort).sort(yearSort)
+      arr[i].date = arr[i].date.sort(timestamp_sort);
     };
 
     for (let i = 0; i < arr.length; i++) {
 
-      const last_date = arr[i].date[arr[i].date.length - 1];
+      const last_date = arr[i].date[arr[i].date.length - 1].date;
       const day = last_date.slice(0,2);
       const mounth = (Number(last_date.slice(4, 5)) - 1) + '';
       const year = last_date.slice(-2);
@@ -83,10 +78,13 @@ const buildRFM = (customers) => {
 
       arr[i].RFM = '' + R(day_ago) + F(orders_count) + M(arr[i].true_amount);
 
-      delete arr[i].date;
-      arr[i].date = customers[i].date;
+
     }
+
   }
+  console.log(arr[0].date);
+  console.log('----------------------------');
+  console.log(arr[0].last_date);
   return arr;
 }
 
