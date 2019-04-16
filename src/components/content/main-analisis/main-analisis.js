@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import {
-  XYPlot, VerticalGridLines, Sunburst,
+  XYPlot, VerticalGridLines,
   HorizontalGridLines, XAxis, YAxis, Hint,
   Crosshair, RadialChart, VerticalBarSeries
 } from 'react-vis';

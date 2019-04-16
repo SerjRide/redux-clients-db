@@ -36,19 +36,6 @@ const getData = (year, token) => {
   };
 };
 
-// const controller = async (year, dispatch) => {
-//   const res = await fetch('/customers');
-//   const body = await res.json();
-//   await dispatch(reqCustomersDone(body))
-//   return body
-// }
-//
-// const getCustomers = (year) => {
-//   return (dispatch) => {
-//     controller(year, dispatch)
-//   };
-// }
-
 const setData = (body, token) => {
   return (dispatch) => {
     fetch('/order', {
@@ -96,21 +83,6 @@ const getCustomers = (year, token) => {
   };
 }
 
-// const extractCustomersByYeat = (year) => {
-//   return (dispatch) => {
-//     fetch('/getcustomersbyyear/' + year)
-//     .then((res) => {
-//       if(!res.ok) throw new Error(res.statusText)
-//       return res;
-//     })
-//     .then((res) => res.json())
-//     .then((customers) => {
-//       console.log(customers);
-//       dispatch(reqCustomersDone(customers))
-//     })
-//   };
-// }
-
 const editOrder = (id, body, token) => {
   return (dispatch) => {
     fetch('/order/' + id, {
@@ -153,18 +125,7 @@ const getAutorize = (log, pass) => {
 }
 
 export {
-  showNavbar,
-  hideNavbar,
-  getData,
-  setData,
-  alertSaccess,
-  delData,
-  changeFilter,
-  showModal,
-  hideModal,
-  editOrder,
-  getCustomers,
-  sign_out,
-  getAutorize,
+  showNavbar, hideNavbar, getData, setData, alertSaccess, delData, changeFilter,
+  showModal, hideModal, editOrder, getCustomers, sign_out, getAutorize,
   mainAnalysis
 }
